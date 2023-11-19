@@ -2,10 +2,10 @@
 the data Dashboard for Hi-Horizon racing team
 
 ## installation
-clone the repository into your system and run the command
+clone the repository into your system and run the following command to start website.
 ```
 npm run dev
 ```
-to start website. Then you can run the python script MqttDataHandler.py to connect to the Mqtt broker
+Then run the python script MqttDataHandler.py to connect to the Mqtt broker
 
 for more information, check the [wiki](https://github.com/Hi-Horizon/Dashboard/wiki)
