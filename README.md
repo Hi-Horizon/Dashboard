@@ -4,7 +4,7 @@ the data Dashboard for Hi-Horizon racing team
 ## installation
 clone the repository into your system and run the following commands to install the dependencies
 ```
-pip install paho-mqtt //install with your 
+pip install paho-mqtt
 npm install
 ```
 then you can host the website locally with:
