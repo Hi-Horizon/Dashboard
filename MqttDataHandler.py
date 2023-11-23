@@ -1,11 +1,17 @@
 import sqlite3
 import time
 import paho.mqtt.client as paho
+from getpass import getpass
 from paho import mqtt
 import json
 
 db = sqlite3.connect("HiHorizonTelemetry.db")
 cur = db.cursor()
+
+def brokerCredentialsInput():
+    username = str(input("MQTT user: "))
+    password = str(getpass("MQTT pwrd:"))
+    return username,password
 
 def insertMapToDatabase(dataFrame):
     beginTime = time.time()
@@ -56,7 +62,11 @@ def insertMapToDatabase(dataFrame):
 
 def on_connect(client, userdata, flags, rc, properties=None):
     print("CONNACK received with code %s." % rc)
-    client.subscribe("data")
+    if (rc == 0):
+        client.subscribe("data")
+    else: 
+        username, password = brokerCredentialsInput()
+        client.username_pw_set(username, password)
 
 # with this callback you can see if your publish was successful
 def on_publish(client, userdata, mid, properties=None):
@@ -86,7 +96,8 @@ client.on_connect = on_connect
 # enable TLS for secure connection
 client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 # set username and password
-client.username_pw_set("admin", "H1hrtFTW")
+username, password = brokerCredentialsInput()
+client.username_pw_set(username, password)
 # connect to HiveMQ Cloud on port 8883 (default for MQTT)
 client.connect("7f15879e36cf4f3781ca3df1f338b397.s1.eu.hivemq.cloud", 8883)
 
