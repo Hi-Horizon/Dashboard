@@ -1,14 +1,16 @@
+import type { RESTMessage } from "$lib/interfaces/RestMessage";
 import { db } from "../dataBaseConnection";
 
-export function getAllDataPointsFromAxes(x:string, y:string): any[][] {
+export function getAllDataPointsFromAxes(x:string, y:string, xs:string, xe:string): RESTMessage {
     try {
-        const stmt = db.prepare("SELECT "+ x +","+ y +" FROM Data");
-        const result: any[] = stmt.raw().all();
-        return result;
+        if (xs >= xe) throw new Error("beginTime is bigger or equal to than endTime")
+        const stmt = db.prepare("SELECT "+ x +","+ y +" FROM Data WHERE UnixTime >= ? AND UnixTime <= ?");
+        const result: any[] = stmt.raw().all([xs,xe]);
+        return {result: result, status:200};
     } 
     catch (error) {
         console.log(error)
-        return [];
+        return {result: [], status:500};
     }
 }
 
