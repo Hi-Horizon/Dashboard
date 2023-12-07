@@ -1,3 +1,4 @@
+import pathlib
 import sqlite3
 import time
 import paho.mqtt.client as paho
@@ -5,7 +6,9 @@ from getpass import getpass
 from paho import mqtt
 import json
 
-db = sqlite3.connect("HiHorizonTelemetry.db")
+root = str(pathlib.Path(__file__).parent.resolve())
+db = sqlite3.connect('file:'+root+'\HiHorizonTelemetry.db?mode=rw', uri=True)
+
 cur = db.cursor()
 
 def brokerCredentialsInput():
@@ -15,7 +18,6 @@ def brokerCredentialsInput():
 
 def insertMapToDatabase(dataFrame):
     beginTime = time.time()
-
     #get all the current dataTypes from the database
     res = cur.execute("SELECT name, abbreviation FROM ReadStatisticTypes")
     typeRows = res.fetchall()
@@ -90,7 +92,7 @@ def on_message(client, userdata, msg):
 # using MQTT version 5 here, for 3.1.1: MQTTv311, 3.1: MQTTv31
 # userdata is user defined data of any type, updated by user_data_set()
 # client_id is the given name of the client
-client = paho.Client(client_id="Website-Listener", userdata=None, protocol=paho.MQTTv5)
+client = paho.Client(userdata=None, protocol=paho.MQTTv5)
 client.on_connect = on_connect
 
 # enable TLS for secure connection
