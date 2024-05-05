@@ -56,8 +56,8 @@ def insertMapToDatabase(dataFrame):
     try:
         cur.execute("INSERT INTO Data ("+ columns +") VALUES("+ placeholders +")", valuesToInsert)
         db.commit()
-    except:
-        print("inserting in the database went wrong")
+    except Exception as error:
+        print(error)
     
     print("insertion took " + str(time.time() - beginTime) + " seconds")
 
