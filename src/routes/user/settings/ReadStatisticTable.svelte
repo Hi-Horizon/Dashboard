@@ -12,12 +12,12 @@
     let addUnit:string = "";
 
     function addReadStatisticType() {
+        if (addName === "" || addAbbreviation == "" || addQuantity == "" || addUnit == "") return;
         let newReadStatistic: ReadStatisticType = {name: addName, abbreviation: addAbbreviation, quantity: addQuantity, unit: addUnit};
         let newLocalChange: SettingsLocalChange = {operation: "Add", settingType: "ReadStatisticType", structure: newReadStatistic};
         readStatisticTypesLocalChangeLog = [...readStatisticTypesLocalChangeLog, newLocalChange];
         
         closeAddForm();
-        console.log(readStatisticTypesLocalChangeLog);
     }
 
     function revealAddForm(): void {

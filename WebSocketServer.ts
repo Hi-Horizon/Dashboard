@@ -9,11 +9,13 @@ export const webSocketServer = {
 		setInterval(()=>{
 			let update = fetchLatestData();
 			io.emit("dataUpdate", update)
-		},1000);
+		}, 1000);
 
 		io.on('connection', (socket) => {
-			socket.on('dataUpdate', (msg) => {
-			  console.log('message: ' + msg);
+			console.log("connected: " + socket.id)
+			
+			socket.on("settingsUpdate", (arg) => {
+				io.emit("settingsUpdate");
 			});
 		});
 	}

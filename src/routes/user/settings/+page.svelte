@@ -1,12 +1,26 @@
 <script lang="ts">
     import ReadStatisticTable from "./ReadStatisticTable.svelte";
+    import readStatisticTypes from "./ReadStatisticTable.svelte";
     import { pageName } from "../../../stores";
     import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
     import { setupPageDefault } from "$lib/setupPageDefault";
+    import { io } from "socket.io-client";
 
     export let data;
     setupPageDefault();
     pageName.set("Settings");
+
+    const socket = io();
+
+    socket.on('settingsUpdate', async (message) => {
+        const response = await fetch('/user/settings/REST', {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json'
+						}});
+        const result = await response.json();
+        data.readStatisticTypes = result.response.readStatisticTypes
+    });
 
     let readStatisticTypesLocalChangeLog: SettingsLocalChange[] = [];
 
@@ -34,8 +48,9 @@
 						}});
             const result = await response.json();
             waitingToSubmit = false;
-            emptyAllLocalChanges();
             alert(result.response + "\ncode: "+ result.status);
+            socket.emit("settingsUpdate", "hai");
+            emptyAllLocalChanges();
         }
     }
 </script>

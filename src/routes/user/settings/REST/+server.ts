@@ -1,6 +1,6 @@
 import type { SettingsLocalChange, SettingsType } from '$lib/interfaces/SettingsLocalChange';
 import { db } from '$lib/server/queries/dataBaseConnection';
-import { addReadStatisticsType, deleteReadStatisticsType } from '$lib/server/queries/settings/ReadStatistics.js';
+import { addReadStatisticsType, deleteReadStatisticsType, fetchReadStatisticsTypes } from '$lib/server/queries/settings/ReadStatistics.js';
 import { parseChanges } from '$lib/server/queries/settings/processChanges.js';
 import { json } from '@sveltejs/kit';
 
@@ -19,4 +19,10 @@ export async function POST({ request, cookies }) {
     }
     
 	return json({response:response, status:result});
+}
+
+export async function GET({ request, cookies }) {
+	return json({response:{
+        readStatisticTypes: await fetchReadStatisticsTypes(),
+    }, status:200});
 }
