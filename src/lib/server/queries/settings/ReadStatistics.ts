@@ -26,6 +26,7 @@ export async function fetchReadStatisticsTypes(): Promise<ReadStatisticType[]> {
 }
 
 export function addReadStatisticsType(newRow:ReadStatisticType)  {
+        preventSpecialCharacters(newRow.abbreviation)
         //adds info about statistic to ReadStatisticTypes table
         const insertRow = db.prepare('INSERT INTO ReadStatisticTypes VALUES (@name, @abbreviation, @quantity, @unit);');
         const insertInfo = insertRow.run({name: newRow.name, abbreviation: newRow.abbreviation, quantity: newRow.quantity, unit: newRow.unit});
@@ -47,7 +48,17 @@ export function deleteReadStatisticsType(toDelete:string) {
         //delete row from the ReadStatisticTypes table
         const insertRow = db.prepare('DELETE FROM ReadStatisticTypes WHERE name = ?;');
         const insertInfo = insertRow.run(toDelete);
+
+        preventSpecialCharacters(columnToDelete.abbreviation)
         //deletes column in the Data table
         const addColumn = db.prepare('ALTER TABLE Data DROP COLUMN '+ columnToDelete.abbreviation +';');
         const AddColumnInfo = addColumn.run();
+}
+
+function preventSpecialCharacters(str: string) {
+    //checks if there are special characters in the Abbreviation
+    var specialChars  = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    if (specialChars.test(str)) {
+        throw new Error("not allowed to use special characters in abbreviation");
+    }
 }
