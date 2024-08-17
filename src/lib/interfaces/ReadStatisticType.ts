@@ -3,4 +3,5 @@ export interface ReadStatisticType {
     abbreviation:string;
     quantity:string;
     unit:string;
+    display:number
 }

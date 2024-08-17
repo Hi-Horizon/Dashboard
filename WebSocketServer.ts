@@ -11,9 +11,7 @@ export const webSocketServer = {
 			io.emit("dataUpdate", update)
 		}, 1000);
 
-		io.on('connection', (socket) => {
-			console.log("connected: " + socket.id)
-			
+		io.on('connection', (socket) => {			
 			socket.on("settingsUpdate", (arg) => {
 				io.emit("settingsUpdate");
 			});

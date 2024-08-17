@@ -10,7 +10,7 @@ export async function POST({ request, cookies }) {
     const body = await request.json();
     try {
         parseChanges(body);
-        response = "All Saves changed sucesfully"
+        response = "All Saves changed sucessfully"
         result = 201;
     }
     catch (error) {
