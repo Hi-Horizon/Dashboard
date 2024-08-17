@@ -8,7 +8,7 @@ setupPageDefault();
 pageName.set("Dashboard");
 export let data;
 let dataFrameStructure: any[] = data.dataFrameStructure;
-
+let displayDataFrameStructures: any[] = dataFrameStructure.filter(x => x.display != 0);
 const socket = io();
 
 let boatData:any = data.dataFrame;
@@ -17,11 +17,14 @@ socket.on('dataUpdate', (message) => {
 });
 
 let statusColor: string = "";
+let statusColorMTU: string = "";
+let statusColorGPS: string = "";
+let statusColorMPPT: string = "";
 const currentDate = new Date();
 let timeSinceLastFrame: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - boatData.UnixTime);
 
 //********************ESTELA LINK HERE ************************/
-let link: string = "https://estela.co/nl/race/13451/solar-racing-2024-nk-groenleven-zonnebootrace-endurance";
+let link: string = "https://estela.co/nl/tracking-race/13452/solar-racing-2024-nk-groenleven-zonnebootrace-rondje-akkrum";
 //********************ESTELA LINK HERE ************************/
 
 setInterval(()=> {
@@ -43,9 +46,9 @@ $: {
 <div class="space-y-3">
     <div class="flex justify-evenly space-x-3">
         <div class="rounded border-separate bg-stone-800 flex-1">
-        {#each dataFrameStructure as readStatistic, index}
+        {#each displayDataFrameStructures as readStatistic, index}
             {#if readStatistic.name !== "UnixTime"}
-                {#if index < (dataFrameStructure.length/2)}
+                {#if index < (displayDataFrameStructures.length/2)}
                     <div class="even:bg-stone-700 p-3 last:rounded-b">
                         <p class="font-bold">{readStatistic.name}</p>
                         <div class="flex flex-row items-end space-x-1">
@@ -58,9 +61,9 @@ $: {
         {/each}
         </div>
         <div class="rounded border-separate bg-stone-800 flex flex-col flex-1" >
-        {#each dataFrameStructure as readStatistic, index}
+        {#each displayDataFrameStructures as readStatistic, index}
             {#if readStatistic.name !== "UnixTime"}
-                {#if index >= (dataFrameStructure.length/2)}
+                {#if index >= (displayDataFrameStructures.length/2)}
                     <div class="even:bg-stone-700 p-3 last:rounded-b">
                         <p class="font-bold">{readStatistic.name}</p>
                         <div class="flex flex-row items-end space-x-1">
@@ -71,7 +74,7 @@ $: {
                 {/if}
             {/if}
         {/each}
-        {#if dataFrameStructure.length % 2 === 1}
+        {#if displayDataFrameStructures.length % 2 === 1}
             <div class="even:bg-stone-700 p-3 last:rounded-b flex-grow">
             </div>
         {/if}
@@ -83,6 +86,9 @@ $: {
     </div>
     <div class="p-3 rounded bg-stone-800 self-start w-fit">
         <div class="font-bold">Status</div>
-        <div class="{statusColor}">time since last Frame: {$timeSinceLastFrame}s</div>
+        <div class="{statusColor}">Time since last Frame: {$timeSinceLastFrame}s</div>
+        <div class="{statusColorGPS}">MTU runtime: {boatData["mtuT"]}s</div>
+        <div class="{statusColorGPS}">Time since last GPS data: {boatData["gpsT"]}s</div>
+        <div class="{statusColorMPPT}">Time since last MPPT data: {boatData["mpptT"]}s</div>
     </div>
 </div>

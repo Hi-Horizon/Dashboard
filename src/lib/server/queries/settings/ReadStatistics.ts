@@ -19,17 +19,18 @@ export async function fetchReadStatisticsTypes(): Promise<ReadStatisticType[]> {
 
     const processedResult: ReadStatisticType[] = [];
     rawResult.forEach((item:string[]) => {
-        let newReadStatisticType: ReadStatisticType = {name: item[0], abbreviation: item[1], quantity: item[2], unit: item[3]}
+        let newReadStatisticType: ReadStatisticType = {name: item[0], abbreviation: item[1], quantity: item[2], unit: item[3], display: item[4]}
         processedResult.push(newReadStatisticType);
     });
     return processedResult;
 }
 
+//TODO: make it an option in settings to change display type
 export function addReadStatisticsType(newRow:ReadStatisticType)  {
         preventSpecialCharacters(newRow.abbreviation)
         //adds info about statistic to ReadStatisticTypes table
-        const insertRow = db.prepare('INSERT INTO ReadStatisticTypes VALUES (@name, @abbreviation, @quantity, @unit);');
-        const insertInfo = insertRow.run({name: newRow.name, abbreviation: newRow.abbreviation, quantity: newRow.quantity, unit: newRow.unit});
+        const insertRow = db.prepare('INSERT INTO ReadStatisticTypes VALUES (@name, @abbreviation, @quantity, @unit, @display);');
+        const insertInfo = insertRow.run({name: newRow.name, abbreviation: newRow.abbreviation, quantity: newRow.quantity, unit: newRow.unit, display: 1});
 
         //adds column to the data table
         // const addColumn = db.prepare('ALTER TABLE Data ADD @colName INTEGER NOT NULL DEFAULT 0');
