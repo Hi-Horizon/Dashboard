@@ -24,7 +24,12 @@ const currentDate = new Date();
 let timeSinceLastFrame: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - boatData.UnixTime);
 
 //********************ESTELA LINK HERE ************************/
-let link: string = "https://estela.co/nl/tracking-race/13452/solar-racing-2024-nk-groenleven-zonnebootrace-rondje-akkrum";
+function changeLink() {
+    link = inputLink;
+}
+
+let inputLink: string = "";
+let link: string = "";
 //********************ESTELA LINK HERE ************************/
 
 setInterval(()=> {
@@ -45,11 +50,11 @@ $: {
 
 <div class="space-y-3">
     <div class="flex justify-evenly space-x-3">
-        <div class="rounded border-separate bg-stone-800 flex-1">
+        <div class="rounded border-separate flex-1 flex flex-col">
         {#each displayDataFrameStructures as readStatistic, index}
             {#if readStatistic.name !== "UnixTime"}
                 {#if index < (displayDataFrameStructures.length/2)}
-                    <div class="even:bg-stone-700 p-3 last:rounded-b">
+                    <div class="even:bg-stone-700 odd:bg-stone-800 p-3 last:rounded-b first:rounded-t flex-grow flex flex-col justify-center">
                         <p class="font-bold">{readStatistic.name}</p>
                         <div class="flex flex-row items-end space-x-1">
                             <p class="text-4xl">{boatData[readStatistic.abbreviation].toFixed(2)}</p>
@@ -60,11 +65,11 @@ $: {
             {/if}
         {/each}
         </div>
-        <div class="rounded border-separate bg-stone-800 flex flex-col flex-1" >
+        <div class="rounded border-separate flex flex-col flex-1" >
         {#each displayDataFrameStructures as readStatistic, index}
             {#if readStatistic.name !== "UnixTime"}
                 {#if index >= (displayDataFrameStructures.length/2)}
-                    <div class="even:bg-stone-700 p-3 last:rounded-b">
+                    <div class="even:bg-stone-700 odd:bg-stone-800 p-3 last:rounded-b first:rounded-t flex-grow flex flex-col justify-center">
                         <p class="font-bold">{readStatistic.name}</p>
                         <div class="flex flex-row items-end space-x-1">
                             <p class="text-4xl">{boatData[readStatistic.abbreviation].toFixed(2)}</p>
@@ -79,9 +84,15 @@ $: {
             </div>
         {/if}
         </div>
-        <div>
-            Current/Most recent race:
-            <iframe width="560" height="315" src={link} frameborder="0" allowfullscreen></iframe>
+        <div class="rounded bg-stone-800 p-3">
+            <!-- Current/Most recent race: -->
+            <div class="rounded bg-stone-900">
+                <iframe title="estela tracker" width="560" height="315" src={link} frameborder="0" allowfullscreen>track the race by filling in a link down below</iframe>
+            </div>
+            <div class="flex pt-3 space-x-1">
+                <input type="text" bind:value={inputLink} placeholder="https://estela.co/...." class="rounded bg-stone-700 px-2 flex-1 placeholder:italic">
+                <button on:click={changeLink} class="text-center bg-stone-700 hover:bg-stone-600 rounded flex justify-center py-1 px-4">Watch</button>
+            </div>
         </div>
     </div>
     <div class="p-3 rounded bg-stone-800 self-start w-fit">
