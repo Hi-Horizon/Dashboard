@@ -5,11 +5,30 @@ import paho.mqtt.client as paho
 from getpass import getpass
 from paho import mqtt
 import json
+import math
 
 root = str(pathlib.Path(__file__).parent.resolve())
 db = sqlite3.connect('file:'+root+'\HiHorizonTelemetry.db?mode=rw', uri=True)
 
 cur = db.cursor()
+
+def degreesMinutesToDecimalDegrees(rawValue: float):
+    degrees = math.floor(rawValue / 100)
+    minutes = rawValue - (degrees * 100)
+    minutesToDegrees = minutes / 60.0
+    return degrees + minutesToDegrees
+
+def calculateDistance(lat1, lng1, lng2, lat2):
+    earthRadius = 6371e3; # metres
+    latitude1_in_radians = lat1 * math.PI/180 # φ, λ in radians
+    latitude2_in_radians = lat2 * math.PI/180
+    delta_phi = (lat2-lat1) * math.PI/180
+    delta_longitude = (lng2-lng1) * math.PI/180
+
+    a = math.sin(delta_phi/2) * math.sin(delta_phi/2) + math.cos(latitude1_in_radians) * math.cos(latitude2_in_radians) * math.sin(delta_longitude/2) * math.sin(delta_longitude/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+
+    return earthRadius * c # in metres
 
 def brokerCredentialsInput():
     username = str(input("MQTT user: "))
@@ -24,6 +43,9 @@ def insertMapToDatabase(dataFrame):
     
     valuesToInsert = []
     columnsToInsert = []
+
+    dataFrame["lat"] = degreesMinutesToDecimalDegrees(dataFrame["lat"])
+    dataFrame["lng"] = degreesMinutesToDecimalDegrees(dataFrame["lng"])
 
     #checks for every type in the database if it got a variable in the message
     for type in typeRows:
@@ -41,6 +63,19 @@ def insertMapToDatabase(dataFrame):
     print(columnsToInsert)
     print(valuesToInsert)
 
+    #add distance travelled from the lat lng coordinates
+    try:
+        #get previous coordinates
+        res = cur.execute("SELECT lat, lng, d FROM Data WHERE UnixTime = (SELECT max(UnixTime) FROM Data)")
+        coordinates = res.fetchall()[0]
+        prevLat = degreesMinutesToDecimalDegrees(coordinates[0])
+        prevLng = degreesMinutesToDecimalDegrees(coordinates[1])
+        
+        columnsToInsert.append("d")
+        valuesToInsert.append(coordinates[2] + calculateDistance(prevLat, prevLng, dataFrame["lat"], dataFrame["lng"]))
+    except Exception as error:
+        print(error)
+    
     #makes the specified length placeholders for the values, and a string containing the column_names
     columns = ""
     placeholders = ""
