@@ -42,6 +42,18 @@ $: {
     else statusColor="";
 };
 
+async function resetDistance(): Promise<any> {
+    let confirmation: boolean = confirm("are you sure you want these changes?");
+    if (confirmation === true) {
+        const response = await fetch('/user/dashboard/REST', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+}
+
 </script>
 
 <svelte:head>
@@ -73,7 +85,12 @@ $: {
                         <p class="font-bold">{readStatistic.name}</p>
                         <div class="flex flex-row items-end space-x-1">
                             <p class="text-4xl">{boatData[readStatistic.abbreviation].toFixed(2)}</p>
-                            <p class="text-stone-400">{readStatistic.unit}</p>
+                            <p class="text-stone-400 flex-grow">{readStatistic.unit}</p>
+                            {#if readStatistic.name === "Meters travelled"}
+                            <button on:click={()=>resetDistance()} class="p-1 text-s text-center bg-stone-500 hover:bg-red-400 rounded">
+                                Reset
+                            </button>
+                            {/if}
                         </div>
                     </div>
                 {/if}
@@ -81,6 +98,11 @@ $: {
         {/each}
         {#if displayDataFrameStructures.length % 2 === 1}
             <div class="even:bg-stone-700 p-3 last:rounded-b flex-grow">
+                <p class="font-bold text-stone-700">dummy</p>
+                <div class="flex flex-row items-end space-x-1">
+                    <p class="text-4xl text-stone-700">hi</p>
+                    <p class="text-stone-700">l</p>
+                </div>
             </div>
         {/if}
         </div>
@@ -102,4 +124,5 @@ $: {
         <div class="{statusColorGPS}">Time since last GPS data: {boatData["gpsT"]}s</div>
         <div class="{statusColorMPPT}">Time since last MPPT data: {boatData["mpptT"]}s</div>
     </div>
+    
 </div>

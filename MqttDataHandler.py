@@ -5,11 +5,30 @@ import paho.mqtt.client as paho
 from getpass import getpass
 from paho import mqtt
 import json
+import math
 
 root = str(pathlib.Path(__file__).parent.resolve())
 db = sqlite3.connect('file:'+root+'\HiHorizonTelemetry.db?mode=rw', uri=True)
 
 cur = db.cursor()
+
+def degreesMinutesToDecimalDegrees(rawValue: float):
+    degrees = math.floor(rawValue / 100)
+    minutes = rawValue - (degrees * 100)
+    minutesToDegrees = minutes / 60.0
+    return degrees + minutesToDegrees
+
+def calculateDistance(lat1, lng1, lat2, lng2):
+    earthRadius = 6371e3; # metres
+    latitude1_in_radians = lat1 * math.pi/180 # φ, λ in radians
+    latitude2_in_radians = lat2 * math.pi/180
+    delta_phi = (lat2-lat1) * math.pi/180
+    delta_longitude = (lng2-lng1) * math.pi/180
+
+    a = math.sin(delta_phi/2) * math.sin(delta_phi/2) + math.cos(latitude1_in_radians) * math.cos(latitude2_in_radians) * math.sin(delta_longitude/2) * math.sin(delta_longitude/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+
+    return earthRadius * c # in metres
 
 def brokerCredentialsInput():
     username = str(input("MQTT user: "))
@@ -41,6 +60,21 @@ def insertMapToDatabase(dataFrame):
     print(columnsToInsert)
     print(valuesToInsert)
 
+    #add distance travelled from the lat lng coordinates
+    try:
+        dataFrame["lat"] = degreesMinutesToDecimalDegrees(dataFrame["lat"])
+        dataFrame["lng"] = degreesMinutesToDecimalDegrees(dataFrame["lng"])
+        #get previous coordinates
+        res = cur.execute("SELECT lat, lng, d FROM Data WHERE UnixTime = (SELECT max(UnixTime) FROM Data)")
+        coordinates = res.fetchall()[0]
+        prevLat = degreesMinutesToDecimalDegrees(coordinates[0])
+        prevLng = degreesMinutesToDecimalDegrees(coordinates[1])
+        
+        valuesToInsert.append(coordinates[2] + calculateDistance(prevLat, prevLng, dataFrame["lat"], dataFrame["lng"]))
+        columnsToInsert.append("d")
+    except Exception as error:
+        print(error)
+    
     #makes the specified length placeholders for the values, and a string containing the column_names
     columns = ""
     placeholders = ""
@@ -84,8 +118,9 @@ def on_message(client, userdata, msg):
         try:
             dataframe = json.loads(str(msg.payload.decode("UTF-8")))
             insertMapToDatabase(dataframe)
-        except:
-            print("could not convert json string to dataframe, possibly a wrong format is used")
+        except Exception as error:
+            print("huh?")
+            print(error)
         
 
 
