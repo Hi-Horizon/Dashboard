@@ -11,4 +11,8 @@ export default defineConfig({
 		  '@mqtt': path.resolve(__dirname, './node_modules/mqtt/bin/'),
 		},
 	  },
+	server: {
+		port: 5173,
+		strictPort: true
+	}
 });

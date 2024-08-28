@@ -3,7 +3,7 @@
 	"version": "2.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "opener http://localhost:5173 && vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",

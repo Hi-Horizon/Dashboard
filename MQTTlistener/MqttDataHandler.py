@@ -8,7 +8,7 @@ import json
 import math
 
 root = str(pathlib.Path(__file__).parent.resolve())
-db = sqlite3.connect('file:'+root+'\HiHorizonTelemetry.db?mode=rw', uri=True)
+db = sqlite3.connect('file:'+root+'\..\db\HiHorizonTelemetry.db?mode=rw', uri=True)
 
 cur = db.cursor()
 
