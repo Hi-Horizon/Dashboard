@@ -51,6 +51,7 @@ async function resetDistance(): Promise<any> {
                 'Content-Type': 'application/json'
             }
         });
+        socket.emit("newData")
     }
 }
 
