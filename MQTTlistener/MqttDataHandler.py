@@ -6,6 +6,43 @@ from getpass import getpass
 from paho import mqtt
 import json
 import math
+import socketio
+
+mqtt_credentials_received = False
+mqtt_username = ""
+mqtt_password = ""
+
+sio = socketio.Client()
+
+@sio.event
+def connect():
+    print('connection established')
+
+@sio.event
+def mqtt_credentials(data):
+    print("credentials given!")
+    global mqtt_credentials_received
+    mqtt_credentials_received= True
+    global mqtt_username
+    mqtt_username = data["username"]
+    global mqtt_password
+    mqtt_password = data["password"]
+
+@sio.event
+def disconnect():
+    print('disconnected from server')
+
+sio.connect('http://localhost:5173')
+
+def requestMQTTcredentials():
+    global mqtt_credentials_received
+    mqtt_credentials_received = False
+    while not mqtt_credentials_received:
+        print("waiting for mqtt_credentials...")
+        sio.emit("request_mqtt_credentials")
+        time.sleep(1)
+
+requestMQTTcredentials()
 
 root = str(pathlib.Path(__file__).parent.resolve())
 db = sqlite3.connect('file:'+root+'\..\db\HiHorizonTelemetry.db?mode=rw', uri=True)
@@ -29,11 +66,6 @@ def calculateDistance(lat1, lng1, lat2, lng2):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
 
     return earthRadius * c # in metres
-
-def brokerCredentialsInput():
-    username = str(input("MQTT user: "))
-    password = str(getpass("MQTT pwrd:"))
-    return username,password
 
 def insertMapToDatabase(dataFrame):
     beginTime = time.time()
@@ -94,15 +126,17 @@ def insertMapToDatabase(dataFrame):
         print(error)
     
     print("insertion took " + str(time.time() - beginTime) + " seconds")
+    sio.emit("newData", {})
 
 
 def on_connect(client, userdata, flags, rc, properties=None):
     print("CONNACK received with code %s." % rc)
     if (rc == 0):
         client.subscribe("data")
-    else: 
-        username, password = brokerCredentialsInput()
-        client.username_pw_set(username, password)
+    else:
+
+        requestMQTTcredentials()
+        client.username_pw_set(mqtt_username, mqtt_password)
 
 # with this callback you can see if your publish was successful
 def on_publish(client, userdata, mid, properties=None):
@@ -133,8 +167,7 @@ client.on_connect = on_connect
 # enable TLS for secure connection
 client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 # set username and password
-username, password = brokerCredentialsInput()
-client.username_pw_set(username, password)
+client.username_pw_set(mqtt_username, mqtt_password)
 # connect to HiveMQ Cloud on port 8883 (default for MQTT)
 client.connect("7f15879e36cf4f3781ca3df1f338b397.s1.eu.hivemq.cloud", 8883)
 
