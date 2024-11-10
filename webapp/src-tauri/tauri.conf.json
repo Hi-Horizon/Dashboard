@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "HiHorizon_Telemetry_Dashboard",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.Hi-horizon.telemetry-dashboard",
   "build": {
     "frontendDist": "../src",
     "devUrl": "http://localhost:5173",
