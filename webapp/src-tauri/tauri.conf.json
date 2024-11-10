@@ -12,11 +12,10 @@
   "app": {
     "windows": [
       {
-        "title": "HiHorizon_Telemetry_Dashboard",
-        "width": 800,
-        "height": 600,
+        "title": "Hi-Horizon Telemetry Dashboard",
+        "focus": true,
         "resizable": true,
-        "fullscreen": false
+        "maximized": true
       }
     ],
     "security": {
@@ -32,6 +31,18 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
-  }
+    ],
+    "externalBin": [ "../../MQTTlistener/dist/MqttDataHandler/MqttDataHandler" ]
+  },
+  "plugins": {
+		"allowlist": {
+      "all": true,
+      "shell": {
+        "all": true,
+        "execute": true,
+        "sidecar": true,
+        "open": true
+      }
+    }
+	}
 }

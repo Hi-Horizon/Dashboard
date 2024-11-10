@@ -6,6 +6,25 @@
     "main"
   ],
   "permissions": [
-    "core:default"
+    "core:default",
+    "shell:default",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "args": [
+            "arg1",
+            "-a",
+            "--arg2",
+            {
+              "validator": "\\S+"
+            }
+          ],
+          "name": "../../../MQTTlistener/dist/MqttDataHandler/MqttDataHandler",
+          "sidecar": true
+        }
+      ]
+    },
+    "shell:allow-open"
   ]
 }
