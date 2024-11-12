@@ -1,6 +1,5 @@
 <script lang="ts">
-    import ReadStatisticTable from "./ReadStatisticTable.svelte";
-    import readStatisticTypes from "./ReadStatisticTable.svelte";
+    import ReadStatisticTable from "./SettingsList/ReadStatisticTable.svelte";
     import { pageName } from "../../../stores";
     import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
     import { setupPageDefault } from "$lib/setupPageDefault";
