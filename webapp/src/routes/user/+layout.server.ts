@@ -8,6 +8,6 @@ export const load: LayoutServerLoad = ({ cookies }) => {
         return;
     }
     else {
-        throw redirect(308, "/");
+        redirect(308, "/");
     }
 };

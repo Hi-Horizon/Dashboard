@@ -3,9 +3,13 @@ import { fetchReadStatisticsTypes } from '$lib/server/queries/settings/ReadStati
 /** @type {import('./$types').Actions} */
 
 export async function load() {
+    const [dataFrame, dataFrameStructure] = await Promise.all([
+        fetchLatestData(),
+        fetchReadStatisticsTypes(),
+    ]);
     return {
-        dataFrame: fetchLatestData(),
-        dataFrameStructure: fetchReadStatisticsTypes()
+        dataFrame,
+        dataFrameStructure
     }   
 }
 export const actions = {

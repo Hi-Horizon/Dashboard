@@ -6,7 +6,7 @@ import type { Actions } from "./user/$types";
 
 export const load: PageServerLoad  = ({cookies}) => {
     if (cookies.get("sessionid") === "1") {
-        throw redirect(308, "user/dashboard");
+        redirect(308, "user/dashboard");
     }
 };
 
@@ -16,15 +16,15 @@ export const actions = {
         const username = data.get('username');
         const password = data.get('password');
         if(validateLogin(username, password) === false) {
-            throw redirect(303, "/");
+            redirect(303, "/");
         }
         else {
-            cookies.set("sessionid", "1");
-            throw redirect(303, "/user/dashboard");
+            /* @migration task: add path argument */ cookies.set("sessionid", "1");
+            redirect(303, "/user/dashboard");
         };
     },
     logout: async ({ cookies, request }) => {
-        cookies.delete("sessionid");
-        throw redirect(303, "/");
+        /* @migration task: add path argument */ cookies.delete("sessionid");
+        redirect(303, "/");
     },
 } satisfies Actions;

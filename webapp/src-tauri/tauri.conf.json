@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "identifier": "com.Hi-horizon.telemetry-dashboard",
   "build": {
-    "frontendDist": "../src",
-    "devUrl": "http://localhost:5173",
     "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:5173",
+    "frontendDist": "../build"
   },
   "app": {
     "windows": [
@@ -31,8 +31,7 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ],
-    "externalBin": [ "../../MQTTlistener/dist/MqttDataHandler/MqttDataHandler" ]
+    ]
   },
   "plugins": {
 		"allowlist": {

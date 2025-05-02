@@ -9,6 +9,7 @@ pageName.set("Dashboard");
 export let data;
 let dataFrameStructure: any[] = data.dataFrameStructure;
 let displayDataFrameStructures: any[] = dataFrameStructure.filter(x => x.display != 0);
+// let displayDataFrameStructures: any[] = [];
 const socket = io();
 
 let boatData:any = data.dataFrame;
