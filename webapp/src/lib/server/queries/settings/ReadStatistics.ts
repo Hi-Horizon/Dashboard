@@ -19,7 +19,7 @@ export async function fetchReadStatisticsTypes(): Promise<ReadStatisticType[]> {
 
     const processedResult: ReadStatisticType[] = [];
     rawResult.forEach((item:string[]) => {
-        let newReadStatisticType: ReadStatisticType = {id: item[0], name: item[1], abbreviation: item[2], quantity: item[3], unit: item[4], display: item[5]}
+        let newReadStatisticType: ReadStatisticType = {id: item[0], name: item[1], abbreviation: item[2], unit: item[3], quantity: item[4], display: item[5]}
         processedResult.push(newReadStatisticType);
     });
     return processedResult;
