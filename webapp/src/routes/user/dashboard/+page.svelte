@@ -71,7 +71,7 @@ async function resetDistance(): Promise<any> {
                     <div class="even:bg-stone-700 odd:bg-stone-800 p-3 last:rounded-b first:rounded-t flex-grow flex flex-col justify-center">
                         <p class="font-bold">{readStatistic.name}</p>
                         <div class="flex flex-row items-end space-x-1">
-                            <p class="text-4xl">{boatData[readStatistic.abbreviation].toFixed(2)}</p>
+                            <p class="text-4xl">{boatData[readStatistic.id].toFixed(2)}</p>
                             <p class="text-stone-400">{readStatistic.unit}</p>
                         </div>
                     </div>
@@ -86,7 +86,7 @@ async function resetDistance(): Promise<any> {
                     <div class="even:bg-stone-700 odd:bg-stone-800 p-3 last:rounded-b first:rounded-t flex-grow flex flex-col justify-center">
                         <p class="font-bold">{readStatistic.name}</p>
                         <div class="flex flex-row items-end space-x-1">
-                            <p class="text-4xl">{boatData[readStatistic.abbreviation].toFixed(2)}</p>
+                            <p class="text-4xl">{boatData[readStatistic.id].toFixed(2)}</p>
                             <p class="text-stone-400 flex-grow">{readStatistic.unit}</p>
                             {#if readStatistic.name === "Meters travelled"}
                             <button on:click={()=>resetDistance()} class="p-1 text-s text-center bg-stone-500 hover:bg-red-400 rounded">
