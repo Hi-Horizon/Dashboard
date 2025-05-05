@@ -1,6 +1,5 @@
 <script lang="ts">
     import { pageName, showBackButton } from "../../stores";
-    import { setupPageDefault } from "$lib/setupPageDefault";
     import { io } from "socket.io-client";
     import { writable } from "svelte/store";
     

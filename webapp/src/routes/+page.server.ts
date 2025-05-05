@@ -19,12 +19,12 @@ export const actions = {
             redirect(303, "/");
         }
         else {
-            /* @migration task: add path argument */ cookies.set("sessionid", "1");
+            cookies.set("sessionid", "1", {path:"/"});
             redirect(303, "/user/dashboard");
         };
     },
     logout: async ({ cookies, request }) => {
-        /* @migration task: add path argument */ cookies.delete("sessionid");
+        cookies.delete("sessionid", {path:"/"});
         redirect(303, "/");
     },
 } satisfies Actions;
