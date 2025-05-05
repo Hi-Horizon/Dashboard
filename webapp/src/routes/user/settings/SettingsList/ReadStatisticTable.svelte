@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { ReadStatisticType } from "$lib/interfaces/ReadStatisticType";
     import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
+    import Cell from "../../../../lib/Components/cell.svelte";
     import Inputrow from "./inputrow.svelte";
     import Row from "./row.svelte";
 
@@ -20,7 +21,7 @@
 
 <div>
     <p class="text-left font-bold text-lg">ReadStatistics types</p>
-    <div class="p-5 bg-stone-800 rounded">
+    <Cell>
         <table class="w-full table-fixed">
         <thead class="text-left">
             <tr>
@@ -43,6 +44,6 @@
             <Inputrow bind:changelog={readStatisticTypesLocalChangeLog}></Inputrow>
         </tbody>
         </table>
-    </div>
+    </Cell>
     <p class="text-left text-xs">note: deleting a type will also delete all the data associated to it, be careful!</p>
 </div>
