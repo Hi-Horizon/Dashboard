@@ -32,26 +32,21 @@ export function addReadStatisticsType(newRow:ReadStatisticType)  {
         const insertRow = db.prepare('INSERT INTO DataDescription (name, tag, quantity, unit, display) VALUES (@name, @tag, @quantity, @unit, @display);');
         const insertInfo = insertRow.run({name: newRow.name, tag: newRow.abbreviation, quantity: newRow.quantity, unit: newRow.unit, display: 1});
 
-        //adds column to the data table
-        // const addColumn = db.prepare('ALTER TABLE Data ADD @colName INTEGER NOT NULL DEFAULT 0');
-        // const AddColumnInfo = addColumn.run({colName: newRow.abbreviation});
-
-        const addColumn = db.prepare('ALTER TABLE Data ADD '+ newRow.abbreviation +' INTEGER NOT NULL DEFAULT 0;');
+        const addColumn = db.prepare('ALTER TABLE Data ADD "'+ insertInfo.lastInsertRowid +'" INTEGER NOT NULL DEFAULT 0;');
         const AddColumnInfo = addColumn.run();
 }
 
 export function deleteReadStatisticsType(toDelete:string) {
-        //get abbreviation to delete the column in the Data table
-        const getAbbreviationToDelete = db.prepare('SELECT tag FROM DataDescription WHERE name = ?;');
+        //get id to delete the column in the Data table
+        const getAbbreviationToDelete = db.prepare('SELECT id FROM DataDescription WHERE name = ?;');
         const columnToDelete:any = getAbbreviationToDelete.get(toDelete);
 
         //delete row from the ReadStatisticTypes table
-        const insertRow = db.prepare('DELETE FROM DataDescription WHERE name = ?;');
-        const insertInfo = insertRow.run(toDelete);
+        const insertRow = db.prepare('DELETE FROM DataDescription WHERE id = @id;');
+        const insertInfo = insertRow.run(columnToDelete);
 
-        preventSpecialCharacters(columnToDelete.abbreviation)
         //deletes column in the Data table
-        const addColumn = db.prepare('ALTER TABLE Data DROP COLUMN '+ columnToDelete.tag +';');
+        const addColumn = db.prepare('ALTER TABLE Data DROP COLUMN "'+ columnToDelete.id +'";');
         const AddColumnInfo = addColumn.run();
 }
 
