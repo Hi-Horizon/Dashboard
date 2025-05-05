@@ -1,5 +1,6 @@
 <script lang="ts">
     import Button from "../../../lib/Components/button.svelte";
+    import Cell from "../../../lib/Components/cell.svelte";
 
 let inputLink: string = "";
 let link: string = "";
@@ -9,8 +10,7 @@ function changeLink() {
 }
 </script>
 
-<div class="rounded bg-stone-800 p-3">
-    <!-- Current/Most recent race: -->
+<Cell>
     <div class="rounded bg-stone-900">
         <iframe title="estela tracker" width="560" height="315" src={link} frameborder="0" allowfullscreen>track the race by filling in a link down below</iframe>
     </div>
@@ -18,4 +18,4 @@ function changeLink() {
         <input type="text" bind:value={inputLink} placeholder="https://estela.co/..." class="rounded bg-stone-700 px-2 flex-1 placeholder:italic">
         <Button props={{onclick:changeLink}}>Watch</Button>
     </div>
-</div>
+</Cell>

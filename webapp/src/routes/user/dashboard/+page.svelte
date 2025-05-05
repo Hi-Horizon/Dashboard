@@ -8,6 +8,7 @@ import { derived, writable, type Writable } from "svelte/store";
     import ValueSmall from "./valueSmall.svelte";
     import Button from "../../../lib/Components/button.svelte";
     import Estela from "./estela.svelte";
+    import Cell from "../../../lib/Components/cell.svelte";
 
 setupPageDefault();
 pageName.set("Dashboard");
@@ -107,14 +108,15 @@ async function resetDistance(): Promise<any> {
 
     <!-- status block -->
     <div class="flex space-x-3">
-        <div class="rounded self-start w-fit ">
+        <Cell>
             <div class="font-bold pb-3">Status</div>
             <List elements={statusList}></List>
-        </div>
+        </Cell>
         
-        <div class="p-3 rounded self-start w-fit">
+        <Cell>
+            <div class="font-bold pb-3">control</div>
             <Button props={{onclick:resetDistance, hoverColour:"bg-red-400"}}>Reset Distance travelled</Button>
-        </div>
+        </Cell>
     </div>
     
 </div>
