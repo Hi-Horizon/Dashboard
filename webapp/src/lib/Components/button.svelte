@@ -1,6 +1,6 @@
 <script lang="ts">
-    export let props: any
-    const onclick = props.onclick
+    export let props: any = {}
+    export let onclick: any = () => {}
     const colour: string = (typeof props.colour === 'undefined') ? "bg-stone-700" : props.colour;
     const hoverColour: string = (typeof props.hoverColour === 'undefined') ? "bg-stone-600" : props.hoverColour;
 </script>
