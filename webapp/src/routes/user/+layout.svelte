@@ -37,7 +37,7 @@
 </div>
 {/if}
 <div class="flex">
-    <ul class="flex-shrink-0 flex flex-col p-5 min-h-screen bg-stone-800 text-center space-y-5">
+    <ul class="sticky top-0 flex-shrink-0 flex flex-col p-5 h-screen bg-stone-800 text-center space-y-5">
         <li class=""><a href="/user/dashboard"><img src="/icons/dashboard.svg" alt="Dashboard" class="hover:bg-stone-700 rounded"></a></li>
         <li class="flex-1"><a href="/user/graphViewer"><img src="/icons/graph.svg" alt="Graphs" class="hover:bg-stone-700 rounded"></a></li>
         <li class="justify-self-end"><a href="/user/settings"><img src="/icons/settings.svg" alt="Settings" class="hover:bg-stone-700 rounded"></a></li>
