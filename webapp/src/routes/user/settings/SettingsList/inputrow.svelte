@@ -1,51 +1,52 @@
 <script lang="ts">
-    import type { ReadStatisticType } from "$lib/interfaces/ReadStatisticType";
-    import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
+    import type { SettingsLocalChange, SettingsType } from "$lib/interfaces/SettingsLocalChange";
+    import Button from "../../../../lib/Components/button.svelte";
+    import Input from "../../../../lib/Components/input.svelte";
 
-    let wantsToAdd: boolean = false;
-    let toAdd: ReadStatisticType = {
-        name: "",
-        abbreviation: "",
-        quantity: "",
-        unit: "",
-        display: 1
-    }
-    export let changelog: any[]
+    export let draftChanges: any[]
+    export let constructObject: any
+    export let objectType: SettingsType
+
+    const keys = Object.keys(constructObject).map(x => {return x as keyof any});
+
+    let openCreation: boolean = false;
 
     function revealAddForm(): void {
-        wantsToAdd = true;
+        openCreation = true;
     }
 
     function closeAddForm(): void {
-        wantsToAdd = false;
-        toAdd.name="";
-        toAdd.abbreviation="";
-        toAdd.quantity="";
-        toAdd.unit="";
+        openCreation = false;
+        keys.forEach(key => {
+            constructObject[key] = ""
+        })
     }
 
-    function addReadStatisticType() {
-        if (toAdd.name === "" || toAdd.abbreviation == "" || toAdd.quantity == "" || toAdd.unit == "") return;
-        let newLocalChange: SettingsLocalChange = {operation: "Add", settingType: "ReadStatisticType", structure: structuredClone(toAdd)};
-        changelog = [...changelog, newLocalChange];
+    function addToDraftChanges() {
+        let filledParams = keys.filter(key => {
+            return constructObject[key] !== ""
+        })
+        if (filledParams.length === 0) {
+            // TODO let user know which rows are not filled yet
+            console.log("missed input")
+            return;
+        };
+
+        let newLocalChange: SettingsLocalChange = {operation: "Add", settingType: objectType, structure: structuredClone(constructObject)};
+        draftChanges = [...draftChanges, newLocalChange];
         
         closeAddForm();
     }
 </script>
 
-
 <tr>
-    {#if wantsToAdd}
-        <td><input bind:value={toAdd.name} id="addName" class="rounded-sm bg-stone-700 w-full"/></td>
-        <td><input bind:value={toAdd.abbreviation} id="addAbbreviation" class="rounded-sm bg-stone-700 w-full"/></td>
-        <td><input bind:value={toAdd.quantity} id="addQuantity" class="rounded-sm bg-stone-700 w-full"/></td>
-        <td><input bind:value={toAdd.unit} id="addUnit" class="rounded-sm bg-stone-700 w-full"/></td>
-        <td><input bind:value={toAdd.display} id="addDisplay" class="rounded-sm bg-stone-700 w-full"/></td>
-    {/if}
-    {#if wantsToAdd}
+    {#if openCreation}
+        {#each keys as key}
+            <td><Input bind:value={constructObject[key]}/></td>
+        {/each}
         <td class="flex justify-evenly">
-            <button on:click={()=>addReadStatisticType()} class="text-center">Add</button>
-            <button on:click={()=>closeAddForm()} class="text-center">Cancel</button>
+            <Button onclick={()=>addToDraftChanges()}>Add</Button>
+            <Button onclick={()=>closeAddForm()}>Cancel</Button>
         </td>
     {:else}
         <td colspan=6>

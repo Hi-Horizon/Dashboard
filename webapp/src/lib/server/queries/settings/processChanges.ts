@@ -15,5 +15,7 @@ function parseSettingType(change:SettingsLocalChange) {
         case "ReadStatisticType":
             parseOperationReadStatistic(change);
             break;
+        case "formulaParameter":
+            break; //To be Implemented
     }
 }

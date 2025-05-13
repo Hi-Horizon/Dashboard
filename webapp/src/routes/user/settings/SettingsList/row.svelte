@@ -22,7 +22,9 @@
 
 <tr class="odd:bg-stone-700" id={readStatistic.name + "ReadStatisticRow"}>
     {#each keys as key}
+    {#if key !== "id"}
         <td class="py-2">{readStatistic[key]}</td>
+    {/if}
     {/each}
     {#if state === "existing"}
         <td class="py-2 flex justify-center">

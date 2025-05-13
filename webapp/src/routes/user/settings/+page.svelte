@@ -4,6 +4,7 @@
     import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
     import { setupPageDefault } from "$lib/setupPageDefault";
     import { io } from "socket.io-client";
+    import FormulaParameters from "./SettingsList/formulaParameters.svelte";
 
     export let data;
     setupPageDefault();
@@ -21,6 +22,8 @@
         data.readStatisticTypes = result.response.readStatisticTypes
     });
 
+    let draftChanges: SettingsLocalChange[]
+
     let readStatisticTypesLocalChangeLog: SettingsLocalChange[] = [];
 
     function askEmptyLocalChangeConfirmation() {
@@ -29,13 +32,13 @@
     }
 
     function emptyAllLocalChanges() {
-        readStatisticTypesLocalChangeLog = [];
+        draftChanges = [];
         data.readStatisticTypes = data.readStatisticTypes;
     }
 
     let waitingToSubmit: boolean = false;
     async function submitChanges(): Promise<any> {
-        const AllchangeLogs: SettingsLocalChange[][] = [readStatisticTypesLocalChangeLog];
+        const AllchangeLogs: SettingsLocalChange[][] = [draftChanges];
         let confirmation: boolean = confirm("are you sure you want these changes?");
         if (confirmation === true) {
             waitingToSubmit = true;
@@ -58,10 +61,12 @@
 	<title>Settings</title>
 </svelte:head>
 
-<div class="flex flex-col flex-grow">
-    <div class="flex-grow">
-        <ReadStatisticTable bind:readStatisticTypesLocalChangeLog readStatisticTypes={data.readStatisticTypes}/>
+<div class="flex flex-col flex-grow space-y-5">
+    <div class="flex-grow space-y-3">
+        <ReadStatisticTable bind:draftChanges rows={data.readStatisticTypes}/>
+        <FormulaParameters  bind:draftChanges rows={[]}/>
     </div>
+
     <footer class="self-end">
         <button on:click={()=>askEmptyLocalChangeConfirmation()} class="p-2 text-center bg-stone-500 hover:bg-stone-400 rounded">Undo</button>
         {#if waitingToSubmit === true}
