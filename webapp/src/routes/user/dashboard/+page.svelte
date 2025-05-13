@@ -1,47 +1,84 @@
 <script lang="ts">
 import { io } from "socket.io-client"
 import { pageName } from "../../../stores";
-import { writable, type Writable } from "svelte/store";
+import { derived, writable, type Writable } from "svelte/store";
     import { setupPageDefault } from "$lib/setupPageDefault";
+    import List from "../../../lib/Components/list.svelte";
+    import ValueBig from "./valueBig.svelte";
+    import ValueSmall from "./valueSmall.svelte";
+    import Button from "../../../lib/Components/button.svelte";
+    import Estela from "./estela.svelte";
+    import Cell from "../../../lib/Components/cell.svelte";
 
 setupPageDefault();
 pageName.set("Dashboard");
 export let data;
 let dataFrameStructure: any[] = data.dataFrameStructure;
 let displayDataFrameStructures: any[] = dataFrameStructure.filter(x => x.display != 0);
-// let displayDataFrameStructures: any[] = [];
+
 const socket = io();
 
-let boatData:any = data.dataFrame;
+let boatData:any = writable(data.dataFrame);
 socket.on('dataUpdate', (message) => {
-    boatData = message;
+    boatData.set(message);
 });
 
-let statusColor: string = "";
+//status variables and 
+let defaultStatusColor:Writable<string> = writable("");
+let statusColor:Writable<string> = writable("text-red-600");
 let statusColorMTU: string = "";
 let statusColorGPS: string = "";
 let statusColorMPPT: string = "";
+
 const currentDate = new Date();
-let timeSinceLastFrame: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - boatData.UnixTime);
-
-//********************ESTELA LINK HERE ************************/
-function changeLink() {
-    link = inputLink;
-}
-
-let inputLink: string = "";
-let link: string = "";
-//********************ESTELA LINK HERE ************************/
-
+let timeSinceLastFrame: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.UnixTime);
 setInterval(()=> {
     const currentDate = new Date();
-    timeSinceLastFrame.set(Math.round(currentDate.getTime()/1000)+7200 - boatData.UnixTime);
+    timeSinceLastFrame.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData.UnixTime);
+    //give a sign if there hasn't been a message in a while
+    if ($timeSinceLastFrame > 20) statusColor.set("text-red-600")
+    else statusColor.set("");
 },1000);
 
-$: {
-    if ($timeSinceLastFrame > 20) statusColor = "text-red-600"
-    else statusColor="";
-};
+// creating the data displays
+function createList(component:any, descriptionsList:any[], ReactiveValuesObject: any) {
+    return descriptionsList.map((element:any) => {
+        return {
+            component: component, 
+            props: {
+                data: element, 
+                currentValue: derived(ReactiveValuesObject, (xs: any) => xs[element.id]), 
+                isDummy:false,
+                statusColor: defaultStatusColor
+            }
+        }
+    });
+}
+
+let leftValueList   = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 0), boatData)
+let rightValueList  = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 1), boatData)
+//create dummy list if there are uneven properties
+if (displayDataFrameStructures.length % 2 === 1) {
+    rightValueList.push({component: ValueBig, props:{data:{}, currentValue:writable(0), isDummy: true, statusColor: defaultStatusColor}})
+}
+
+let statusValues = [
+    dataFrameStructure.filter(x => x.abbreviation === "gpsT")[0],
+    dataFrameStructure.filter(x => x.abbreviation === "mtuT")[0],
+    dataFrameStructure.filter(x => x.abbreviation === "mpptT")[0]
+]
+
+let statusList = createList(ValueSmall, statusValues, boatData)
+statusList.push({
+    component: ValueSmall, 
+    props: {
+        data: {name: "Last Frame", unit: "s ago"}, 
+        currentValue: timeSinceLastFrame, 
+        isDummy:false,
+        statusColor: statusColor
+    }
+})
+statusList.reverse()
 
 async function resetDistance(): Promise<any> {
     let confirmation: boolean = confirm("are you sure you want these changes?");
@@ -55,7 +92,6 @@ async function resetDistance(): Promise<any> {
         socket.emit("newData")
     }
 }
-
 </script>
 
 <svelte:head>
@@ -63,68 +99,24 @@ async function resetDistance(): Promise<any> {
 </svelte:head>
 
 <div class="space-y-3">
+    <!-- top row -->
     <div class="flex justify-evenly space-x-3">
-        <div class="rounded border-separate flex-1 flex flex-col">
-        {#each displayDataFrameStructures as readStatistic, index}
-            {#if readStatistic.name !== "UnixTime"}
-                {#if index < (displayDataFrameStructures.length/2)}
-                    <div class="even:bg-stone-700 odd:bg-stone-800 p-3 last:rounded-b first:rounded-t flex-grow flex flex-col justify-center">
-                        <p class="font-bold">{readStatistic.name}</p>
-                        <div class="flex flex-row items-end space-x-1">
-                            <p class="text-4xl">{boatData[readStatistic.id].toFixed(2)}</p>
-                            <p class="text-stone-400">{readStatistic.unit}</p>
-                        </div>
-                    </div>
-                {/if}
-            {/if}
-        {/each}
-        </div>
-        <div class="rounded border-separate flex flex-col flex-1" >
-        {#each displayDataFrameStructures as readStatistic, index}
-            {#if readStatistic.name !== "UnixTime"}
-                {#if index >= (displayDataFrameStructures.length/2)}
-                    <div class="even:bg-stone-700 odd:bg-stone-800 p-3 last:rounded-b first:rounded-t flex-grow flex flex-col justify-center">
-                        <p class="font-bold">{readStatistic.name}</p>
-                        <div class="flex flex-row items-end space-x-1">
-                            <p class="text-4xl">{boatData[readStatistic.id].toFixed(2)}</p>
-                            <p class="text-stone-400 flex-grow">{readStatistic.unit}</p>
-                            {#if readStatistic.name === "Meters travelled"}
-                            <button on:click={()=>resetDistance()} class="p-1 text-s text-center bg-stone-500 hover:bg-red-400 rounded">
-                                Reset
-                            </button>
-                            {/if}
-                        </div>
-                    </div>
-                {/if}
-            {/if}
-        {/each}
-        {#if displayDataFrameStructures.length % 2 === 1}
-            <div class="even:bg-stone-700 p-3 last:rounded-b flex-grow">
-                <p class="font-bold text-stone-700">dummy</p>
-                <div class="flex flex-row items-end space-x-1">
-                    <p class="text-4xl text-stone-700">hi</p>
-                    <p class="text-stone-700">l</p>
-                </div>
-            </div>
-        {/if}
-        </div>
-        <div class="rounded bg-stone-800 p-3">
-            <!-- Current/Most recent race: -->
-            <div class="rounded bg-stone-900">
-                <iframe title="estela tracker" width="560" height="315" src={link} frameborder="0" allowfullscreen>track the race by filling in a link down below</iframe>
-            </div>
-            <div class="flex pt-3 space-x-1">
-                <input type="text" bind:value={inputLink} placeholder="https://estela.co/...." class="rounded bg-stone-700 px-2 flex-1 placeholder:italic">
-                <button on:click={changeLink} class="text-center bg-stone-700 hover:bg-stone-600 rounded flex justify-center py-1 px-4">Watch</button>
-            </div>
-        </div>
+        <List elements={leftValueList} />
+        <List elements={rightValueList} />
+        <Estela />
     </div>
-    <div class="p-3 rounded bg-stone-800 self-start w-fit">
-        <div class="font-bold">Status</div>
-        <div class="{statusColor}">Time since last Frame: {$timeSinceLastFrame}s</div>
-        <div class="{statusColorGPS}">MTU runtime: {boatData["mtuT"]}s</div>
-        <div class="{statusColorGPS}">Time since last GPS data: {boatData["gpsT"]}s</div>
-        <div class="{statusColorMPPT}">Time since last MPPT data: {boatData["mpptT"]}s</div>
+
+    <!-- status block -->
+    <div class="flex space-x-3">
+        <Cell>
+            <div class="font-bold pb-3">Status</div>
+            <List elements={statusList}></List>
+        </Cell>
+        
+        <Cell>
+            <div class="font-bold pb-3">control</div>
+            <Button onclick={resetDistance} props={{hoverColour:"bg-red-400"}}>Reset Distance travelled</Button>
+        </Cell>
     </div>
     
 </div>
