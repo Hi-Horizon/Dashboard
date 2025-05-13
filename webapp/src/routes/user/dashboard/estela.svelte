@@ -16,6 +16,6 @@ function changeLink() {
     </div>
     <div class="flex pt-3 space-x-1">
         <input type="text" bind:value={inputLink} placeholder="https://estela.co/..." class="rounded bg-stone-700 px-2 flex-1 placeholder:italic">
-        <Button props={{onclick:changeLink}}>Watch</Button>
+        <Button onclick={changeLink} >Watch</Button>
     </div>
 </Cell>

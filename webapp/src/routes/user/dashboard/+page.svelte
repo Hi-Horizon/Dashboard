@@ -115,7 +115,7 @@ async function resetDistance(): Promise<any> {
         
         <Cell>
             <div class="font-bold pb-3">control</div>
-            <Button props={{onclick:resetDistance, hoverColour:"bg-red-400"}}>Reset Distance travelled</Button>
+            <Button onclick={resetDistance} props={{hoverColour:"bg-red-400"}}>Reset Distance travelled</Button>
         </Cell>
     </div>
     
