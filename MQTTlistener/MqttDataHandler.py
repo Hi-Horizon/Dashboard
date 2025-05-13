@@ -87,7 +87,7 @@ try:
     def insertMapToDatabase(dataFrame):
         beginTime = time.time()
         #get all the current dataTypes from the database
-        res = cur.execute("SELECT name, abbreviation FROM ReadStatisticTypes")
+        res = cur.execute("SELECT id, tag FROM DataDescription")
         typeRows = res.fetchall()
         
         valuesToInsert = []
@@ -98,9 +98,9 @@ try:
             try:
                 value = dataFrame[type[1]]
                 valuesToInsert.append(value)
-                columnsToInsert.append(type[1])
+                columnsToInsert.append(type[0])
             except:
-                print("error: " + type[1] + " is not inside the message")
+                print("Warning: " + type[1] + " is not inside the message")
         
         #add UnixTime (PK) to the columns to update
         columnsToInsert.append("UnixTime")
@@ -128,7 +128,7 @@ try:
         columns = ""
         placeholders = ""
         for i in range(len(columnsToInsert)):
-            columns = columns + columnsToInsert[i] + ","
+            columns = columns + '"' + str(columnsToInsert[i]) + '"' + ","
             placeholders = placeholders + "?,"
 
         #remove last comma
@@ -137,12 +137,13 @@ try:
         
         #insert data into the database
         try:
-            cur.execute("INSERT INTO Data ("+ columns +") VALUES("+ placeholders +")", valuesToInsert)
+            cur.execute("INSERT INTO Data ("+ columns +") VALUES ("+ placeholders +")", valuesToInsert)
             db.commit()
         except Exception as error:
             print(error)
         
         print("insertion took " + str(time.time() - beginTime) + " seconds")
+        #ping webapp for new data
         sio.emit("newData", {})
 
 
