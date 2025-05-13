@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { io } from "socket.io-client";
     import { onMount } from "svelte";
     import { cubicOut } from "svelte/easing";
 import { fly } from "svelte/transition";
