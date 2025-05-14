@@ -25,6 +25,8 @@
     {#each rows as row}
         {#if checkIfLocalNotDeleted(row.name) === true}
             <Row bind:changelog={draftChanges} bind:readStatistic={row} state="existing"></Row>
+        {:else}
+            <Row bind:changelog={draftChanges} bind:readStatistic={row} state="draftDelete"></Row>
         {/if}
     {/each}
     {#each draftChanges.filter(t => t.operation === "Add" && t.settingType === objectType) as toAdd}
