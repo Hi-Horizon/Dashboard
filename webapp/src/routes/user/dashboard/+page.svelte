@@ -9,6 +9,7 @@ import { derived, writable, type Writable } from "svelte/store";
     import Button from "../../../lib/Components/button.svelte";
     import Estela from "./estela.svelte";
     import Cell from "../../../lib/Components/cell.svelte";
+    import Map from "../../../lib/Components/map.svelte";
 
 setupPageDefault();
 pageName.set("Dashboard");
@@ -92,6 +93,11 @@ async function resetDistance(): Promise<any> {
         socket.emit("newData")
     }
 }
+
+let positionCurrentVals = dataFrameStructure
+    .filter((element) => element.abbreviation == "lng" || element.abbreviation == "lat")
+    .map((element) => derived(boatData, (xs: any) => xs[element.id]))
+
 </script>
 
 <svelte:head>
@@ -103,7 +109,7 @@ async function resetDistance(): Promise<any> {
     <div class="flex justify-evenly space-x-3">
         <List elements={leftValueList} />
         <List elements={rightValueList} />
-        <Estela />
+        <Map elements={positionCurrentVals}/>
     </div>
 
     <!-- status block -->
