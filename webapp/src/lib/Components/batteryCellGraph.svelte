@@ -39,7 +39,7 @@ let batteryCellGraphConfig:any = {
             y: {
                 title: {
                     display: true,
-                    text: "Voltage"
+                    text: "Voltage (V)"
                 },
                 type: "linear",
                 max: 4.5
