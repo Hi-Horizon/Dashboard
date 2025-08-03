@@ -10,6 +10,7 @@ import { derived, writable, type Writable } from "svelte/store";
     import Estela from "./estela.svelte";
     import Cell from "../../../lib/Components/cell.svelte";
     import Map from "../../../lib/Components/map.svelte";
+    import BatteryCellGraph from "../../../lib/Components/batteryCellGraph.svelte";
 
 setupPageDefault();
 pageName.set("Dashboard");
@@ -98,6 +99,16 @@ let positionCurrentVals = dataFrameStructure
     .filter((element) => element.abbreviation == "lng" || element.abbreviation == "lat")
     .map((element) => derived(boatData, (xs: any) => xs[element.id]))
 
+//for testing purposes
+const average = (array: number[]) => array.reduce((a, b) => a + b) / array.length;
+let cellCount = 14
+let voltages = writable(Array.from({length: cellCount}, () => 3.6 + Math.random() * (0.2)));
+let isBalancingList = writable([...Array(cellCount).keys()].map(i => $voltages[i] - average($voltages) > 0.05));
+
+setInterval(()=> {
+    voltages.set($voltages.map( x => x - Math.random()*0.03));
+    isBalancingList.set([...Array(cellCount).keys()].map(i => $voltages[i] - average($voltages) > 0.05));
+},1000);
 </script>
 
 <svelte:head>
@@ -105,13 +116,18 @@ let positionCurrentVals = dataFrameStructure
 </svelte:head>
 
 <div class="space-y-3">
+    
     <!-- top row -->
     <div class="flex justify-evenly space-x-3">
         <List elements={leftValueList} />
         <List elements={rightValueList} />
-        <Map elements={positionCurrentVals}/>
+        <!-- <Map elements={positionCurrentVals}/> -->
     </div>
 
+    <div class="flex space-x-3">
+        <BatteryCellGraph bind:voltages={voltages} bind:isBalancingList={isBalancingList}/>
+    </div>
+    
     <!-- status block -->
     <div class="flex space-x-3">
         <Cell>
@@ -124,5 +140,6 @@ let positionCurrentVals = dataFrameStructure
             <Button onclick={resetDistance} props={{hoverColour:"bg-red-400"}}>Reset Distance travelled</Button>
         </Cell>
     </div>
+    
     
 </div>
