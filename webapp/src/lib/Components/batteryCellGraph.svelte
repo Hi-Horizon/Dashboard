@@ -2,10 +2,10 @@
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { onMount } from 'svelte';
-import { type Writable, writable } from 'svelte/store';
+import { get, type Readable, type Writable, writable } from 'svelte/store';
 
-export let voltages: Writable<number[]>
-export let isBalancingList: Writable<boolean[]>
+export let voltages: Readable<number[]>
+export let isBalancingList: Readable<boolean[]>
 
 let cellCount = $voltages.length
 let labels = [...Array(cellCount).keys()].map( i => "Cell " + (i + 1))
