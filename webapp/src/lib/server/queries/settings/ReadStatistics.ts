@@ -30,7 +30,7 @@ export function addReadStatisticsType(newRow:ReadStatisticType)  {
         preventSpecialCharacters(newRow.abbreviation)
         //adds info about statistic to ReadStatisticTypes table
         const insertRow = db.prepare('INSERT INTO DataDescription (name, tag, quantity, unit, display) VALUES (@name, @tag, @quantity, @unit, @display);');
-        const insertInfo = insertRow.run({name: newRow.name, tag: newRow.abbreviation, quantity: newRow.quantity, unit: newRow.unit, display: 1});
+        const insertInfo = insertRow.run({name: newRow.name, tag: newRow.abbreviation, quantity: newRow.quantity, unit: newRow.unit, display: newRow.display});
 
         const addColumn = db.prepare('ALTER TABLE Data ADD "'+ insertInfo.lastInsertRowid +'" INTEGER NOT NULL DEFAULT 0;');
         const AddColumnInfo = addColumn.run();

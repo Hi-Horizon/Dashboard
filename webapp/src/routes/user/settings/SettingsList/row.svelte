@@ -42,10 +42,15 @@
                 <img src="../icons/trashcan.svg" alt="Delete">
             </button>
         </td>
-    {/if}
-    {#if state === "new"}
+    {:else if state === "new"}
         <td class="py-2 flex justify-center">
             <button on:click={()=>deleteRow(readStatistic.name, false)} class="p-2 rounded bg-red-600 hover:bg-red-500 flex justify-center">
+                undo
+            </button>
+        </td>
+    {:else}
+        <td class="py-2 flex justify-center">
+            <button on:click={()=>restoreRow(readStatistic.name, false)} class="p-2 rounded bg-red-600 hover:bg-red-500 flex justify-center">
                 undo
             </button>
         </td>
