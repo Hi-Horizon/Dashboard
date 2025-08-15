@@ -8,6 +8,7 @@ export async function POST({ request, cookies }) {
         resetDistance();
         response = "All Saves changed sucessfully"
         result = 201;
+        console.log("jaay");
     }
     catch (error) {
         response = "An error occured";
