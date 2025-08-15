@@ -15,7 +15,6 @@ mqtt_credentials_received = False
 mqtt_username = ""
 mqtt_password = ""
 
-print("bitch")
 
 sio = socketio.Client()
 
@@ -25,7 +24,6 @@ def connect():
 
 @sio.event
 def mqtt_credentials(data):
-    print("credentials given!")
     global mqtt_credentials_received
     mqtt_credentials_received= True
     global mqtt_username
@@ -48,8 +46,9 @@ while not localhost_connected:
 def requestMQTTcredentials():
     global mqtt_credentials_received
     mqtt_credentials_received = False
+    print("waiting for mqtt_credentials", end="")
     while not mqtt_credentials_received:
-        print("waiting for mqtt_credentials...")
+        print('.', end='')
         sio.emit("request_mqtt_credentials")
         time.sleep(1)
 
@@ -106,7 +105,7 @@ try:
         columnsToInsert.append("UnixTime")
         valuesToInsert.append(int(time.time()) + 7200) #adjusting for timezone
 
-        print(columnsToInsert)
+        print(columnsToInsert)  
         print(valuesToInsert)
 
         #add distance travelled from the lat lng coordinates
@@ -114,13 +113,13 @@ try:
             dataFrame["lat"] = degreesMinutesToDecimalDegrees(dataFrame["lat"])
             dataFrame["lng"] = degreesMinutesToDecimalDegrees(dataFrame["lng"])
             #get previous coordinates
-            res = cur.execute("SELECT lat, lng, d FROM Data WHERE UnixTime = (SELECT max(UnixTime) FROM Data)")
+            res = cur.execute("SELECT 11, 12, 13 FROM Data WHERE UnixTime = (SELECT max(UnixTime) FROM Data)")
             coordinates = res.fetchall()[0]
             prevLat = degreesMinutesToDecimalDegrees(coordinates[0])
             prevLng = degreesMinutesToDecimalDegrees(coordinates[1])
             
             valuesToInsert.append(coordinates[2] + calculateDistance(prevLat, prevLng, dataFrame["lat"], dataFrame["lng"]))
-            columnsToInsert.append("d")
+            columnsToInsert.append(13)
         except Exception as error:
             print(error)
         
