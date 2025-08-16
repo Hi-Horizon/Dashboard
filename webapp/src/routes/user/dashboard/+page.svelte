@@ -83,6 +83,7 @@ statusList.reverse()
 
 async function resetDistance(): Promise<any> {
     let confirmation: boolean = confirm("are you sure you want these changes?");
+    console.log(confirmation)
     if (confirmation === true) {
         const response = await fetch('/user/dashboard/REST', {
             method: 'POST',
@@ -90,6 +91,9 @@ async function resetDistance(): Promise<any> {
                 'Content-Type': 'application/json'
             }
         });
+        if (response.status != 200) {
+            alert(response.status)
+        }
         socket.emit("newData")
     }
 }

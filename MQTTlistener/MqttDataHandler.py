@@ -15,7 +15,6 @@ mqtt_credentials_received = False
 mqtt_username = ""
 mqtt_password = ""
 
-print("bitch")
 
 sio = socketio.Client()
 
@@ -25,7 +24,6 @@ def connect():
 
 @sio.event
 def mqtt_credentials(data):
-    print("credentials given!")
     global mqtt_credentials_received
     mqtt_credentials_received= True
     global mqtt_username
@@ -48,8 +46,9 @@ while not localhost_connected:
 def requestMQTTcredentials():
     global mqtt_credentials_received
     mqtt_credentials_received = False
+    print("waiting for mqtt_credentials", end="")
     while not mqtt_credentials_received:
-        print("waiting for mqtt_credentials...")
+        print('.', end='')
         sio.emit("request_mqtt_credentials")
         time.sleep(1)
 
@@ -82,7 +81,10 @@ try:
         a = math.sin(delta_phi/2) * math.sin(delta_phi/2) + math.cos(latitude1_in_radians) * math.cos(latitude2_in_radians) * math.sin(delta_longitude/2) * math.sin(delta_longitude/2)
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
 
-        return earthRadius * c # in metres
+        return abs(earthRadius * c) # in metres
+    
+    def calculateDistanceSimple(lat1, lng1, lat2, lng2):
+        return math.sqrt((lat2 - lat1)**2 + (lng2 - lng1)**2)
 
     def insertMapToDatabase(dataFrame):
         beginTime = time.time()
@@ -97,6 +99,9 @@ try:
         for type in typeRows:
             try:
                 value = dataFrame[type[1]]
+                if (type[1] == "lat" or type[1] == "lng"):
+                    value = degreesMinutesToDecimalDegrees(value)
+
                 valuesToInsert.append(value)
                 columnsToInsert.append(type[0])
             except:
@@ -106,23 +111,23 @@ try:
         columnsToInsert.append("UnixTime")
         valuesToInsert.append(int(time.time()) + 7200) #adjusting for timezone
 
-        print(columnsToInsert)
-        print(valuesToInsert)
-
         #add distance travelled from the lat lng coordinates
         try:
             dataFrame["lat"] = degreesMinutesToDecimalDegrees(dataFrame["lat"])
             dataFrame["lng"] = degreesMinutesToDecimalDegrees(dataFrame["lng"])
             #get previous coordinates
-            res = cur.execute("SELECT lat, lng, d FROM Data WHERE UnixTime = (SELECT max(UnixTime) FROM Data)")
+            res = cur.execute("SELECT Data.'11', Data.'12', Data.'13' FROM Data WHERE UnixTime = (SELECT max(UnixTime) FROM Data)")
             coordinates = res.fetchall()[0]
-            prevLat = degreesMinutesToDecimalDegrees(coordinates[0])
-            prevLng = degreesMinutesToDecimalDegrees(coordinates[1])
+            prevLat = coordinates[0]
+            prevLng = coordinates[1]
             
             valuesToInsert.append(coordinates[2] + calculateDistance(prevLat, prevLng, dataFrame["lat"], dataFrame["lng"]))
-            columnsToInsert.append("d")
+            columnsToInsert.append(13)
         except Exception as error:
             print(error)
+
+        print(columnsToInsert)  
+        print(valuesToInsert)
         
         #makes the specified length placeholders for the values, and a string containing the column_names
         columns = ""

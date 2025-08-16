@@ -8,7 +8,7 @@ export function fetchLatestData() {
 }
 
 export function resetDistance() {
-    const stmt = db.prepare("UPDATE Data SET d = 0 WHERE UnixTime = (SELECT max(UnixTime) FROM Data)");
+    const stmt = db.prepare("UPDATE Data SET '13' = 0 WHERE UnixTime = (SELECT max(UnixTime) FROM Data)");
     const updates = stmt.run();
 
     return
