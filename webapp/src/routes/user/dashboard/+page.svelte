@@ -33,9 +33,15 @@ let statusColorMPPT: string = "";
 
 const currentDate = new Date();
 let timeSinceLastFrame: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.UnixTime);
+let timeSinceLastGPSmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.gpsT);
+let timeSinceLastESCmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.escT);
+let timeSinceLastMPPTmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.mpptT);
 setInterval(()=> {
     const currentDate = new Date();
     timeSinceLastFrame.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData.UnixTime);
+    timeSinceLastGPSmsg.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData[8]);
+    timeSinceLastESCmsg.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData[56]);
+    timeSinceLastMPPTmsg.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData[10]);
     //give a sign if there hasn't been a message in a while
     if ($timeSinceLastFrame > 20) statusColor.set("text-red-600")
     else statusColor.set("");
@@ -63,13 +69,41 @@ if (displayDataFrameStructures.length % 2 === 1) {
     rightValueList.push({component: ValueBig, props:{data:{}, currentValue:writable(0), isDummy: true, statusColor: defaultStatusColor}})
 }
 
-let statusValues = [
-    dataFrameStructure.filter(x => x.abbreviation === "gpsT")[0],
+let statusValues: any[] = [
     dataFrameStructure.filter(x => x.abbreviation === "mtuT")[0],
-    dataFrameStructure.filter(x => x.abbreviation === "mpptT")[0]
+    // dataFrameStructure.filter(x => x.abbreviation === "mpptT")[0],
+    // dataFrameStructure.filter(x => x.abbreviation === "gpsT")[0],
+    // dataFrameStructure.filter(x => x.abbreviation === "escT")[0]
 ]
 
 let statusList = createList(ValueSmall, statusValues, boatData)
+statusList.push({
+    component: ValueSmall, 
+    props: {
+        data: {name: "Last MPPT msg", unit: "s ago"}, 
+        currentValue: timeSinceLastMPPTmsg, 
+        isDummy:false,
+        statusColor: defaultStatusColor
+    }
+})
+statusList.push({
+    component: ValueSmall, 
+    props: {
+        data: {name: "Last GPS msg", unit: "s ago"}, 
+        currentValue: timeSinceLastGPSmsg, 
+        isDummy:false,
+        statusColor: defaultStatusColor
+    }
+})
+statusList.push({
+    component: ValueSmall, 
+    props: {
+        data: {name: "Last ESC msg", unit: "s ago"}, 
+        currentValue: timeSinceLastESCmsg, 
+        isDummy:false,
+        statusColor: defaultStatusColor
+    }
+})
 statusList.push({
     component: ValueSmall, 
     props: {
@@ -79,6 +113,7 @@ statusList.push({
         statusColor: statusColor
     }
 })
+
 statusList.reverse()
 
 async function resetDistance(): Promise<any> {
