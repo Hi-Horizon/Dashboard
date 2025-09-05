@@ -6,10 +6,11 @@ import { webSocketServer } from "./WebSocketServer"
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-	plugins: [
-		tailwindcss(), 
+	plugins: [ 
+		tailwindcss(),
 		sveltekit(), 
-		webSocketServer],
+		webSocketServer
+	],
 	resolve: {
 		alias: {
 		  '@mqtt': path.resolve(__dirname, './node_modules/mqtt/bin/'),

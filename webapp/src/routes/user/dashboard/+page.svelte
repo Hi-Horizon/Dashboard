@@ -2,7 +2,7 @@
 import { io } from "socket.io-client"
 import { pageName } from "../../../stores";
 import { derived, writable, type Readable, type Writable } from "svelte/store";
-    import { setupPageDefault } from "$lib/setupPageDefault";
+import { setupPageDefault } from "$lib/setupPageDefault";
     import List from "../../../lib/Components/list.svelte";
     import ValueBig from "./valueBig.svelte";
     import ValueSmall from "./valueSmall.svelte";
