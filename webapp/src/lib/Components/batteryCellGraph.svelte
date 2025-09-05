@@ -1,4 +1,4 @@
-<script lang="ts" type="module">
+<script lang="ts">
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { onMount } from 'svelte';
@@ -107,7 +107,7 @@ $: {
 }
 </script>
 
-<div class="flex-grow grid grid-cols-1 rounded-xl h-96 bg-stone-800 p-4" style="grid-row-start: 1; grid-column-start: 1;">
+<div class="grow grid grid-cols-1 rounded-xl h-96 bg-stone-800 p-4" style="grid-row-start: 1; grid-column-start: 1;">
     {#if $refreshingGraph}
     <div class=" flex justify-center items-center font-bold text-2xl z-10 bg-stone-900 bg-opacity-70" style="grid-area: 1/1;">
         <div class="text-center">Loading...</div>

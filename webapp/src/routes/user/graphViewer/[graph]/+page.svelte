@@ -148,7 +148,7 @@ function getGraphPoint(e: MouseEvent) {
             </button>
         </div>
         
-        <div class="flex-grow grid grid-cols-1 rounded-xl h-full bg-stone-800" style="grid-row-start: 1; grid-column-start: 1;">
+        <div class="grow grid grid-cols-1 rounded-xl h-full bg-stone-800" style="grid-row-start: 1; grid-column-start: 1;">
             {#if $refreshingGraph}
                 <div class=" flex justify-center items-center font-bold text-2xl z-10 bg-stone-900 bg-opacity-70" style="grid-area: 1/1;">
                     <div class="text-center">Loading...</div>

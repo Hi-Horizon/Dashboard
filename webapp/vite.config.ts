@@ -3,9 +3,13 @@ import { defineConfig } from 'vite';
 import path from "path"
 
 import { webSocketServer } from "./WebSocketServer"
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-	plugins: [sveltekit(), webSocketServer],
+	plugins: [
+		tailwindcss(), 
+		sveltekit(), 
+		webSocketServer],
 	resolve: {
 		alias: {
 		  '@mqtt': path.resolve(__dirname, './node_modules/mqtt/bin/'),
@@ -16,3 +20,4 @@ export default defineConfig({
 		strictPort: true
 	}
 });
+

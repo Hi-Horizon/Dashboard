@@ -61,8 +61,8 @@
 	<title>Settings</title>
 </svelte:head>
 
-<div class="flex flex-col flex-grow space-y-5">
-    <div class="flex-grow space-y-3">
+<div class="flex flex-col grow space-y-5">
+    <div class="grow space-y-3">
         <ReadStatisticTable bind:draftChanges rows={data.readStatisticTypes}/>
         <FormulaParameters  bind:draftChanges rows={[]}/>
     </div>

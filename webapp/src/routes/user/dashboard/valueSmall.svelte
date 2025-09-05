@@ -9,6 +9,6 @@
     <p class="pr-1">{data.name}:</p>
     <div class="flex">
         <p class="">{$currentValue}</p>
-        <p class="flex-grow">{data.unit}</p>
+        <p class="grow">{data.unit}</p>
     </div>
 </div>
