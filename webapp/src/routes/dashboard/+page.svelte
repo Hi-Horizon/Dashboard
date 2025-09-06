@@ -11,16 +11,33 @@ import { setupPageDefault } from "$lib/setupPageDefault";
     import BatteryCellGraph from "../../lib/Components/batteryCellGraph.svelte";
     import { onMount } from "svelte";
 import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
+    import Database from "@tauri-apps/plugin-sql";
 
 setupPageDefault();
 pageName.set("Dashboard");
-// export let data;
-// let dataFrameStructure: any[] = data.dataFrameStructure;
-// let displayDataFrameStructures: any[] = dataFrameStructure.filter(x => x.display != 0);
 
-// const socket = io();
+let dataFrameStructure: any[] = [];
+let displayDataFrameStructures: any[] = []
+let leftValueList: any;
+let rightValueList: any;
 
-let boatData:any = writable({test:0});
+let boatData:any = writable({Pz:10});
+
+async function fetchDataDescriptionFromDb() {
+    const db = await Database.load('sqlite:HiHorizonTelemetry.db');
+    dataFrameStructure = await db.select('SELECT * FROM DataDescription');
+    displayDataFrameStructures = dataFrameStructure.filter(x => x.display != 0);
+    console.log(displayDataFrameStructures)
+
+    leftValueList   = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 0), boatData)
+    rightValueList  = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 1), boatData)
+    // //create dummy list if there are uneven properties
+    if (displayDataFrameStructures.length % 2 === 1) {
+        rightValueList.push({component: ValueBig, props:{data:{}, currentValue:writable(0), isDummy: true, statusColor: defaultStatusColor}})
+    }
+}
+
+
 // socket.on('dataUpdate', (message) => {
 //     boatData.set(message);
 // });
@@ -63,24 +80,13 @@ function createList(component:any, descriptionsList:any[], ReactiveValuesObject:
             component: component, 
             props: {
                 data: element, 
-                currentValue: derived(ReactiveValuesObject, (xs: any) => xs[element.id]), 
+                currentValue: derived(ReactiveValuesObject, (xs: any) => xs[element.tag]), 
                 isDummy:false,
                 statusColor: defaultStatusColor
             }
         }
     });
 }
-
-// let displayDataFrameStructures = [{
-    
-// }]
-
-// let leftValueList   = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 0), boatData)
-// let rightValueList  = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 1), boatData)
-// //create dummy list if there are uneven properties
-// if (displayDataFrameStructures.length % 2 === 1) {
-//     rightValueList.push({component: ValueBig, props:{data:{}, currentValue:writable(0), isDummy: true, statusColor: defaultStatusColor}})
-// }
 
 // let statusValues: any[] = [
 //     dataFrameStructure.filter(x => x.abbreviation === "mtuT")[0],
@@ -165,7 +171,6 @@ function createList(component:any, descriptionsList:any[], ReactiveValuesObject:
 
 // let isBalancingListIds = [41,42,43,44,45,46,47,48,49,50,51,52,53,54]
 // let isBalancingList: Readable<boolean[]> = derived(boatData, (xs: any) => isBalancingListIds.map((i: number) => xs[i]))
-let testVal = derived(boatData, (xs: any) => xs.test)
 </script>
 
 <svelte:head>
@@ -174,10 +179,13 @@ let testVal = derived(boatData, (xs: any) => xs.test)
 
 <div class="space-y-3">
     <!-- top row -->
+     {#await fetchDataDescriptionFromDb()}
+        loading..
+     {:then}
     <div class="flex justify-evenly space-x-3">
-        <!-- <List elements={leftValueList} />
-        <List elements={rightValueList} /> -->
-        <ValueBig props={{data: {name: "test", unit:"t"}, currentValue: testVal, isDummy: false}}/>
+        <List elements={leftValueList} />
+        <List elements={rightValueList} />
+        <!-- <ValueBig props={{data: {name: "test", unit:"t"}, currentValue: testVal, isDummy: false}}/> -->
         <!-- <Map elements={positionCurrentVals}/> -->
     </div>
 
@@ -197,6 +205,6 @@ let testVal = derived(boatData, (xs: any) => xs.test)
             <!-- <Button onclick={resetDistance} props={{hoverColour:"bg-red-400"}}>Reset Distance travelled</Button> -->
         </Cell>
     </div>
-    
+    {/await}
     
 </div>

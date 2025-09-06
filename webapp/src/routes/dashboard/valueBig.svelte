@@ -9,7 +9,7 @@
     {#if !isDummy}
     <p class="font-bold">{data.name}</p>
     <div class="flex flex-row items-end space-x-1">
-        <p class="text-4xl">{$currentValue.toFixed(2)}</p>
+        <p class="text-4xl">{($currentValue ?? 0).toFixed(2)}</p>
         <p class="text-stone-400 grow">{data.unit}</p>
     </div>
     {:else}

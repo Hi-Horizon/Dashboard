@@ -31,6 +31,7 @@
 		"@kuyoonjo/tauri-plugin-mqtt": "^0.1.0",
 		"@tailwindcss/vite": "^4.1.13",
 		"@tauri-apps/plugin-shell": "^2.3.1",
+		"@tauri-apps/plugin-sql": "^2.3.0",
 		"better-sqlite3": "^12.2.0",
 		"buffer": "^6.0.3",
 		"chart.js": "^4.5.0",
@@ -45,5 +46,8 @@
 		"socket.io-client": "^4.8.1",
 		"tailwindcss": "^4.1.13",
 		"u8-mqtt": "^0.6.6"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": ["lightningcss"]
 	}
 }
