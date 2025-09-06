@@ -4,7 +4,7 @@ import { pageName } from "../../../stores";
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { setupPageDefault } from "$lib/setupPageDefault";
     import List from "../../../lib/Components/list.svelte";
-    import ValueBig from "./valueBig.svelte";
+    import ValueBig from "../../../../src/routes/dashboard/valueBig.svelte";
     import ValueSmall from "./valueSmall.svelte";
     import Button from "../../../lib/Components/button.svelte";
     import Cell from "../../../lib/Components/cell.svelte";
