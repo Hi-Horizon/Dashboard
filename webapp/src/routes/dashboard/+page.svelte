@@ -21,7 +21,7 @@ let displayDataFrameStructures: any[] = []
 let leftValueList: any;
 let rightValueList: any;
 
-let boatData:any = writable({Pz:10});
+let boatData:any = writable({});
 
 async function fetchDataDescriptionFromDb() {
     const db = await Database.load('sqlite:HiHorizonTelemetry.db');

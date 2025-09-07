@@ -43,6 +43,9 @@
         "sidecar": true,
         "open": true
       }
+    },
+    "sql": {
+      "preload": ["sqlite:HiHorizonTelemetry.db"]
     }
 	}
 }
