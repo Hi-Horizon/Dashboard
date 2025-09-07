@@ -24,7 +24,7 @@
       if (event.payload.event.connect === undefined) {
         alert("connection failed, check credentials and try again")
       } else {
-        goto("/dashboard")
+        goto("./connected/dashboard")
       }
     }); 
     try {

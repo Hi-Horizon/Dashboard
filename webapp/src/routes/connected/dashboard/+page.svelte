@@ -1,14 +1,14 @@
 <script lang="ts">
-import { pageName } from "../../stores";
+import { pageName } from "../../../stores";
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { setupPageDefault } from "$lib/setupPageDefault";
-    import List from "../../lib/Components/list.svelte";
+    import List from "$lib/Components/list.svelte";
     import ValueBig from "./valueBig.svelte";
     import ValueSmall from "./valueSmall.svelte";
-    import Button from "../../lib/Components/button.svelte";
-    import Cell from "../../lib/Components/cell.svelte";
-    import Map from "../../lib/Components/map.svelte";
-    import BatteryCellGraph from "../../lib/Components/batteryCellGraph.svelte";
+    import Button from "$lib/Components/button.svelte";
+    import Cell from "$lib/Components/cell.svelte";
+    import Map from "$lib/Components/map.svelte";
+    import BatteryCellGraph from "$lib/Components/batteryCellGraph.svelte";
     import { onMount } from "svelte";
 import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
     import Database from "@tauri-apps/plugin-sql";
@@ -27,7 +27,6 @@ async function fetchDataDescriptionFromDb() {
     const db = await Database.load('sqlite:HiHorizonTelemetry.db');
     dataFrameStructure = await db.select('SELECT * FROM DataDescription');
     displayDataFrameStructures = dataFrameStructure.filter(x => x.display != 0);
-    console.log(displayDataFrameStructures)
 
     leftValueList   = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 0), boatData)
     rightValueList  = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 1), boatData)
