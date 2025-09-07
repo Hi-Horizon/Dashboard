@@ -13,7 +13,7 @@ export function parseOperationReadStatistic(db: any, change: SettingsLocalChange
     }
 }
 
-// export async function fetchReadStatisticsTypes(): Promise<ReadStatisticType[]> {
+export async function fetchReadStatisticsTypes(): Promise<any> {
 //     const stmt = db.prepare("SELECT * FROM DataDescription");
 //     const rawResult:any[] = stmt.raw().all();
 
@@ -23,7 +23,7 @@ export function parseOperationReadStatistic(db: any, change: SettingsLocalChange
 //         processedResult.push(newReadStatisticType);
 //     });
 //     return processedResult;
-// }
+}
 
 //TODO: make it an option in settings to change display type
 export async function addReadStatisticsType(db:Database ,newRow:ReadStatisticType)  {

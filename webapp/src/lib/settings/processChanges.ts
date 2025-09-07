@@ -3,15 +3,15 @@ import type Database from "@tauri-apps/plugin-sql";
 import { db } from "../server/queries/dataBaseConnection";
 import { parseOperationReadStatistic } from "./ReadStatistics";
 
-// export const parseChanges = db.transaction((body)=>{
-//     body.forEach((setting: SettingsLocalChange[]) =>{
-//         setting.forEach((change)=>{
-//             parseSettingType(db, change);
-//         });
-//     });
-// });
+export const parseChanges = db.transaction((body)=>{
+    body.forEach((setting: SettingsLocalChange[]) =>{
+        setting.forEach((change)=>{
+            // parseSettingType(db, change);
+        });
+    });
+});
 
-function parseSettingType(db:Database , change:SettingsLocalChange) {
+export function parseSettingType(db:Database , change:SettingsLocalChange) {
     switch (change.settingType) {
         case "ReadStatisticType":
             parseOperationReadStatistic(db, change);
