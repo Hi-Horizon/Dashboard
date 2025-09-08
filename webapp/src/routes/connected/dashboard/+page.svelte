@@ -17,23 +17,47 @@ setupPageDefault();
 pageName.set("Dashboard");
 
 let dataFrameStructure: any[] = [];
+let tagToIdDict: any = {};
 let displayDataFrameStructures: any[] = []
 let leftValueList: any;
 let rightValueList: any;
 
-let boatData:any = writable({});
+let boatData:any = writable({UnixTime:0});
 
 async function fetchDataDescriptionFromDb() {
+    boatData.set({UnixTime:0})
     const db = await Database.load('sqlite:HiHorizonTelemetry.db');
     dataFrameStructure = await db.select('SELECT * FROM DataDescription');
     displayDataFrameStructures = dataFrameStructure.filter(x => x.display != 0);
 
+    //fill the tagToIdDict
+    dataFrameStructure.map((x) => {
+        tagToIdDict[x.tag] = x.id
+    })
     leftValueList   = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 0), boatData)
     rightValueList  = createList(ValueBig, displayDataFrameStructures.filter((id, idx, arr) => idx % 2 == 1), boatData)
     // //create dummy list if there are uneven properties
     if (displayDataFrameStructures.length % 2 === 1) {
         rightValueList.push({component: ValueBig, props:{data:{}, currentValue:writable(0), isDummy: true, statusColor: defaultStatusColor}})
     }
+
+    //fetch last seen values
+    const lastMsgTime: any[] = await db.select('SELECT max(UnixTime) as UnixTime FROM Data')
+    console.log(lastMsgTime)
+    const maxTResult: any[] = await db.select('SELECT descriptionId as id, Value FROM Data WHERE Unixtime = (SELECT max(UnixTime) FROM Data)')
+    console.log(maxTResult[0].id)
+    maxTResult.forEach((result) => {
+        console.log(result)
+        boatData.update((xs: any) => {
+            xs[result.id] = result.Value
+            return xs
+        })
+    })
+    boatData.update((xs: any) => {
+        xs["UnixTime"] = lastMsgTime[0].UnixTime
+        return xs
+    })
+    console.log($boatData)
 }
 
 
@@ -42,10 +66,24 @@ async function fetchDataDescriptionFromDb() {
 // });
 
 onMount(() => {
-    mqtt.listen((x: any) => {
+    mqtt.listen(async (x: any) => {
         const payload = x.payload.event.message.payload
         const dataObj = JSON.parse(payload.map((x: any) => String.fromCharCode(x)).join(''))
-        boatData.set(dataObj)
+        // boatData.set(dataObj)
+        
+        const curDate = new Date()
+        const db = await Database.load('sqlite:HiHorizonTelemetry.db');
+        Object.keys(dataObj).map(async (key: string) => {
+            await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), tagToIdDict[key], dataObj[key]]);
+            boatData.update((xs: any) => {
+                xs[tagToIdDict[key]] = dataObj[key]
+                return xs
+            })
+        })
+        boatData.update((xs: any) => {
+            xs["UnixTime"] = curDate.getTime()
+            return xs
+        })
     });
 });
 
@@ -57,13 +95,14 @@ let statusColorGPS: string = "";
 let statusColorMPPT: string = "";
 
 const currentDate = new Date();
-let timeSinceLastFrame: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.UnixTime);
+let timeSinceLastFrame: Writable<number> = writable(0);
 // let timeSinceLastGPSmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.gpsT);
 // let timeSinceLastESCmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.escT);
 // let timeSinceLastMPPTmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.mpptT);
 setInterval(()=> {
     const currentDate = new Date();
-    timeSinceLastFrame.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData.UnixTime);
+    // console.log($boatData)
+    timeSinceLastFrame.set(Math.round((currentDate.getTime()+7200 - $boatData.UnixTime)/1000));
 //     timeSinceLastGPSmsg.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData[8]);
 //     timeSinceLastESCmsg.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData[56]);
 //     timeSinceLastMPPTmsg.set(Math.round(currentDate.getTime()/1000)+7200 - $boatData[10]);
@@ -79,7 +118,7 @@ function createList(component:any, descriptionsList:any[], ReactiveValuesObject:
             component: component, 
             props: {
                 data: element, 
-                currentValue: derived(ReactiveValuesObject, (xs: any) => xs[element.tag]), 
+                currentValue: derived(ReactiveValuesObject, (xs: any) => xs[element.id]), 
                 isDummy:false,
                 statusColor: defaultStatusColor
             }
