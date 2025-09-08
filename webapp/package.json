@@ -17,7 +17,6 @@
 		"@sveltejs/kit": "^2.37.0",
 		"@sveltejs/vite-plugin-svelte": "^6.1.4",
 		"@tauri-apps/cli": "^2.8.4",
-		"@types/better-sqlite3": "^7.6.13",
 		"autoprefixer": "^10.4.21",
 		"leaflet": "^1.9.4",
 		"svelte": "^5.38.7",
@@ -32,7 +31,6 @@
 		"@tailwindcss/vite": "^4.1.13",
 		"@tauri-apps/plugin-shell": "^2.3.1",
 		"@tauri-apps/plugin-sql": "^2.3.0",
-		"better-sqlite3": "^12.2.0",
 		"buffer": "^6.0.3",
 		"chart.js": "^4.5.0",
 		"chartjs-adapter-dayjs-4": "^1.0.4",
@@ -41,13 +39,11 @@
 		"dayjs": "^1.11.18",
 		"layercake": "^10.0.1",
 		"luxon": "^3.7.2",
-		"mqtt": "^5.14.1",
-		"socket.io": "^4.8.1",
-		"socket.io-client": "^4.8.1",
-		"tailwindcss": "^4.1.13",
-		"u8-mqtt": "^0.6.6"
+		"tailwindcss": "^4.1.13"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": ["lightningcss"]
+		"onlyBuiltDependencies": [
+			"lightningcss"
+		]
 	}
 }
