@@ -1,15 +1,16 @@
 <script lang="ts">
+    import type { Writable } from "svelte/store";
     import EditableTable from "./editableTable.svelte";
 
-    export let rows: any[]
-    export let draftChanges: any[]
+    export let rows: Writable<any[]>
+    export let draftChanges: Writable<any[]>
 
-    const headers = ["name", "tag", "quantity", "unit", "display"]
+    const headers = ["name", "tag", "unit", "quantity", "display"]
     let constructObject: any = {
         name: "",
         abbreviation: "",
-        quantity: "",
         unit: "",
+        quantity: "", 
         display: ""
     }
 </script>

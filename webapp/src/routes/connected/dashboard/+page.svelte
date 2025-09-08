@@ -2,16 +2,16 @@
 import { pageName } from "../../../stores";
 import { derived, writable, type Readable, type Writable } from "svelte/store";
 import { setupPageDefault } from "$lib/setupPageDefault";
-    import List from "$lib/Components/list.svelte";
-    import ValueBig from "./valueBig.svelte";
-    import ValueSmall from "./valueSmall.svelte";
-    import Button from "$lib/Components/button.svelte";
-    import Cell from "$lib/Components/cell.svelte";
-    import Map from "$lib/Components/map.svelte";
-    import BatteryCellGraph from "$lib/Components/batteryCellGraph.svelte";
-    import { onMount } from "svelte";
+import List from "$lib/Components/list.svelte";
+import ValueBig from "./valueBig.svelte";
+import ValueSmall from "./valueSmall.svelte";
+import Button from "$lib/Components/button.svelte";
+import Cell from "$lib/Components/cell.svelte";
+import Map from "$lib/Components/map.svelte";
+import BatteryCellGraph from "$lib/Components/batteryCellGraph.svelte";
+import { onMount } from "svelte";
 import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
-    import Database from "@tauri-apps/plugin-sql";
+import { db } from "$lib/IOconnections/DBO/databaseObject";
 
 setupPageDefault();
 pageName.set("Dashboard");
@@ -24,9 +24,9 @@ let rightValueList: any;
 
 let boatData:any = writable({UnixTime:0});
 
+
 async function fetchDataDescriptionFromDb() {
     boatData.set({UnixTime:0})
-    const db = await Database.load('sqlite:HiHorizonTelemetry.db');
     dataFrameStructure = await db.select('SELECT * FROM DataDescription');
     displayDataFrameStructures = dataFrameStructure.filter(x => x.display != 0);
 
@@ -43,11 +43,8 @@ async function fetchDataDescriptionFromDb() {
 
     //fetch last seen values
     const lastMsgTime: any[] = await db.select('SELECT max(UnixTime) as UnixTime FROM Data')
-    console.log(lastMsgTime)
     const maxTResult: any[] = await db.select('SELECT descriptionId as id, Value FROM Data WHERE Unixtime = (SELECT max(UnixTime) FROM Data)')
-    console.log(maxTResult[0].id)
     maxTResult.forEach((result) => {
-        console.log(result)
         boatData.update((xs: any) => {
             xs[result.id] = result.Value
             return xs
@@ -57,22 +54,15 @@ async function fetchDataDescriptionFromDb() {
         xs["UnixTime"] = lastMsgTime[0].UnixTime
         return xs
     })
-    console.log($boatData)
 }
-
-
-// socket.on('dataUpdate', (message) => {
-//     boatData.set(message);
-// });
 
 onMount(() => {
     mqtt.listen(async (x: any) => {
         const payload = x.payload.event.message.payload
         const dataObj = JSON.parse(payload.map((x: any) => String.fromCharCode(x)).join(''))
-        // boatData.set(dataObj)
         
         const curDate = new Date()
-        const db = await Database.load('sqlite:HiHorizonTelemetry.db');
+        
         Object.keys(dataObj).map(async (key: string) => {
             await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), tagToIdDict[key], dataObj[key]]);
             boatData.update((xs: any) => {

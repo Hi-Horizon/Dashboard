@@ -3,21 +3,19 @@
     import { pageName } from "../../../stores";
     import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
     import { setupPageDefault } from "$lib/setupPageDefault";
-    import FormulaParameters from "./SettingsList/formulaParameters.svelte";
-    import Database from "@tauri-apps/plugin-sql";
-    import { parseOperationReadStatistic } from "../../../lib/settings/ReadStatistics";
+    import { parseOperationReadStatistic } from "$lib/settings/ReadStatistics";
+    import { db } from "$lib/IOconnections/DBO/databaseObject";
+    import { writable, type Writable } from "svelte/store";
 
     setupPageDefault();
     pageName.set("Settings");
 
-    let draftChanges: SettingsLocalChange[]
+    let draftChanges: Writable<SettingsLocalChange[]> = writable([])
 
-    let DataDescriptions: any[] = []
-    let readStatisticTypesLocalChangeLog: SettingsLocalChange[] = [];
+    let DataDescriptions: Writable<any[]> = writable([])
 
     async function fetchDataDescriptionFromDb() {
-        const db = await Database.load('sqlite:HiHorizonTelemetry.db');
-        DataDescriptions = await db.select('SELECT * FROM DataDescription');
+        DataDescriptions.set(await db.select('SELECT * FROM DataDescription'));
     }
 
     function askEmptyLocalChangeConfirmation() {
@@ -26,23 +24,22 @@
     }
 
     function emptyAllLocalChanges() {
-        draftChanges = [];
+        draftChanges.set([]);
         // data.readStatisticTypes = data.readStatisticTypes;
     }
 
     let waitingToSubmit: boolean = false;
     async function submitChanges(): Promise<any> {
-        const db = await Database.load('sqlite:HiHorizonTelemetry.db');
-        const AllchangeLogs: SettingsLocalChange[][] = [draftChanges];
+        // const AllchangeLogs: SettingsLocalChange[][] = [$draftChanges];
         let confirmation: boolean = confirm("are you sure you want these changes?");
         if (confirmation === true) {
             waitingToSubmit = true;
-            draftChanges.forEach(change => {
+            $draftChanges.forEach(change => {
                 parseOperationReadStatistic(db, change)
             });
             waitingToSubmit = false;
-            // alert(result.response + "\ncode: "+ result.status);
             emptyAllLocalChanges();
+            await fetchDataDescriptionFromDb() // update screen
         }
     }
 </script>
@@ -56,7 +53,7 @@
         {#await fetchDataDescriptionFromDb()}
             <p>loading...</p>
         {:then}    
-            <ReadStatisticTable bind:draftChanges rows={DataDescriptions}/>
+            <ReadStatisticTable bind:draftChanges bind:rows={DataDescriptions}/>
         {/await}
         <!-- <FormulaParameters  bind:draftChanges rows={[]}/> -->
     </div>

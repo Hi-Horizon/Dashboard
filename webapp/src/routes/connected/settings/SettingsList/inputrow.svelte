@@ -1,9 +1,10 @@
 <script lang="ts">
     import type { SettingsLocalChange, SettingsType } from "$lib/interfaces/SettingsLocalChange";
-    import Button from "../../../../lib/Components/button.svelte";
-    import Input from "../../../../lib/Components/input.svelte";
+    import Button from "$lib/Components/button.svelte";
+    import Input from "$lib/Components/input.svelte";
+    import type { Writable } from "svelte/store";
 
-    export let draftChanges: any[]
+    export let draftChanges: Writable<any[]>
     export let constructObject: any
     export let objectType: SettingsType
 
@@ -33,7 +34,7 @@
         };
 
         let newLocalChange: SettingsLocalChange = {operation: "Add", settingType: objectType, structure: structuredClone(constructObject)};
-        draftChanges = [...draftChanges, newLocalChange];
+        draftChanges.set([...$draftChanges, newLocalChange]);
         
         closeAddForm();
     }
@@ -42,7 +43,7 @@
 <tr>
     {#if openCreation}
         {#each keys as key}
-            <td><Input bind:value={constructObject[key]}/></td>
+            <td><Input name={key.toString()} bind:value={constructObject[key]}/></td>
         {/each}
         <td class="flex justify-evenly">
             <Button onclick={()=>addToDraftChanges()}>Add</Button>

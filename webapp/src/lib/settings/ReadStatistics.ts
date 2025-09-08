@@ -26,8 +26,9 @@ export async function fetchReadStatisticsTypes(): Promise<any> {
 }
 
 //TODO: make it an option in settings to change display type
-export async function addReadStatisticsType(db:Database ,newRow:ReadStatisticType)  {
+export async function addReadStatisticsType(db:Database, newRow:ReadStatisticType)  {
         preventSpecialCharacters(newRow.abbreviation)
+        console.log(newRow.quantity)
         //adds info about statistic to ReadStatisticTypes table
         const insertRow = await db.execute(
             'INSERT INTO DataDescription (name, tag, quantity, unit, display) VALUES ( $1 , $2 , $3 , $4 , $5);',

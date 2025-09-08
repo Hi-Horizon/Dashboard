@@ -2,9 +2,8 @@
     import { pageName, showBackButton } from "../../stores";
     import { writable } from "svelte/store";
     import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
-      import { once } from '@tauri-apps/api/event';
     import { goto } from "$app/navigation";
-    
+
     let currentPageName: string = "Page";
 
     pageName.subscribe((value) => {
@@ -15,6 +14,7 @@
     let mqttusername = ""
     let mqttpassword = ""
 
+
     async function disconnect() {
         try {
             await mqtt.disconnect("1");
@@ -24,7 +24,8 @@
             goto("../")
         }
     }
-    
+
+
 </script>
 
 {#if $askMQTT }
