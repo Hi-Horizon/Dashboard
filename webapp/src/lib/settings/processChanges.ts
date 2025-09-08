@@ -1,15 +1,15 @@
 import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
 import type Database from "@tauri-apps/plugin-sql";
-import { db } from "../server/queries/dataBaseConnection";
 import { parseOperationReadStatistic } from "./ReadStatistics";
+import { db } from "../IOconnections/DBO/databaseObject";
 
-export const parseChanges = db.transaction((body)=>{
-    body.forEach((setting: SettingsLocalChange[]) =>{
-        setting.forEach((change)=>{
-            // parseSettingType(db, change);
-        });
-    });
-});
+// export const parseChanges = db.transaction((body)=>{
+//     body.forEach((setting: SettingsLocalChange[]) =>{
+//         setting.forEach((change)=>{
+//             // parseSettingType(db, change);
+//         });
+//     });
+// });
 
 export function parseSettingType(db:Database , change:SettingsLocalChange) {
     switch (change.settingType) {

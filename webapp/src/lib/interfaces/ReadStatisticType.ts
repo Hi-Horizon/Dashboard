@@ -1,3 +1,4 @@
+//todo name change
 export interface ReadStatisticType {
     id:number;
     name:string;

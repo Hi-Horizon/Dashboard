@@ -13,22 +13,13 @@ export function parseOperationReadStatistic(db: any, change: SettingsLocalChange
     }
 }
 
-export async function fetchReadStatisticsTypes(): Promise<any> {
-//     const stmt = db.prepare("SELECT * FROM DataDescription");
-//     const rawResult:any[] = stmt.raw().all();
-
-//     const processedResult: ReadStatisticType[] = [];
-//     rawResult.forEach((item:string[]) => {
-//         let newReadStatisticType: ReadStatisticType = {id: item[0], name: item[1], abbreviation: item[2], unit: item[3], quantity: item[4], display: item[5]}
-//         processedResult.push(newReadStatisticType);
-//     });
-//     return processedResult;
+export async function fetchReadStatisticsTypes(db:Database): Promise<any> {
+    return await db.select('SELECT * FROM DataDescription');
 }
 
 //TODO: make it an option in settings to change display type
 export async function addReadStatisticsType(db:Database, newRow:ReadStatisticType)  {
         preventSpecialCharacters(newRow.abbreviation)
-        console.log(newRow.quantity)
         //adds info about statistic to ReadStatisticTypes table
         const insertRow = await db.execute(
             'INSERT INTO DataDescription (name, tag, quantity, unit, display) VALUES ( $1 , $2 , $3 , $4 , $5);',
