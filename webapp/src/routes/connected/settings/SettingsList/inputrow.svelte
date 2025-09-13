@@ -43,14 +43,14 @@
 <tr>
     {#if openCreation}
         {#each keys as key}
-            <td><Input name={key.toString()} bind:value={constructObject[key]}/></td>
+            <td class="p-2"><Input name={key.toString()} bind:value={constructObject[key]}/></td>
         {/each}
-        <td class="flex justify-evenly">
+        <td class="p-2 flex space-x-4 justify-center-safe">
             <Button onclick={()=>addToDraftChanges()}>Add</Button>
             <Button onclick={()=>closeAddForm()}>Cancel</Button>
         </td>
     {:else}
-        <td colspan=6>
+        <td colspan=6 class="py-2">
             <button on:click={()=>revealAddForm()} class="text-center w-full hover:bg-stone-600 rounded flex justify-center py-1">
                 <img src="../icons/addCircle.svg" alt="Add">
             </button>

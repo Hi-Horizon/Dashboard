@@ -25,7 +25,6 @@
 
     function emptyAllLocalChanges() {
         draftChanges.set([]);
-        // data.readStatisticTypes = data.readStatisticTypes;
     }
 
     let waitingToSubmit: boolean = false;

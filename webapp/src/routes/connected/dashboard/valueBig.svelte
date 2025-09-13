@@ -13,7 +13,7 @@
         <p class="text-stone-400 grow">{data.unit}</p>
     </div>
     {:else}
-    <div class="text-white text-opacity-0">
+    <div class="text-transparent">
         <p class="font-bold">dummy</p>
         <div class="flex flex-row items-end space-x-1">
             <p class="text-4xl">hi</p>
