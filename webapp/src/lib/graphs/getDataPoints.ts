@@ -26,6 +26,7 @@ export async function getDataTableWithRange(min:number = 0, max:number = Number.
         });
         sql = sql.concat(" FROM Data as D where UnixTime >= ? AND UnixTime <= ?")
         const result: any[] = await db.select(sql, [min, max]);
+        console.log(result)
         return result
     } 
     catch (error) {
