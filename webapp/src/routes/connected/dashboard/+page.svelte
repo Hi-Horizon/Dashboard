@@ -29,7 +29,6 @@ async function fetchDataDescriptionFromDb() {
     boatData.set({UnixTime:0})
     dataFrameStructure = await db.select('SELECT * FROM DataDescription');
     displayDataFrameStructures = dataFrameStructure.filter(x => x.display != 0);
-
     //fill the tagToIdDict
     dataFrameStructure.map((x) => {
         tagToIdDict[x.tag] = x.id
@@ -85,7 +84,7 @@ let statusColorGPS: string = "";
 let statusColorMPPT: string = "";
 
 const currentDate = new Date();
-let timeSinceLastFrame: Writable<number> = writable(0);
+let timeSinceLastFrame: Writable<number> = writable((currentDate.getTime()+7200 - $boatData.UnixTime));
 // let timeSinceLastGPSmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.gpsT);
 // let timeSinceLastESCmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.escT);
 // let timeSinceLastMPPTmsg: Writable<number> = writable(Math.round(currentDate.getTime()/1000)+7200 - $boatData.mpptT);
@@ -214,7 +213,6 @@ statusList.reverse()
     <div class="flex justify-evenly space-x-3">
         <List elements={leftValueList} />
         <List elements={rightValueList} />
-        <!-- <ValueBig props={{data: {name: "test", unit:"t"}, currentValue: testVal, isDummy: false}}/> -->
         <!-- <Map elements={positionCurrentVals}/> -->
     </div>
 

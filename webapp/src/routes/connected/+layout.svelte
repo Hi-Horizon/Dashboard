@@ -42,8 +42,8 @@
 {/if}
 <div class="flex">
     <ul class="sticky top-0 shrink-0 flex flex-col p-5 h-screen bg-stone-800 text-center space-y-5">
-        <li class="flex-1"><a href="./dashboard"><img src="/icons/dashboard.svg" alt="Dashboard" class="hover:bg-stone-700 rounded"></a></li>
-        <!-- <li class="flex-1"><a href="/user/graphViewer"><img src="/icons/graph.svg" alt="Graphs" class="hover:bg-stone-700 rounded"></a></li> -->
+        <li class=""><a href="./dashboard"><img src="/icons/dashboard.svg" alt="Dashboard" class="hover:bg-stone-700 rounded"></a></li>
+        <li class="flex-1"><a href="./analyzation"><img src="/icons/graph.svg" alt="analyzation" class="hover:bg-stone-700 rounded"></a></li>
         <li class="justify-self-end"><a href="./settings"><img src="/icons/settings.svg" alt="Settings" class="hover:bg-stone-700 rounded"></a></li>
         <li class="justify-self-end"><button on:click={disconnect}><img src="/icons/logout.svg" alt="Logout" class="hover:bg-stone-700 rounded"></button></li>
     </ul>

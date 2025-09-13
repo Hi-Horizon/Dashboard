@@ -15,16 +15,22 @@ export function getAllDataPointsFromAxes(x:string, y:string, xs:string, xe:strin
 }
 
 //returns a table in a two-dimensional array with columnnames
-export function getDataTableWithRange(min:number = 0, max:number = Number.MAX_SAFE_INTEGER): any[] {
-    // try {
-    //     const stmt = db.select("SELECT * FROM Data where UnixTime >= ? AND UnixTime <= ?");
-    //     const result = stmt.columns().map((column:any) => column.name);
-    //     const test = stmt.raw(true).all(min, max);
-    //     return [result, ...test];
-    // } 
-    // catch (error) {
-    //     console.log(error)
-    //     return [];
-    // }
+export async function getDataTableWithRange(min:number = 0, max:number = Number.MAX_SAFE_INTEGER): Promise<any[]> {
+    try {
+        //get datadescription values
+        const columndescriptions: any[] = await db.select('SELECT * FROM DataDescription');
+        let sql = "SELECT unixTime"
+        //loop this line for data de
+        columndescriptions.forEach(column => {
+            sql = sql.concat(", (SELECT Value FROM Data where descriptionid = "+ column.id +" and unixtime = D.UnixTime) AS '"+ column.name +"'" )
+        });
+        sql = sql.concat(" FROM Data as D where UnixTime >= ? AND UnixTime <= ?")
+        const result: any[] = await db.select(sql, [min, max]);
+        return result
+    } 
+    catch (error) {
+        console.log(error)
+        return [];
+    }
     return []
 }
