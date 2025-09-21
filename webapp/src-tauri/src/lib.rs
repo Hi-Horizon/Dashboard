@@ -9,6 +9,12 @@ pub fn run() {
             description: "create_initial_tables",
             sql: include_str!("../../../db/schema.sql"),
             kind: MigrationKind::Up
+        },
+        Migration {
+            version: 2,
+            description: "create_DashboardLayout_tables",
+            sql: include_str!("../../../db/DashboardLayout.sql"),
+            kind: MigrationKind::Up
         }
     ];
 
