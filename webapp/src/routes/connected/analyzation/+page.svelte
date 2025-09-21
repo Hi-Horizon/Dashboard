@@ -1,22 +1,10 @@
-<script lang="ts" module>
+<script lang="ts">
 import { pageName } from "../../../stores";
-import { onMount } from 'svelte';
 import { setupPageDefault } from '$lib/setupPageDefault';
-import 'chartjs-adapter-luxon';
-import { writable } from 'svelte/store';
 import { getDataTableWithRange } from "$lib/graphs/getDataPoints";
 
 setupPageDefault();
 pageName.set("Analyzation");
-
-let xAxesOption:string;
-let yAxesOption:string;
-let GraphType:string;
-
-let xName: string = ""
-
-let chartCanvas: any;
-let ctx: any;
 
 let dataURL: string;
 let downloadLinkDOM: any;
@@ -36,7 +24,7 @@ async function downloadDataRange() {
     dataURL = src.toString();
     downloadLinkDOM.href = dataURL
     downloadLinkDOM.click();
-    alert("download succesful")
+    alert("Download succesful")
 }
 
 </script>
