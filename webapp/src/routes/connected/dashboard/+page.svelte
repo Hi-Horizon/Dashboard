@@ -1,11 +1,6 @@
 <script lang="ts">
 import { pageName } from "../../../stores";
-import {writable, type Writable } from "svelte/store";
 import { setupPageDefault } from "$lib/setupPageDefault";
-import List from "$lib/DashboardBuilder/Components/list.svelte";
-import ValueSmall from "./valueSmall.svelte";
-import Cell from "$lib/Components/cell.svelte";
-import BatteryCellGraph from "$lib/Components/batteryCellGraph.svelte";
 import { onMount } from "svelte";
 import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
 import { db } from "$lib/IOconnections/DBO/databaseObject";
@@ -18,9 +13,6 @@ setupPageDefault();
 pageName.set("Dashboard");
 
 let tagToIdDict: any = {};
-let displayDataFrameStructures: any[] = []
-let leftValueList: any;
-let rightValueList: any;
 
 let DashboardLayout:any;
 
@@ -69,44 +61,6 @@ onMount(() => {
         })
     });
 });
-
-//status variables and  time
-let defaultStatusColor:Writable<string> = writable("");
-let statusColor:Writable<string> = writable("text-red-600");
-let statusColorMTU: string = "";
-let statusColorGPS: string = "";
-let statusColorMPPT: string = "";
-
-const currentDate = new Date();
-let timeSinceLastFrame: Writable<number> = writable((currentDate.getTime()+7200 - $latestData.UnixTime));
-setInterval(()=> {
-    const currentDate = new Date();
-    timeSinceLastFrame.set(Math.round((currentDate.getTime()+7200 - $latestData.UnixTime)/1000));
-    //give a sign if there hasn't been a message in a while
-    if ($timeSinceLastFrame > 20) statusColor.set("text-red-600")
-    else statusColor.set("");
-},1000);
-
-let statusValues: any[] = [
-//     dataFrameStructure.filter(x => x.abbreviation === "mtuT")[0],
-//     // dataFrameStructure.filter(x => x.abbreviation === "mpptT")[0],
-//     // dataFrameStructure.filter(x => x.abbreviation === "gpsT")[0],
-//     // dataFrameStructure.filter(x => x.abbreviation === "escT")[0]
-]
-
-let statusList = []
-statusList.push({
-    component: ValueSmall, 
-    props: {
-        data: {name: "Last Frame", unit: "s ago"}, 
-        currentValue: timeSinceLastFrame, 
-        isDummy:false,
-        statusColor: statusColor
-    }
-})
-
-statusList.reverse()
-
 </script>
 
 <svelte:head>
@@ -120,24 +74,6 @@ statusList.reverse()
     {:then}
     
     <DashboardBuilder/>
-
-    <!-- <div class="flex space-x-3">
-        <BatteryCellGraph bind:voltages={voltages} bind:isBalancingList={isBalancingList}/>
-    </div> -->
-    
-    <!-- status block -->
-    <div class="flex space-x-3">
-        <Cell>
-            <div class="font-bold pb-3">Status</div>
-            <List elements={statusList}></List>
-        </Cell>
-        
-        <!-- <Cell>
-            <div class="font-bold pb-3">control</div>
-            <Button onclick={resetDistance} props={{hoverColour:"bg-red-400"}}>Reset Distance travelled</Button>
-        </Cell> -->
-    </div>
-
     <DashboardConfigUploader />
     
     {/await}

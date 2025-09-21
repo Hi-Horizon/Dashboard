@@ -19,6 +19,7 @@
             
         await editLayoutconfig(newConfigStr)
         layout.set(await getlayoutConfig())
+        newConfigStr = ""
 
         alert("layout update succesful!")
     }

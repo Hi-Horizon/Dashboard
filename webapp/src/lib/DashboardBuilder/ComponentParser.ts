@@ -1,6 +1,6 @@
 import List from "./Components/list.svelte"
 import ValueBig from "./Components/valueBig.svelte";
-import ValueSmall from "../../routes/connected/dashboard/valueSmall.svelte";
+import ValueSmall from "./Components/valueSmall.svelte";
 
 export function parseComponentName(componentName: string) {
     switch (componentName) {
@@ -8,7 +8,7 @@ export function parseComponentName(componentName: string) {
             return List
         case "valueBig":
             return ValueBig
-        case "valueBig":
+        case "valueSmall":
             return ValueSmall          
         default:
             return ValueBig
