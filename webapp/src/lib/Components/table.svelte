@@ -11,7 +11,7 @@
         <thead class="text-left">
             <tr>
             {#each headers as header}
-                <th>{header}</th>
+                <th class="p-2">{header}</th>
             {/each}
             </tr>
         </thead>

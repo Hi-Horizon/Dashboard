@@ -1,16 +1,12 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import path from "path"
-
-import { webSocketServer } from "./WebSocketServer"
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-	plugins: [sveltekit(), webSocketServer],
-	resolve: {
-		alias: {
-		  '@mqtt': path.resolve(__dirname, './node_modules/mqtt/bin/'),
-		},
-	  },
+	plugins: [ 
+		tailwindcss(),
+		sveltekit() 
+	],
 	server: {
 		port: 5173,
 		strictPort: true

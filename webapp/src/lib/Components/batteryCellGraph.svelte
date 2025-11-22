@@ -1,4 +1,4 @@
-<script lang="ts" type="module">
+<script lang="ts">
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { onMount } from 'svelte';
@@ -105,9 +105,25 @@ async function updateGraph(y:number[], isbalancingList:boolean[]) {
 $: {
     if (chart !== undefined) updateGraph($voltages, $isBalancingList);
 }
+
+//for testing purposes
+// const average = (array: number[]) => array.reduce((a, b) => a + b) / array.length;
+// let cellCount = 14
+// let voltages = writable(Array.from({length: cellCount}, () => 3.6 + Math.random() * (0.2)));
+// let isBalancingList = writable([...Array(cellCount).keys()].map(i => voltages[i] - average($voltages) > 0.05));
+// setInterval(()=> {
+//     voltages.set(voltages.map( x => x - Math.random()*0.03));
+//     isBalancingList.set([...Array(cellCount).keys()].map(i => $voltages[i] - average($voltages) > 0.05));
+// },1000);
+
+// let voltageIds = [24,25,26,27,28,29,30,31,32,33,34,35,36,37]
+// let voltages: Readable<number[]> = derived(boatData, (xs: any) => voltageIds.map((i: number) => xs[i]))
+
+// let isBalancingListIds = [41,42,43,44,45,46,47,48,49,50,51,52,53,54]
+// let isBalancingList: Readable<boolean[]> = derived(boatData, (xs: any) => isBalancingListIds.map((i: number) => xs[i]))
 </script>
 
-<div class="flex-grow grid grid-cols-1 rounded-xl h-96 bg-stone-800 p-4" style="grid-row-start: 1; grid-column-start: 1;">
+<div class="grow grid grid-cols-1 rounded-xl h-96 bg-stone-800 p-4" style="grid-row-start: 1; grid-column-start: 1;">
     {#if $refreshingGraph}
     <div class=" flex justify-center items-center font-bold text-2xl z-10 bg-stone-900 bg-opacity-70" style="grid-area: 1/1;">
         <div class="text-center">Loading...</div>

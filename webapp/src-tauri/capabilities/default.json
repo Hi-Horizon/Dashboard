@@ -8,23 +8,9 @@
   "permissions": [
     "core:default",
     "shell:default",
-    {
-      "identifier": "shell:allow-execute",
-      "allow": [
-        {
-          "args": [
-            "arg1",
-            "-a",
-            "--arg2",
-            {
-              "validator": "\\S+"
-            }
-          ],
-          "name": "../../../MQTTlistener/dist/MqttDataHandler/MqttDataHandler",
-          "sidecar": true
-        }
-      ]
-    },
-    "shell:allow-open"
+    "shell:allow-open",
+    "mqtt:default",
+    "sql:default",
+    "sql:allow-execute"
   ]
 }
