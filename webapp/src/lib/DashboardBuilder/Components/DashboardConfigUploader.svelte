@@ -26,8 +26,8 @@
 </script>
 
 <Cell>
-        <div class="font-bold pb-3">Edit dashboard layout</div>
-        <div class="p-2 flex space-x-4 justify-center-safe">
+        <div class="font-semibold pb-1">Edit dashboard layout</div>
+        <div class="flex space-x-4 justify-center-safe">
             <Input name="newConfig" bind:value={newConfigStr} placeholder={"[[\"componentName\":\"...\"]]"}/>
             <Button onclick={()=>updateConfig()}>Upload</Button>
         </div>
