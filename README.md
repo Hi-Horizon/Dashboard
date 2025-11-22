@@ -3,24 +3,50 @@ the data Dashboard for Hi-Horizon racing team.
 
 For more information, check the [wiki](https://github.com/Hi-Horizon/Dashboard/wiki)
 
-## Running the application
-NOTE: For the application to run, it is required to have [Node](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed.
+## Dashboard Config
+For now, the dashboard layout can be changed using a json object string. 
 
-Clone/download the repository onto your machine. before running the applications install all the dependencies by navigating to ```/webapp``` in your terminal and run the command:
-```
- npm install
-```
-Once all the dependencies have been downloaded you can run the file ```Hi-horizon_telemetry.bat``` to launch the app.
+The format is a 2d array, you can imagine this as a grid. Each cell in this grid contains a component object inside, these correlate to svelte components.
 
-
-<!-- ## installation
-clone the repository into your system and run the following commands to install the dependencies
+an example config:
 ```
-pip install paho-mqtt
-npm install
+[
+	[
+		{
+			"componentName": "list",
+			"props": {
+				"items": [
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 1,
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 22,
+							"valType": 0
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"items": [
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 2,
+							"valType": 0
+						}
+					}
+				]
+			}
+		}
+	]
+]
 ```
-then you can host the website locally with:
-```
-npm run dev
-```
-And then run the python script MqttDataHandler.py to connect to the Mqtt broker -->
