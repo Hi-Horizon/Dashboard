@@ -1,14 +1,15 @@
 {
-	"name": "HiHorizon_Telemetry_Dashboard",
+	"name": "HiHorizon Telemetry Dashboard",
 	"version": "2.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
+		"dev": "tauri dev",
+		"build": "tauri build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"tauri": "tauri"
+		"vite:dev": "vite dev",
+		"vite:build": "vite build"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^6.1.0",

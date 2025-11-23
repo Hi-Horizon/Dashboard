@@ -6,6 +6,7 @@
     import { parseOperationReadStatistic } from "$lib/settings/ReadStatistics";
     import { db } from "$lib/IOconnections/DBO/databaseObject";
     import { writable, type Writable } from "svelte/store";
+    import Button from "../../../lib/Components/button.svelte";
 
     setupPageDefault();
     pageName.set("Settings");
@@ -51,7 +52,8 @@
     <div class="grow space-y-3">
         {#await fetchDataDescriptionFromDb()}
             <p>loading...</p>
-        {:then}    
+        {:then} 
+            <Button>Import CANbus Structure</Button>   
             <ReadStatisticTable bind:draftChanges bind:rows={DataDescriptions}/>
         {/await}
         <!-- <FormulaParameters  bind:draftChanges rows={[]}/> -->
