@@ -22,13 +22,13 @@
         <p class="font-bold">ERROR: undefined</p>
         <div class="flex flex-row items-end space-x-1">
             <p class="text-4xl">-</p>
-            <p class="text-stone-400 grow"></p>
+            <p class="dark:text-stone-400 grow"></p>
         </div>
     {:else if !isDummy}
         <p class="font-bold">{$description.name}</p>
         <div class="flex flex-row items-end space-x-1">
             <p class="text-4xl">{($latestValue ?? 0).toFixed(2)}</p>
-            <p class="text-stone-400 grow">{$description.unit}</p>
+            <p class="dark:text-stone-400 grow">{$description.unit}</p>
         </div>
     {:else}
     <div class="text-transparent">

@@ -4,7 +4,13 @@ import { db } from "../IOconnections/DBO/databaseObject";
 // returns a javascript object containing the config
 export async function getlayoutConfig() {
     const result: any = await db.select('SELECT layoutData FROM DashboardLayout where id = 1');
-    return JSON.parse(result[0].layoutdata)
+    let jsonObj
+    try {
+        jsonObj = JSON.parse(result[0].layoutdata)
+    } catch {
+        jsonObj = {}
+    }
+    return jsonObj
 }
 
 

@@ -15,6 +15,7 @@
             JSON.parse(newConfigStr)
         } catch (error: any) {
             alert ("Error: String is not a valid JSON-object: \n" + error.message + "\n\n Please fix the error and try again.")
+            return
         }
             
         await editLayoutconfig(newConfigStr)
@@ -26,9 +27,11 @@
 </script>
 
 <Cell>
-        <div class="font-semibold pb-1">Edit dashboard layout</div>
+    <div class="py-1">
+        <div class="font-semibold pb-4">Edit dashboard layout</div>
         <div class="flex space-x-4 justify-center-safe">
             <Input name="newConfig" bind:value={newConfigStr} placeholder={"[[\"componentName\":\"...\"]]"}/>
             <Button onclick={()=>updateConfig()}>Upload</Button>
         </div>
+    </div>
 </Cell>

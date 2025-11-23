@@ -84,12 +84,12 @@ onMount(()=>{
     {:else}
         <div class="h-52"></div>
     {/if}
-    <div class="flex flex-col bg-stone-900 z-10 pb-10 mt-3">
+    <div class="flex flex-col z-10 pb-10 mt-3">
         <h1 class="font-bold text-2xl pb-5">Hi-Horizon Racing Team Telemetry Dashboard</h1>
         <form class="flex flex-col space-y-3 w-1/2 self-center" on:submit={connect}>
-            <input bind:value={mqttUser} class="bg-white text-stone-900 rounded text-center" placeholder="username" name="username">
-            <input bind:value={mqttPassword} type="password" class="bg-white text-stone-900 rounded text-center" placeholder="password" name="password">
-            <button type="submit" class="bg-red-600 hover:bg-red-500 rounded">Login</button>
+            <input bind:value={mqttUser} class="bg-stone-200  text-stone-900 rounded text-center" placeholder="username" name="username">
+            <input bind:value={mqttPassword} type="password" class="bg-stone-200  text-stone-900 rounded text-center" placeholder="password" name="password">
+            <button type="submit" class="text-stone-50 bg-red-600 hover:bg-red-500 rounded">Login</button>
         </form>
     </div>
 </div>

@@ -34,10 +34,10 @@ async function downloadDataRange() {
 </svelte:head>
 
 <div class="flex flex-col items-start space-y-5 h-full">
-            <button on:click={()=>downloadDataRange()} class="bg-green-700 hover:bg-green-600 rounded p-2 flex justify-center">
-                <img src="/icons/download.svg" alt="download" class="self-start">
-                <p>Save to .CSV</p>
-            </button>
+    <button on:click={()=>downloadDataRange()} class="bg-green-700 hover:bg-green-600 rounded p-3 flex justify-center">
+        <img src="/icons/download.svg" alt="download" class="size-6">
+        <p class="pl-2">Save to CSV</p>
+    </button>
 </div>
 
 <a download={"data-dump"+ Date().toString()} href="./" bind:this={downloadLinkDOM} hidden>download</a>
