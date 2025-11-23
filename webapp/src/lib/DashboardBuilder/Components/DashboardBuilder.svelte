@@ -5,7 +5,7 @@
     import { layout } from "./layoutStore";
 
     // TODO: make this work, Selects which dashboard to render
-    export let layoutId = 1;
+    export const layoutId = 1;
     
     let defaultStatusColor:Writable<string> = writable("");
     
@@ -26,14 +26,14 @@
     <div>Loading layout...</div>
 {:then} 
     <!-- <svelte:boundary {failed}> -->
-        {#key $layout}
-            {#each $layout as row}
-            <div class="flex space-x-3">
-                {#each row as cell}
-                    <svelte:component this={parseComponentName(cell.componentName)} bind:props={cell.props}/>
-                {/each}
-            </div>
+    {#key $layout}
+        {#each $layout as row}
+        <div class="flex space-x-3">
+            {#each row as cell}
+                <svelte:component this={parseComponentName(cell.componentName)} bind:props={cell.props}/>
             {/each}
-        {/key}
+        </div>
+        {/each}
+    {/key}
     <!-- </svelte:boundary> -->
 {/await}

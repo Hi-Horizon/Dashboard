@@ -4,4 +4,4 @@
     export let placeholder = ""
 </script>
 
-<input name={name} type={"text"} placeholder={placeholder} bind:value={value} class="rounded-sm bg-stone-700 w-full" />
+<input name={name} type={"text"} placeholder={placeholder} bind:value={value} class="rounded-sm bg-stone-300 dark:bg-stone-700 w-full" />
