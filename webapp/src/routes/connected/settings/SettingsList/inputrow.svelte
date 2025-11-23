@@ -40,7 +40,7 @@
     }
 </script>
 
-<tr>
+<tr class="dark:odd:bg-stone-700">
     {#if openCreation}
         {#each keys as key}
             <td class="p-2"><Input name={key.toString()} bind:value={constructObject[key]}/></td>
@@ -51,7 +51,7 @@
         </td>
     {:else}
         <td colspan=6 class="py-2">
-            <button on:click={()=>revealAddForm()} class="text-center w-full hover:bg-stone-600 rounded flex justify-center py-1">
+            <button on:click={()=>revealAddForm()} class="text-center w-full hover:bg-stone-500 rounded flex justify-center py-1">
                 <img src="../icons/addCircle.svg" alt="Add">
             </button>
         </td>

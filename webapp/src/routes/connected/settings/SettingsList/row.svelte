@@ -30,7 +30,7 @@
     }
 </script>
 
-<tr class="odd:bg-stone-700" id={readStatistic.name + "ReadStatisticRow"}>
+<tr class="dark:odd:bg-stone-600" id={readStatistic.name + "ReadStatisticRow"}>
     {#each keys as key}
     {#if key !== "id"}
         <td class="p-2 {draftDeleteStyle}">{readStatistic[key]}</td>
