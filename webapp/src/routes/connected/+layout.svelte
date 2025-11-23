@@ -52,7 +52,7 @@
             {#if $showBackButton === true}
             <a href="../" on:click={()=>showBackButton.set(false)} class="hover:bg-stone-600 rounded text-center p-3 justify-self-start"><img src="/icons/arrowBack.svg" alt="Go Back"></a>
             {/if}
-            <h1 class="text-center font-bold text-2xl self-center justify-self-center grow">{currentPageName}</h1>
+            <h1 class="font-bold text-2xl self-center justify-self-center grow">{currentPageName}</h1>
         </div>
         <slot></slot>
     </div>

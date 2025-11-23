@@ -8,7 +8,7 @@ export let listName = props.name
 
 <!-- {#if listName !== undefined} -->
 <Cell>
-    {#if listName !== undefined}<div class="font-bold p-2">{listName}</div>{/if}
+    {#if listName !== undefined}<div class="font-bold pb-2">{listName}</div>{/if}
     <div class="rounded border-separate flex flex-col flex-1" >
         {#each props.items as element, index}
             <div class="odd:bg-stone-300 even:bg-stone-400  dark:odd:bg-stone-700 dark:even:bg-stone-600 last:rounded-b first:rounded-t flex flex-col justify-center">
