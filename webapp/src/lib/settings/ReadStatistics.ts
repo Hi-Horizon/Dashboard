@@ -22,8 +22,8 @@ export async function addReadStatisticsType(db:Database, newRow:ReadStatisticTyp
         preventSpecialCharacters(newRow.abbreviation)
         //adds info about statistic to ReadStatisticTypes table
         const insertRow = await db.execute(
-            'INSERT INTO DataDescription (name, tag, quantity, unit, display) VALUES ( $1 , $2 , $3 , $4 , $5);',
-            [newRow.name, newRow.abbreviation, newRow.quantity, newRow.unit, newRow.display]
+            'INSERT INTO DataDescription (name, tag, quantity, unit, display, CANid, CANmsgPosition, CANByteLength, Endian, CANScale, CANOffset) VALUES ( $1 , $2 , $3 , $4 , $5 , $6 , $7 , $8 , $9 , $10, $11);',
+            [newRow.name, newRow.abbreviation, newRow.quantity, newRow.unit, newRow.display, newRow.CANid, newRow.CANmsgPosition, newRow.CANByteLength, newRow.endianness, newRow.Scale, newRow.Offset]
         );
 }
 

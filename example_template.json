@@ -1,0 +1,395 @@
+[
+	[
+		{
+			"componentName": "list",
+			"props": {
+				"name": "ESC",
+				"items": [
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 57,
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 65,
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 59,
+							"valType": 0
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "BMS",
+				"items": [
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 15,
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 16,
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 17,
+							"valType": 0
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "GPS",
+				"items": [
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": 36,
+							"valType": 0
+						}
+					}
+				]
+			}
+		}
+	],
+	[
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell1",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 1
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 1
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell2",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 2
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 2
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell3",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 3
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 3
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell4",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 4
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 4
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell5",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 5
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 5
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell6",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 6
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 6
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell7",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 6
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 6
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell8",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 7
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 7
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell9",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 8
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 8
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell10",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 10
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 10
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell11",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 11
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 11
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell12",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 12
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 12
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell13",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 13
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 13
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell14",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 14
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 14
+						}
+					}
+				]
+			}
+		}
+
+	],
+	[
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Status",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "UnixTime",
+							"DateNowDiff": true
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 66
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 67
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": 37
+						}
+					}
+				]
+			}
+		}
+	]
+]

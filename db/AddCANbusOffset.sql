@@ -1,0 +1,1 @@
+ALTER TABLE DataDescription ADD COLUMN 'CANoffset'       NUMBER NOT NULL DEFAULT  0;
