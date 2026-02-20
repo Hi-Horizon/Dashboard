@@ -5,7 +5,7 @@
     export let rows: Writable<any[]>
     export let draftChanges: Writable<any[]>
 
-    const headers = ["Name", "Tag", "Unit", "Quantity", "Display", "CANid", "Position", "Byte Length", "Scale", "Endian"]
+    const headers = ["CANid", "CANposition", "Name", "Byte Length", "Endian", "Scale", "offset", "tag", "unit", "quantity"]
     let constructObject: any = {
         name: "",
         abbreviation: "",

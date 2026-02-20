@@ -31,7 +31,7 @@
         let current_canid = 0x0
         for (let row = 1; row < rawConfig.length; row++) {
            if (rawConfig[row][1] !== "") {
-                datadescription.CANid = rawConfig[row][1]
+                datadescription.CANid = parseInt(rawConfig[row][1], 16)
                 datadescription.CANmsgPosition = 0
            }
            datadescription.CANmsgPosition++

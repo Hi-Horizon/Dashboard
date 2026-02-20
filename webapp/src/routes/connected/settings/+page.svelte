@@ -16,7 +16,11 @@
     let DataDescriptions: Writable<any[]> = writable([])
 
     async function fetchDataDescriptionFromDb() {
-        DataDescriptions.set(await db.select('SELECT * FROM DataDescription'));
+        let rawData: any[] = await db.select('SELECT * FROM DataDescription')
+        rawData.forEach((row) => {
+            row.CANid = '0x' + row.CANid.toString(16);
+        });
+        DataDescriptions.set(rawData);
     }
 
     function askEmptyLocalChangeConfirmation() {

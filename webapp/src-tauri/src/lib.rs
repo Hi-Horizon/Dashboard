@@ -15,18 +15,6 @@ pub fn run() {
             description: "create_DashboardLayout_tables",
             sql: include_str!("../../../db/DashboardLayout.sql"),
             kind: MigrationKind::Up
-        },
-        Migration {
-            version: 3,
-            description: "add_CANbus_Columns",
-            sql: include_str!("../../../db/AddCANbusColumns.sql"),
-            kind: MigrationKind::Up
-        },
-        Migration {
-            version: 4,
-            description: "add_CANoffset_Column",
-            sql: include_str!("../../../db/AddCANbusOffset.sql"),
-            kind: MigrationKind::Up
         }
     ];
 
