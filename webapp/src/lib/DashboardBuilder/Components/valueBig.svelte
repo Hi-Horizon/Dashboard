@@ -5,9 +5,9 @@
     export let props: any
     let isDummy: any = props.isDummy
 
-    let id = props.valueId
-    const description = derived(datadescription, (xs: any) => xs.filter((x :any) => x.id == id)[0])
-    const latestValue = derived(latestData, (xs: any) => xs[id])
+    let name = props.valueId
+    const description = derived(datadescription, (xs: any) => xs.filter((x :any) => x.name == name)[0])
+    const latestValue = derived(latestData, (xs: any) => xs[$description.id])
 
     let isError = false
     if ($description === undefined)
