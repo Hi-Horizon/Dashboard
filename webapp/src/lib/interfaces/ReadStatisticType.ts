@@ -5,5 +5,11 @@ export interface ReadStatisticType {
     abbreviation:string;
     quantity:string;
     unit:string;
-    display:number
+    display:number;
+    CANid:number;
+    CANmsgPosition:number;
+    CANByteLength:number;
+    endianness:number;
+    Scale:number;
+    Offset:number;
 }

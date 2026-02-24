@@ -7,12 +7,14 @@ import { db } from "$lib/IOconnections/DBO/databaseObject";
 import DashboardBuilder from "$lib/DashboardBuilder/Components/DashboardBuilder.svelte";
     import { getlayoutConfig } from "$lib/DashboardBuilder/LayoutConfig";
     import { datadescription, latestData } from "../ConnectionStores";
-    import DashboardConfigUploader from "../../../lib/DashboardBuilder/Components/DashboardConfigUploader.svelte";
+    import DashboardConfigUploader from "$lib/DashboardBuilder/Components/DashboardConfigUploader.svelte";
+    import { parseCANmessages } from "$lib/MQTTparser";
 
 setupPageDefault();
 pageName.set("Dashboard");
 
 let tagToIdDict: any = {};
+let canSchema: any = {};
 
 let DashboardLayout:any;
 
@@ -25,6 +27,13 @@ async function fetchDataDescriptionFromDb() {
     $datadescription.map((x) => {
         tagToIdDict[x.tag] = x.id
     })
+
+    //fill the canschema values
+    canSchema = Object.groupBy($datadescription, ({ CANid }) => CANid)
+    // sort on CAN position
+    Object.keys(canSchema).forEach(key => {
+        canSchema[key] = canSchema[key].sort((a: any, b: any) => a.CANmsgPosition - b.CANmsgPosition)
+    });
 
     //fetch last seen values
     const lastMsgTime: any[] = await db.select('SELECT max(UnixTime) as UnixTime FROM Data')
@@ -44,14 +53,13 @@ async function fetchDataDescriptionFromDb() {
 onMount(() => {
     mqtt.listen(async (x: any) => {
         const payload = x.payload.event.message.payload
-        const dataObj = JSON.parse(payload.map((x: any) => String.fromCharCode(x)).join(''))
+        const dataObj = parseCANmessages(x, canSchema)
         
         const curDate = new Date()
-        
         Object.keys(dataObj).map(async (key: string) => {
-            await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), tagToIdDict[key], dataObj[key]]);
+            await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), key, dataObj[key]]);
             latestData.update((xs: any) => {
-                xs[tagToIdDict[key]] = dataObj[key]
+                xs[key] = dataObj[key]
             return xs
             })
         })

@@ -1,0 +1,395 @@
+[
+	[
+		{
+			"componentName": "list",
+			"props": {
+				"name": "ESC",
+				"items": [
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": "ESC Battery Voltage",
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": "Power output",
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": "rpm",
+							"valType": 0
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "BMS",
+				"items": [
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": "BMS Battery voltage",
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": "Battery current",
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": "Charge current",
+							"valType": 0
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "GPS",
+				"items": [
+					{
+						"componentName": "valueBig",
+						"props": {
+							"valueId": "Speed",
+							"valType": 0
+						}
+					}
+				]
+			}
+		}
+	],
+	[
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell1",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 1"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 1"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell2",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 2"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 2"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell3",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 3"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 3"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell4",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 4"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 4"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell5",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 5"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 5"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell6",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 6"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 6"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell7",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 7"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 7"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell8",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 8"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 8"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell9",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 9"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 9"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell10",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 10"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 10"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell11",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 11"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 11"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell12",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 12"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 12"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell13",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 13"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 13"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Cell14",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 14"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "cell 14"
+						}
+					}
+				]
+			}
+		}
+
+	],
+	[
+		{
+			"componentName": "list",
+			"props": {
+				"name": "Status",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "UnixTime",
+							"DateNowDiff": true
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "ESC warning"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "ESC failure"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "Fix"
+						}
+					}
+				]
+			}
+		}
+	]
+]

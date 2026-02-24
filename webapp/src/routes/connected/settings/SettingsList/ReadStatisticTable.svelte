@@ -5,13 +5,14 @@
     export let rows: Writable<any[]>
     export let draftChanges: Writable<any[]>
 
-    const headers = ["name", "tag", "unit", "quantity", "display"]
+    const headers = ["CANid", "CANposition", "Name", "Byte Length", "Endian", "Scale", "offset", "tag", "unit", "quantity"]
     let constructObject: any = {
         name: "",
         abbreviation: "",
         unit: "",
         quantity: "", 
-        display: ""
+        display: "",
+        canid: ""
     }
 </script>
 

@@ -4,7 +4,7 @@
     import { clock } from "../../../stores";
 
     export let props: any
-    let id = props.valueId
+    let name = props.valueId
     let statusColor= props.statusColor
     let DateNowDiff= props.DateNowDiff
 
@@ -16,13 +16,13 @@
     }
 
     const description = derived(datadescription, (xs: any) => {
-        if (id === "UnixTime") {
-            if (DateNowDiff) return ({name:"Last frame", unit: "s ago"})
-            else return ({name:"UnixTime", unit: "s"})
+        if (name === "UnixTime") {
+            if (DateNowDiff) return ({id: "UnixTime", name:"Last frame", unit: "s ago"})
+            else return ({id:"UnixTime", name:"UnixTime", unit: "s"})
         }
-        return xs.filter((x :any) => x.id == id)[0]
+        return xs.filter((x :any) => x.name == name)[0]
     })
-    const latestValue = derived([latestData, clock], ([$latestData, $clock]) => chooseValueFromData($latestData, $clock, id))
+    const latestValue = derived([latestData, clock, description], ([$latestData, $clock, $description]) => chooseValueFromData($latestData, $clock, $description.id))
 </script>
 
 <div class="flex flex-row items-end justify-between p-2 {$statusColor}">

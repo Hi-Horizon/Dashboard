@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "identifier": "com.Hi-horizon.telemetry-dashboard",
   "build": {
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run vite:dev",
+    "beforeBuildCommand": "npm run vite:build",
     "devUrl": "http://localhost:5173",
     "frontendDist": "../build"
   },

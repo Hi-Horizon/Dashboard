@@ -6,6 +6,7 @@
     import { parseOperationReadStatistic } from "$lib/settings/ReadStatistics";
     import { db } from "$lib/IOconnections/DBO/databaseObject";
     import { writable, type Writable } from "svelte/store";
+    import CanMessageInfoImporter from "$lib/settings/CanMessageInfoImporter.svelte";
 
     setupPageDefault();
     pageName.set("Settings");
@@ -15,7 +16,11 @@
     let DataDescriptions: Writable<any[]> = writable([])
 
     async function fetchDataDescriptionFromDb() {
-        DataDescriptions.set(await db.select('SELECT * FROM DataDescription'));
+        let rawData: any[] = await db.select('SELECT * FROM DataDescription')
+        rawData.forEach((row) => {
+            row.CANid = '0x' + row.CANid.toString(16);
+        });
+        DataDescriptions.set(rawData);
     }
 
     function askEmptyLocalChangeConfirmation() {
@@ -51,7 +56,8 @@
     <div class="grow space-y-3">
         {#await fetchDataDescriptionFromDb()}
             <p>loading...</p>
-        {:then}    
+        {:then}
+            <CanMessageInfoImporter />
             <ReadStatisticTable bind:draftChanges bind:rows={DataDescriptions}/>
         {/await}
         <!-- <FormulaParameters  bind:draftChanges rows={[]}/> -->
