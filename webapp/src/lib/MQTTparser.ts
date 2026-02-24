@@ -10,8 +10,7 @@ export function parseCANmessages(mqttMsg: any, canSchema: any) {
     // parse bytes to individual can messages
     canMessages.forEach(message => {
         // parse id
-        const id: string = "0x" + (message[0] + (message[1] << 8) + (message[2] << 16) + (message[3] << 24)).toString(16).toUpperCase()
-        console.log("parsed CAN id:" + id)
+        const id: number = message[0] + (message[1] << 8) + (message[2] << 16) + (message[3] << 24)
         
         // parse message
         let messageStructure: any[] = canSchema[id]
@@ -22,9 +21,7 @@ export function parseCANmessages(mqttMsg: any, canSchema: any) {
                 if (valueInfo.Endian)       value += message[startPos + i] << 8*((valueInfo.CANbyteLength - 1) - i)
                 else                        value += message[startPos + i] << (8*i)
             }
-            console.log(value)
             resultsdict[valueInfo.id] = (value / valueInfo.CANscale) + valueInfo.CANoffset
-            console.log(resultsdict[valueInfo.id])
             startPos += valueInfo.CANbyteLength
         })
     });

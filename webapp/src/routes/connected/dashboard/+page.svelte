@@ -53,18 +53,9 @@ async function fetchDataDescriptionFromDb() {
 onMount(() => {
     mqtt.listen(async (x: any) => {
         const payload = x.payload.event.message.payload
-        // const dataObj = JSON.parse(payload.map((x: any) => String.fromCharCode(x)).join(''))
         const dataObj = parseCANmessages(x, canSchema)
         
         const curDate = new Date()
-        
-        // Object.keys(dataObj).map(async (key: string) => {
-        //     await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), tagToIdDict[key], dataObj[key]]);
-        //     latestData.update((xs: any) => {
-        //         xs[tagToIdDict[key]] = dataObj[key]
-        //     return xs
-        //     })
-        // })
         Object.keys(dataObj).map(async (key: string) => {
             await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), key, dataObj[key]]);
             latestData.update((xs: any) => {

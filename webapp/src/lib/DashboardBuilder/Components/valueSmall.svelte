@@ -22,7 +22,6 @@
         }
         return xs.filter((x :any) => x.name == name)[0]
     })
-    console.log($description)
     const latestValue = derived([latestData, clock, description], ([$latestData, $clock, $description]) => chooseValueFromData($latestData, $clock, $description.id))
 </script>
 
