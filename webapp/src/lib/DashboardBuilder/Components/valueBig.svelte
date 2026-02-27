@@ -1,13 +1,14 @@
 <script lang="ts">
     import { derived } from "svelte/store";
-    import { datadescription, latestData } from "../../../routes/connected/ConnectionStores";
+    import { datadescription, liveData } from "../../../routes/connected/ConnectionStores";
 
     export let props: any
+
     let isDummy: any = props.isDummy
 
     let name = props.valueId
     const description = derived(datadescription, (xs: any) => xs.filter((x :any) => x.name == name)[0])
-    const latestValue = derived(latestData, (xs: any) => xs[$description.id])
+    const latestValue = derived(liveData, (xs: any) => xs[$description.id])
 
     let isError = false
     if ($description === undefined)

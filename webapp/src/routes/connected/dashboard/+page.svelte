@@ -6,7 +6,7 @@ import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
 import { db } from "$lib/IOconnections/DBO/databaseObject";
 import DashboardBuilder from "$lib/DashboardBuilder/Components/DashboardBuilder.svelte";
     import { getlayoutConfig } from "$lib/DashboardBuilder/LayoutConfig";
-    import { datadescription, latestData } from "../ConnectionStores";
+    import { datadescription, liveData } from "../ConnectionStores";
     import DashboardConfigUploader from "$lib/DashboardBuilder/Components/DashboardConfigUploader.svelte";
     import { parseCANmessages } from "$lib/MQTTparser";
 
@@ -39,12 +39,12 @@ async function fetchDataDescriptionFromDb() {
     const lastMsgTime: any[] = await db.select('SELECT max(UnixTime) as UnixTime FROM Data')
     const maxTResult: any[] = await db.select('SELECT descriptionId as id, Value FROM Data WHERE Unixtime = (SELECT max(UnixTime) FROM Data)')
     maxTResult.forEach((result) => {
-        latestData.update((xs: any) => {
+        liveData.update((xs: any) => {
             xs[result.id] = result.Value
             return xs
         })
     })
-    latestData.update((xs: any) => {
+    liveData.update((xs: any) => {
         xs["UnixTime"] = lastMsgTime[0].UnixTime
         return xs
     })
@@ -58,12 +58,12 @@ onMount(() => {
         const curDate = new Date()
         Object.keys(dataObj).map(async (key: string) => {
             await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), key, dataObj[key]]);
-            latestData.update((xs: any) => {
+            liveData.update((xs: any) => {
                 xs[key] = dataObj[key]
             return xs
             })
         })
-        latestData.update((xs: any) => {
+        liveData.update((xs: any) => {
             xs["UnixTime"] = curDate.getTime()
             return xs
         })

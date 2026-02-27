@@ -78,289 +78,6 @@
 		{
 			"componentName": "list",
 			"props": {
-				"name": "Cell1",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 1"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 1"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell2",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 2"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 2"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell3",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 3"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 3"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell4",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 4"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 4"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell5",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 5"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 5"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell6",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 6"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 6"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell7",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 7"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 7"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell8",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 8"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 8"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell9",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 9"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 9"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell10",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 10"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 10"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell11",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 11"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 11"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell12",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 12"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 12"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell13",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 13"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 13"
-						}
-					}
-				]
-			}
-		},
-		{
-			"componentName": "list",
-			"props": {
-				"name": "Cell14",
-				"items": [
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 14"
-						}
-					},
-					{
-						"componentName": "valueSmall",
-						"props": {
-							"valueId": "cell 14"
-						}
-					}
-				]
-			}
-		}
-
-	],
-	[
-		{
-			"componentName": "list",
-			"props": {
 				"name": "Status",
 				"items": [
 					{
@@ -388,6 +105,45 @@
 							"valueId": "Fix"
 						}
 					}
+				]
+			}
+		}
+	],
+	[
+		{
+			"componentName": "batteryCellGraph",
+			"props": {
+				"cell_voltage_vars": [
+					"cell 1",
+					"cell 2",
+					"cell 3",
+					"cell 4",
+					"cell 5",
+					"cell 6",
+					"cell 7",
+					"cell 8",
+					"cell 9",
+					"cell 10",
+					"cell 11",
+					"cell 12",
+					"cell 13",
+					"cell 14"
+				],
+				"cell_isbalancing_vars": [
+					"rpm",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix",
+					"Fix"
 				]
 			}
 		}
