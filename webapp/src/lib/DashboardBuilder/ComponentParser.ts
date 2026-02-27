@@ -4,7 +4,6 @@ import ValueBig from "./Components/valueBig.svelte";
 import ValueSmall from "./Components/valueSmall.svelte";
 
 export function parseComponentName(componentName: string) {
-    console.log(componentName)
     switch (componentName) {
         case "list":
             return List

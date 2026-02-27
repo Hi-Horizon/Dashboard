@@ -118,9 +118,9 @@ async function updateGraph(cellVoltageArr:number[], isbalancingList:boolean[]) {
     chart.update();
 }
 
-// $: {
-//     if (chart !== undefined) updateGraph($voltages, $isBalancingList);
-// }
+$: {
+    if (chart !== undefined) updateGraph($cellVoltageArr, $isBalancingArr);
+}
 </script>
 
 <div class="grow grid grid-cols-1 rounded-xl h-96 bg-stone-800 p-4" style="grid-row-start: 1; grid-column-start: 1;">
