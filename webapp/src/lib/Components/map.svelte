@@ -1,10 +1,21 @@
 <script lang="ts">
-    import { onMount, onDestroy, tick } from 'svelte';
     import Cell from './cell.svelte';
+    import { onMount, onDestroy, tick } from 'svelte';
+    import { datadescription, liveData } from "../../routes/connected/ConnectionStores";
+    import { derived } from 'svelte/store';
 
-    export let elements: any[]
-    let lng = elements[0]
-    let lat = elements[1]
+    export let props: any
+    let latRef = props.lat
+    let lngRef = props.lng
+
+    const latValue = derived([liveData, datadescription], ([$liveData, $datadescription]) => {
+        const latDescription = $datadescription.filter((x :any) => x.name == latRef)[0]  
+        return $liveData[latDescription.id]
+    })
+    const lngValue = derived([liveData, datadescription], ([$liveData, $datadescription]) => {
+        const lngDescription = $datadescription.filter((x :any) => x.name == lngRef)[0]  
+        return $liveData[lngDescription.id]
+    })
 
     let mapElement:any;
     let map:any;
@@ -16,16 +27,16 @@
         await tick();
         leaflet = await import('leaflet');
 
-        map = leaflet.map(mapElement).setView([$lng, $lat], 13);
+        map = leaflet.map(mapElement).setView([$lngValue, $latValue], 13);
         leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        boatMarker = leaflet.marker([$lng, $lat]).addTo(map)
+        boatMarker = leaflet.marker([$lngValue, $latValue]).addTo(map)
             .bindPopup('Hi-horizon racing team')
-            .openPopup();
+            // .openPopup();
 
-        setInterval(() => boatMarker.setLatLng(leaflet.latLng($lng, $lat)), 1000);
+        setInterval(() => boatMarker.setLatLng(leaflet.latLng($lngValue, $latValue)), 1000);
     });
 
     onDestroy(async () => {
@@ -49,7 +60,7 @@
 
 <div class="flex-1 w-full">
     <Cell>
-        <h2>Position</h2>
+        <div class="font-bold pb-2">Position</div>
         <div bind:this={mapElement} class="flex-1 h-96 w-96"></div>
     </Cell>
 </div>

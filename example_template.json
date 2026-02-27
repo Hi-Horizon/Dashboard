@@ -72,6 +72,13 @@
 					}
 				]
 			}
+		},
+		{
+			"componentName": "map",
+			"props": {
+				"lat":"Latitude",
+				"lng":"Longitude"
+			}
 		}
 	],
 	[
