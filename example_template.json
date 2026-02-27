@@ -88,10 +88,10 @@
 				"name": "Status",
 				"items": [
 					{
-						"componentName": "valueSmall",
+						"componentName": "timeSince",
 						"props": {
 							"valueId": "UnixTime",
-							"DateNowDiff": true
+							"statusColor": "red-600"
 						}
 					},
 					{

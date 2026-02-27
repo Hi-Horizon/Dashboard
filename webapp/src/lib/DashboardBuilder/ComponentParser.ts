@@ -1,8 +1,9 @@
-import BatteryCellGraph from "../Components/batteryCellGraph.svelte";
-import Map from "../Components/map.svelte";
+import BatteryCellGraph from "./Components/batteryCellGraph.svelte";
+import Map from "./Components/map.svelte";
 import List from "./Components/list.svelte"
 import ValueBig from "./Components/valueBig.svelte";
 import ValueSmall from "./Components/valueSmall.svelte";
+import TimeSince from "./Components/timeSince.svelte";
 
 export function parseComponentName(componentName: string) {
     switch (componentName) {
@@ -15,7 +16,9 @@ export function parseComponentName(componentName: string) {
         case "batteryCellGraph":
             return BatteryCellGraph
         case "map":
-            return Map   
+            return Map
+        case "timeSince":
+            return TimeSince  
         default:
             return ValueBig
     }
