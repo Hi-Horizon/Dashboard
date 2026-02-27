@@ -1,7 +1,7 @@
 <script lang="ts">
-    import Cell from './cell.svelte';
+    import Cell from '../../Components/cell.svelte';
     import { onMount, onDestroy, tick } from 'svelte';
-    import { datadescription, liveData } from "../../routes/connected/ConnectionStores";
+    import { datadescription, liveData } from "../../../routes/connected/ConnectionStores";
     import { derived } from 'svelte/store';
 
     export let props: any
