@@ -1,7 +1,7 @@
 <script lang="ts">
 import { onMount } from "svelte";
 import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
-import { once, listen } from '@tauri-apps/api/event';
+import { once } from '@tauri-apps/api/event';
 import { setupPageDefault } from "$lib/setupPageDefault.js";
 import { pageName } from "../../stores.js";
 import Cell from "$lib/Components/cell.svelte";

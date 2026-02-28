@@ -39,6 +39,7 @@
     <ul class="sticky top-0 shrink-0 flex flex-col p-3 h-screen bg-stone-200 dark:bg-stone-800 text-center space-y-3">
         <li class=""><a href="./dashboard"><img src="/icons/dashboard.svg" alt="Dashboard" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
         <li class="flex-1"><a href="./analyzation"><img src="/icons/graph.svg" alt="analyzation" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
+        <li class="justify-self-end"><a href="./navigation-generator"><img src="/icons/route_generator.svg" alt="analyzation" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
         <li class="justify-self-end relative"><a href="./connection">
             <img src="/icons/connection.svg" alt="Logout" class="p-2 hover:bg-stone-700 not-dark:invert rounded">
             <span class="{$connectionColor} absolute top-0 end-0 size-3 rounded-full transform-translate-y-1/2 translate-x-1/2"></span>
