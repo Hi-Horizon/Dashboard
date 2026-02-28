@@ -1,7 +1,7 @@
 <script lang="ts">
     import Cell from '../../Components/cell.svelte';
     import { onMount, onDestroy, tick } from 'svelte';
-    import { datadescription, liveData } from "../../../routes/connected/ConnectionStores";
+    import { datadescription, liveData } from "../../../routes/ConnectionStores";
     import { derived } from 'svelte/store';
 
     export let props: any
@@ -27,16 +27,19 @@
         await tick();
         leaflet = await import('leaflet');
 
-        map = leaflet.map(mapElement).setView([$lngValue, $latValue], 13);
+        map = leaflet.map(mapElement).setView([($lngValue ?? 0), ($latValue ?? 0)], 13);
         leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        boatMarker = leaflet.marker([$lngValue, $latValue]).addTo(map)
+        boatMarker = leaflet.marker([($lngValue ?? 0), ($latValue ?? 0)]).addTo(map)
             .bindPopup('Hi-horizon racing team')
             // .openPopup();
 
-        setInterval(() => boatMarker.setLatLng(leaflet.latLng($lngValue, $latValue)), 1000);
+        setInterval(() => {
+            if ($lngValue === undefined || $latValue === undefined) return
+            boatMarker.setLatLng(leaflet.latLng($lngValue, $latValue))
+        }, 1000);
     });
 
     onDestroy(async () => {

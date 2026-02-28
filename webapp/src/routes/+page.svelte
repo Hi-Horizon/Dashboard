@@ -5,76 +5,77 @@
   import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
   import { listen } from '@tauri-apps/api/event';
   import { once } from '@tauri-apps/api/event';
-    import { redirect } from "@sveltejs/kit";
-    import { goto } from "$app/navigation";
+  import { goto } from "$app/navigation";
 
-  export let data;
-  let mqttUrl:any = data.MQTTBROKERURL;
-  let mqttBrokerPort:any = data.MQTTBROKERPORT;
-  let mqttClientId:any = data.MQTTCLIENTID;
+//   export let data;
+//   let mqttUrl:any = data.MQTTBROKERURL;
+//   let mqttBrokerPort:any = data.MQTTBROKERPORT;
+//   let mqttClientId:any = data.MQTTCLIENTID;
 
-  let mqttUser: string = "admin"
-  let mqttPassword: string = ""
-  let topic = "data";
-  let message = "hello";
-  let connectId = "1"
+//   let mqttUser: string = "admin"
+//   let mqttPassword: string = ""
+//   let topic = "data";
+//   let message = "hello";
+//   let connectId = "1"
 
-  async function connect() {
-    const unlisten = await once('plugin://mqtt', (event: any) => {
-      if (event.payload.event.connect === undefined) {
-        alert("connection failed, check credentials and try again")
-      } else {
-        goto("./connected/dashboard")
-      }
-    }); 
-    try {
-      await mqtt.connect(connectId, "mqtts://"+ mqttUser +":"+ mqttPassword +"@"+ mqttUrl +":8883?client_id=test", { skipVerification: true })
-      await mqtt.subscribe(connectId, topic, 0);    
-    } catch (e) {
-      console.log({ e })
-    }
+//   async function connect() {
+//     const unlisten = await once('plugin://mqtt', (event: any) => {
+//       if (event.payload.event.connect === undefined) {
+//         alert("connection failed, check credentials and try again")
+//       } else {
+//         goto("./connected/dashboard")
+//       }
+//     }); 
+//     try {
+//       await mqtt.connect(connectId, "mqtts://"+ mqttUser +":"+ mqttPassword +"@"+ mqttUrl +":8883?client_id=test", { skipVerification: true })
+//       await mqtt.subscribe(connectId, topic, 0);    
+//     } catch (e) {
+//       console.log({ e })
+//     }
     
-  }
+//   }
 
-  async function disconnect() {
-    try {
-      await mqtt.disconnect(connectId);
-    } catch (e) {
+//   async function disconnect() {
+//     try {
+//       await mqtt.disconnect(connectId);
+//     } catch (e) {
       
-    }
-  }
+//     }
+//   }
 
-  async function publish() {
-    try {
-      await mqtt.publish(connectId, topic, 0, false, message);
-    } catch (e) {
+//   async function publish() {
+//     try {
+//       await mqtt.publish(connectId, topic, 0, false, message);
+//     } catch (e) {
       
-    }
-  }
+//     }
+//   }
 
-  async function subscribe() {
-    try {
-      await mqtt.subscribe(connectId, topic, 0);
-    } catch (e) {
+//   async function subscribe() {
+//     try {
+//       await mqtt.subscribe(connectId, topic, 0);
+//     } catch (e) {
       
-    }
-  }
+//     }
+//   }
 
-  async function unsubscribe() {
-    try {
-      await mqtt.unsubscribe(connectId, topic);
-    } catch (e) {
+//   async function unsubscribe() {
+//     try {
+//       await mqtt.unsubscribe(connectId, topic);
+//     } catch (e) {
       
-    }
-  }
+//     }
+//   }
 
-let showImage: boolean = false;
-onMount(()=>{
-    showImage = true;
-});
+// let showImage: boolean = false;
+// onMount(()=>{
+//     showImage = true;
+// });
+
+goto("./dashboard")
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
 	<title>Login</title>
 </svelte:head>
 
@@ -92,4 +93,4 @@ onMount(()=>{
             <button type="submit" class="text-stone-50 bg-red-600 hover:bg-red-500 rounded">Login</button>
         </form>
     </div>
-</div>
+</div> -->

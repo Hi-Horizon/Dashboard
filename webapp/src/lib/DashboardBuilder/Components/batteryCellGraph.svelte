@@ -3,7 +3,7 @@ import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { onMount } from 'svelte';
 import { derived, get, type Readable, type Writable, writable } from 'svelte/store';
-import { datadescription, liveData } from '../../../routes/connected/ConnectionStores';
+import { datadescription, liveData } from '../../../routes/ConnectionStores';
 
 export let props
 const cell_voltage_vars: string[] = props.cell_voltage_vars
@@ -69,7 +69,7 @@ let batteryCellGraphConfig:any = {
                     weight: 'bold'
                 },
                 formatter: function(value:number) {
-                    return value.toFixed(3);
+                    return (value ?? 0).toFixed(3);
                 }
             },
             legend: {

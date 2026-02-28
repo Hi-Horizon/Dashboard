@@ -1,5 +1,5 @@
 <script lang="ts">
-import { pageName } from "../../../stores";
+import { pageName } from "../../stores";
 import { setupPageDefault } from '$lib/setupPageDefault';
 import { getDataTableWithRange } from "$lib/graphs/getDataPoints";
 

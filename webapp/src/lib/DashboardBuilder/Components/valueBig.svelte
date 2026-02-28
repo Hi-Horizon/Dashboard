@@ -1,6 +1,6 @@
 <script lang="ts">
     import { derived } from "svelte/store";
-    import { datadescription, liveData } from "../../../routes/connected/ConnectionStores";
+    import { datadescription, liveData } from "../../../routes/ConnectionStores";
 
     export let props: any
 
