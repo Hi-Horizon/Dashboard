@@ -1,6 +1,6 @@
 <script lang="ts">
     import { derived } from "svelte/store";
-    import { datadescription, latestData } from "../../../routes/connected/ConnectionStores";
+    import { datadescription, liveData } from "../../../routes/ConnectionStores";
     import { clock } from "../../../stores";
 
     export let props: any
@@ -22,7 +22,7 @@
         }
         return xs.filter((x :any) => x.name == name)[0]
     })
-    const latestValue = derived([latestData, clock, description], ([$latestData, $clock, $description]) => chooseValueFromData($latestData, $clock, $description.id))
+    const latestValue = derived([liveData, clock, description], ([$latestData, $clock, $description]) => chooseValueFromData($latestData, $clock, $description.id))
 </script>
 
 <div class="flex flex-row items-end justify-between p-2 {$statusColor}">
