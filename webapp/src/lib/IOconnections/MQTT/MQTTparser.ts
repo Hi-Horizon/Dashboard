@@ -1,3 +1,14 @@
+import { createModel } from "js-crc"
+
+const crc16 = createModel({
+  width: 16,
+  poly: 0xBAAD,
+  init: 0x0,
+  refin: false,
+  refout: false,
+  xorout: 0x0
+});
+
 export function parseCANmessages(mqttMsg: any, canSchema: any) {
     const payload: number[] = mqttMsg.payload.event.message.payload
     const canMessages: number[][] = []
@@ -9,6 +20,12 @@ export function parseCANmessages(mqttMsg: any, canSchema: any) {
 
     // parse bytes to individual can messages
     canMessages.forEach(message => {
+        // calculate crc
+        if (Number(crc16(message)) != 0) {
+            console.warn("crc checksum failed!")
+            return //stop parsing since message is invalid
+        }
+
         // parse id
         const id: number = message[0] + (message[1] << 8) + (message[2] << 16) + (message[3] << 24)
         
