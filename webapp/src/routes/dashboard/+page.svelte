@@ -8,7 +8,7 @@ import DashboardBuilder from "$lib/DashboardBuilder/Components/DashboardBuilder.
 import { getlayoutConfig } from "$lib/DashboardBuilder/LayoutConfig";
 import { datadescription, liveData } from "../ConnectionStores";
 import DashboardConfigUploader from "$lib/DashboardBuilder/Components/DashboardConfigUploader.svelte";
-import { parseCANmessages } from "$lib/MQTTparser";
+import { parseCANmessages } from "$lib/IOconnections/MQTT/MQTTparser";
 
 setupPageDefault();
 pageName.set("Dashboard");
