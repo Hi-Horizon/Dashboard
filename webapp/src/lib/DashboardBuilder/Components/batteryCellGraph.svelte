@@ -7,7 +7,7 @@ import { datadescription, liveData } from '../../../routes/ConnectionStores';
 
 export let props
 const cell_voltage_vars: string[] = props.cell_voltage_vars
-const cell_isbalancing_vars: string[] = props.cell_isbalancing_vars
+const cell_isbalancing_var: string = props.cell_isbalancing_var
 
 const cellVoltageArr: Readable<number[]> = derived([liveData, datadescription], ([$liveData, $datadescription]) => {
     const descriptions = cell_voltage_vars.map(varName => 
@@ -17,10 +17,14 @@ const cellVoltageArr: Readable<number[]> = derived([liveData, datadescription], 
 })
 
 const isBalancingArr: Readable<boolean[]> = derived([liveData, datadescription], ([$liveData, $datadescription]) => {
-    const descriptions = cell_isbalancing_vars.map(varName => 
-        $datadescription.filter((x :any) => x.name == varName)[0]
-    )
-    return descriptions.map(description => $liveData[description.id])
+    const description = $datadescription.filter((x :any) => x.name == cell_isbalancing_var)[0]
+    let result: boolean[] = []
+    
+    // get every bit value of the integer by shifting to left and masking with lowest order bit
+    for (let i = 0; i < 14; i++) {
+        result.push(Boolean(($liveData[description.id] >> i) & 0b1))
+    }
+    return result
 })
 
 let cellCount = cell_voltage_vars.length

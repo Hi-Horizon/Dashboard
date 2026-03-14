@@ -136,22 +136,7 @@
 					"cell 13",
 					"cell 14"
 				],
-				"cell_isbalancing_vars": [
-					"rpm",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix"
-				]
+				"cell_isbalancing_var": "isBalancing"
 			}
 		}
 	]
