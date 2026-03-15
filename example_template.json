@@ -74,7 +74,7 @@
 			}
 		},
 		{
-			"componentName": "map",
+			"componentName": "routeMap",
 			"props": {
 				"lat":"Latitude",
 				"lng":"Longitude"
