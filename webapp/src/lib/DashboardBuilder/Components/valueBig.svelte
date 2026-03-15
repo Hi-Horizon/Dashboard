@@ -28,7 +28,7 @@
     {:else if !isDummy}
         <p class="font-bold">{$description.name}</p>
         <div class="flex flex-row items-end space-x-1">
-            <p class="text-4xl">{($latestValue ?? 0).toFixed(2)}</p>
+            <p class="text-4xl">{($latestValue)?.toFixed(2) ?? "-"}</p>
             <p class="dark:text-stone-400 grow">{$description.unit}</p>
         </div>
     {:else}

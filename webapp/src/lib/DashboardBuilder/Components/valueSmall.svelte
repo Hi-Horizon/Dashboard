@@ -28,7 +28,7 @@
 <div class="flex flex-row items-end justify-between p-2 {$statusColor}">
     <p class="pr-1">{$description.name}:</p>
     <div class="flex">
-        <p class="">{$latestValue}</p>
+        <p class="">{$latestValue ?? "-"}</p>
         <p class="grow">{$description.unit}</p>
     </div>
 </div>
