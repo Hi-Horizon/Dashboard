@@ -154,9 +154,16 @@
 		totalDistance = total;
 	}
 
+	let fileName = ""
 	function exportCSV() {
-		if (waypoints.length === 0) return;
-
+		if (fileName === "") {
+			alert("please select a name for the route")
+			return 
+		}
+		if (waypoints.length === 0) {
+			alert("please select at least 1 waypoint")
+			return;
+		}
 		const ref = waypoints[0];
 		let csv = "lat,lng,x_m,y_m\n";
 
@@ -170,7 +177,7 @@
 
 		const a = document.createElement('a');
 		a.href = url;
-		a.download = "route.csv";
+		a.download = fileName + ".csv";
 		a.click();
 
 		URL.revokeObjectURL(url);
@@ -213,8 +220,10 @@
 			<div class="pt-3 border-t border-white">
 				Total Distance: {totalDistance.toFixed(0)} m
 			</div>
+			<label for=routeFileName class="pt-5 font-bold">Route name:</label>
+			<input id="fileNameInput" bind:value={fileName} class="bg-stone-200 text-stone-900 rounded px-2 ml-2 placeholder:italic" placeholder="mijn_route" name="routeFileName">
 			<button on:click={exportCSV} class="bg-green-700 hover:bg-green-600 rounded px-3 py-1 flex justify-center">
-				Export CSV
+				Export to CSV
 			</button>
 		</div>
     </div>
