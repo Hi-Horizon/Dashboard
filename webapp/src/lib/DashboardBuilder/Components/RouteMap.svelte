@@ -4,6 +4,7 @@
     import { datadescription, liveData } from "../../../routes/ConnectionStores";
     import { derived, writable, type Readable, type Writable } from 'svelte/store';
     import Cell from '../../Components/cell.svelte';
+    import { boatIconOptions } from '../../leaflet-maps/icons';
 
     // --- Types ---
     interface GCSCoordinates {
@@ -63,6 +64,7 @@
         //initialize leaflet, create map
         L = await import('leaflet');
         await import('leaflet/dist/leaflet.css');
+        const boatIcon = L.icon(boatIconOptions)
 
         map = L.map(mapElement).setView([($boatPos.gcs.lat), ($boatPos.gcs.lng)], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -70,7 +72,7 @@
         }).addTo(map);
 
         // set boat marker on current coördinates
-        boatMarker = L.marker([($boatPos.gcs.lat), ($boatPos.gcs.lng)]).addTo(map)
+        boatMarker = L.marker([($boatPos.gcs.lat), ($boatPos.gcs.lng)], {icon: boatIcon}).addTo(map)
             .bindPopup('Hi-horizon racing team')
             // .openPopup();
     });

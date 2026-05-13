@@ -4,6 +4,7 @@
     import Button from '$lib/Components/button.svelte';
     import { setupPageDefault } from '$lib/setupPageDefault';
     import { pageName } from '../../stores';
+	import { markerIconOptions } from '../../lib/leaflet-maps/icons';
 
     setupPageDefault();
     pageName.set("Navigation generator");
@@ -23,9 +24,11 @@
 	let totalDistance = 0;
 
 	let mapContainer: HTMLDivElement;
+	let waypointIcon: any
 
 	onMount(async () => {
 		L = await import('leaflet');
+		waypointIcon = L.icon(markerIconOptions)
 
 		map = L.map(mapContainer).setView([53.0, 5.8], 13);
 
@@ -50,7 +53,7 @@
 
 		waypoints = [...waypoints, wp];
 
-		const marker = L.marker(latlng, { draggable: true })
+		const marker = L.marker(latlng, { draggable: true, icon: waypointIcon} )
 			.addTo(map)
 			.on('drag', (e: any) => {
 				updateWaypoint(wp.id, e.target.getLatLng());
