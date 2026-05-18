@@ -8,11 +8,8 @@
     let valueName = props.valueName
 
     let nameVoltage             = props.voltageId
-    console.log(nameVoltage)
     const descriptionVoltage    = derived(datadescription, (xs: any) => xs.filter((x :any) => x.name == nameVoltage)[0])
-    console.log($descriptionVoltage)
     const latestVoltage         = derived(liveData, (xs: any) => xs[$descriptionVoltage.id])
-    console.log($latestVoltage)
 
     let nameCurrent             = props.currentId
     const descriptionCurrent    = derived(datadescription, (xs: any) => xs.filter((x :any) => x.name == nameCurrent)[0])
