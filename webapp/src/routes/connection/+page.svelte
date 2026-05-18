@@ -5,7 +5,10 @@ import { once } from '@tauri-apps/api/event';
 import { setupPageDefault } from "$lib/setupPageDefault.js";
 import { pageName } from "../../stores.js";
 import Cell from "$lib/Components/cell.svelte";
-    import { MQTTconnected } from "../ConnectionStores.js";
+import { MQTTconnected } from "../ConnectionStores.js";
+
+import { invoke } from '@tauri-apps/api/core';
+import { listen } from "@tauri-apps/api/event";
     
 setupPageDefault();
 pageName.set("Connection");
@@ -48,6 +51,39 @@ let connectId = "1"
     }
   }
 
+  async function connectToPeakCanDevice() {
+      try {
+          // Set up listeners before connecting
+          const unlisten = await listen<{ id: number; data: number[] }>("can-frame", (event) => {
+            console.log("CAN frame:", event.payload);
+          });
+
+          const unlistenErr = await listen<string>("can-error", (event) => {
+            console.error("CAN error:", event.payload);
+          });
+          
+          const response = await invoke('connect_can');
+          console.log(response);
+      } catch (error) {
+          console.error("Failed to connect:", error);
+      }
+  }
+
+  async function disconnectToPeakCanDevice() {
+      try {
+          const response = await invoke('disconnect_can');
+          console.log(response);
+      } catch (error) {
+          console.error("Failed to disconnect:", error);
+      }
+  }
+
+  listen('CAN-message-received', (event : any) => {
+    console.log(
+      event
+    );
+  });
+
 let showImage: boolean = false;
 onMount(()=>{
     showImage = true;
@@ -58,7 +94,7 @@ onMount(()=>{
 	<title>Connections</title>
 </svelte:head>
 
-<div class="flex flex-col items-center justify-center">
+<div class="flex flex-col items-center justify-center space-y-5">
   <Cell>
     <form class="flex flex-col space-y-1 w-xl" onsubmit={connect}>
       <label for=mqttUser>MQTT username</label>
@@ -70,5 +106,9 @@ onMount(()=>{
         <button type="submit" class="mt-7 px-5 text-stone-50 bg-green-600 hover:bg-green-500 rounded">Connect</button>
       </div>
     </form>
+  </Cell>
+  <Cell>
+    <button onclick={disconnectToPeakCanDevice} class="mt-7 px-3 text-stone-50 bg-red-400 hover:bg-red-300 rounded">Disconnect to Peak-CAN device</button>
+    <button onclick={connectToPeakCanDevice} class="mt-7 px-5 text-stone-50 bg-green-600 hover:bg-green-500 rounded">Connect to Peak-CAN device</button>
   </Cell>
 </div>

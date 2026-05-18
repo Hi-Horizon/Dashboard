@@ -26,4 +26,5 @@ tauri-plugin-log = "2.0.0-rc"
 tauri-plugin-shell = "2.3.1"
 tauri-plugin-mqtt = "0.1.1"
 tauri-plugin-sql = { version = "2", features = ["sqlite"] }
+peak-can = "0.2.0"
 
