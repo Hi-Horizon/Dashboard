@@ -51,38 +51,34 @@ let connectId = "1"
     }
   }
 
+  
+  // Set up listeners before connecting
+  let unlistenErr: (() => void) | null = null;
+          
   async function connectToPeakCanDevice() {
       try {
-          // Set up listeners before connecting
-          const unlisten = await listen<{ id: number; data: number[] }>("can-frame", (event) => {
-            console.log("CAN frame:", event.payload);
-          });
+        unlistenErr = await listen<string>("can-error", (event) => {
+          console.error("CAN error:", event.payload);
+        });
 
-          const unlistenErr = await listen<string>("can-error", (event) => {
-            console.error("CAN error:", event.payload);
-          });
-          
-          const response = await invoke('connect_can');
-          console.log(response);
+        const response = await invoke('connect_can');
+        console.log(response);
       } catch (error) {
-          console.error("Failed to connect:", error);
+        console.error("Failed to connect:", error);
       }
   }
 
   async function disconnectToPeakCanDevice() {
       try {
-          const response = await invoke('disconnect_can');
-          console.log(response);
+        const response = await invoke('disconnect_can');
+        console.log(response);
       } catch (error) {
-          console.error("Failed to disconnect:", error);
+        console.error("Failed to disconnect:", error);
+      }  finally {
+        unlistenErr?.();
+        unlistenErr = null;
       }
   }
-
-  listen('CAN-message-received', (event : any) => {
-    console.log(
-      event
-    );
-  });
 
 let showImage: boolean = false;
 onMount(()=>{

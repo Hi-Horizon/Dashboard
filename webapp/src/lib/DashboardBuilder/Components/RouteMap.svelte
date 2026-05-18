@@ -40,11 +40,22 @@
     }
 
     const boatPos: Readable<Coordinates> = derived([liveData, datadescription, refCoordinate], ([$liveData, $datadescription, $refCoordinate]) => {
-        const latDescription = $datadescription.filter((x :any) => x.name == latRef)[0] 
-        const lat = (degreesMinutesToDecimalDegrees($liveData[latDescription.id]) || null) ?? espelLat
-        const lngDescription = $datadescription.filter((x :any) => x.name == lngRef)[0]
-        const lng = (degreesMinutesToDecimalDegrees($liveData[lngDescription.id]) || null) ?? espelLng
+        let lat: number;
+        let lng: number;
 
+        const latDescription = $datadescription.filter((x :any) => x.name == latRef)[0]
+        if (Number.isFinite(degreesMinutesToDecimalDegrees($liveData[latDescription.id]))) {
+            lat = degreesMinutesToDecimalDegrees($liveData[latDescription.id])
+        } else {
+            lat = espelLat
+        }
+
+        const lngDescription = $datadescription.filter((x :any) => x.name == lngRef)[0]
+        if (Number.isFinite(degreesMinutesToDecimalDegrees($liveData[lngDescription.id]))) {
+            lng = degreesMinutesToDecimalDegrees($liveData[lngDescription.id])
+        } else {
+            lng = espelLng
+        }
 
         const gcs: GCSCoordinates = {lat, lng}
         const cartesian = toCartesian(gcs, $refCoordinate)
