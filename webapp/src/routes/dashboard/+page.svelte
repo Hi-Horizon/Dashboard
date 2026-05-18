@@ -8,7 +8,7 @@ import DashboardBuilder from "$lib/DashboardBuilder/Components/DashboardBuilder.
 import { getlayoutConfig } from "$lib/DashboardBuilder/LayoutConfig";
 import { datadescription, liveData } from "../ConnectionStores";
 import DashboardConfigUploader from "$lib/DashboardBuilder/Components/DashboardConfigUploader.svelte";
-import { parseCANmessages } from "$lib/MQTTparser";
+import { parseCANmessages } from "$lib/IOconnections/MQTT/MQTTparser";
 
 setupPageDefault();
 pageName.set("Dashboard");
@@ -35,16 +35,8 @@ async function fetchDataDescriptionFromDb() {
         canSchema[key] = canSchema[key].sort((a: any, b: any) => a.CANmsgPosition - b.CANmsgPosition)
     });
 
-    //fetch last seen values
+    // fetch time of last update
     const lastMsgTime: any[] = await db.select('SELECT max(UnixTime) as UnixTime FROM Data')
-    // this does not work
-    const maxTResult: any[] = await db.select('SELECT descriptionId as id, Value FROM Data WHERE Unixtime = (SELECT max(UnixTime) FROM Data)')
-    maxTResult.forEach((result) => {
-        liveData.update((xs: any) => {
-            xs[result.id] = result.Value
-            return xs
-        })
-    })
     liveData.update((xs: any) => {
         xs["UnixTime"] = lastMsgTime[0].UnixTime
         return xs

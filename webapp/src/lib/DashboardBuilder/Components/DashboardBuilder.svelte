@@ -36,4 +36,6 @@
         {/each}
     {/key}
     <!-- </svelte:boundary> -->
+{:catch error}
+    <p>{error.message}</p>
 {/await}

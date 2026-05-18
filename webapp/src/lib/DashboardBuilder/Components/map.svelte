@@ -3,6 +3,7 @@
     import { onMount, onDestroy, tick } from 'svelte';
     import { datadescription, liveData } from "../../../routes/ConnectionStores";
     import { derived } from 'svelte/store';
+    import { boatIconOptions } from '../../leaflet-maps/icons';
 
     export let props: any
     let latRef = props.lat
@@ -26,13 +27,14 @@
     onMount(async () => {
         await tick();
         leaflet = await import('leaflet');
+        const boatIcon = leaflet.icon(boatIconOptions)
 
         map = leaflet.map(mapElement).setView([($lngValue ?? 0), ($latValue ?? 0)], 13);
         leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        boatMarker = leaflet.marker([($lngValue ?? 0), ($latValue ?? 0)]).addTo(map)
+        boatMarker = leaflet.marker([($lngValue ?? 0), ($latValue ?? 0)], {icon: boatIcon}).addTo(map)
             .bindPopup('Hi-horizon racing team')
             // .openPopup();
 

@@ -42,6 +42,24 @@
 						}
 					},
 					{
+						"componentName": "wattsValueBig",
+						"props": {
+							"valueName": "Netto Power",
+							"voltageId": "BMS Battery voltage",
+							"currentId": "Battery current",
+							"valType": 0
+						}
+					},
+					{
+						"componentName": "wattsValueBig",
+						"props": {
+							"valueName": "Charge Power",
+							"voltageId": "BMS Battery voltage",
+							"currentId": "Charge current",
+							"valType": 0
+						}
+					},
+					{
 						"componentName": "valueBig",
 						"props": {
 							"valueId": "Battery current",
@@ -74,7 +92,7 @@
 			}
 		},
 		{
-			"componentName": "map",
+			"componentName": "routeMap",
 			"props": {
 				"lat":"Latitude",
 				"lng":"Longitude"
@@ -109,7 +127,69 @@
 					{
 						"componentName": "valueSmall",
 						"props": {
+							"valueId": "ESC temperature"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
 							"valueId": "Fix"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "SD status"
+						}
+					}
+				]
+			}
+		},
+		{
+			"componentName": "list",
+			"props": {
+				"name": "BMS status",
+				"items": [
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "Cell temp 1"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "Cell temp 2"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "Cell temp 3"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "Cell temp 4"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "Balance Temp 1"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "Balance Temp 2"
+						}
+					},
+					{
+						"componentName": "valueSmall",
+						"props": {
+							"valueId": "switchStatus"
 						}
 					}
 				]
@@ -136,22 +216,7 @@
 					"cell 13",
 					"cell 14"
 				],
-				"cell_isbalancing_vars": [
-					"rpm",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix",
-					"Fix"
-				]
+				"cell_isbalancing_var": "isBalancing"
 			}
 		}
 	]

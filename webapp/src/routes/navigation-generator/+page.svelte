@@ -4,6 +4,7 @@
     import Button from '$lib/Components/button.svelte';
     import { setupPageDefault } from '$lib/setupPageDefault';
     import { pageName } from '../../stores';
+	import { markerIconOptions } from '../../lib/leaflet-maps/icons';
 
     setupPageDefault();
     pageName.set("Navigation generator");
@@ -23,9 +24,11 @@
 	let totalDistance = 0;
 
 	let mapContainer: HTMLDivElement;
+	let waypointIcon: any
 
 	onMount(async () => {
 		L = await import('leaflet');
+		waypointIcon = L.icon(markerIconOptions)
 
 		map = L.map(mapContainer).setView([53.0, 5.8], 13);
 
@@ -50,7 +53,7 @@
 
 		waypoints = [...waypoints, wp];
 
-		const marker = L.marker(latlng, { draggable: true })
+		const marker = L.marker(latlng, { draggable: true, icon: waypointIcon} )
 			.addTo(map)
 			.on('drag', (e: any) => {
 				updateWaypoint(wp.id, e.target.getLatLng());
@@ -154,9 +157,16 @@
 		totalDistance = total;
 	}
 
+	let fileName = ""
 	function exportCSV() {
-		if (waypoints.length === 0) return;
-
+		if (fileName === "") {
+			alert("please select a name for the route")
+			return 
+		}
+		if (waypoints.length === 0) {
+			alert("please select at least 1 waypoint")
+			return;
+		}
 		const ref = waypoints[0];
 		let csv = "lat,lng,x_m,y_m\n";
 
@@ -170,7 +180,7 @@
 
 		const a = document.createElement('a');
 		a.href = url;
-		a.download = "route.csv";
+		a.download = fileName + ".csv";
 		a.click();
 
 		URL.revokeObjectURL(url);
@@ -213,8 +223,10 @@
 			<div class="pt-3 border-t border-white">
 				Total Distance: {totalDistance.toFixed(0)} m
 			</div>
+			<label for=routeFileName class="pt-5 font-bold">Route name:</label>
+			<input id="fileNameInput" bind:value={fileName} class="bg-stone-200 text-stone-900 rounded px-2 ml-2 placeholder:italic" placeholder="mijn_route" name="routeFileName">
 			<button on:click={exportCSV} class="bg-green-700 hover:bg-green-600 rounded px-3 py-1 flex justify-center">
-				Export CSV
+				Export to CSV
 			</button>
 		</div>
     </div>
