@@ -32,11 +32,19 @@
     // reference coordinate to create a local cartesian system
     const refCoordinate: Writable<GCSCoordinates> = writable({lat:0 ,lng:0})
 
+    function degreesMinutesToDecimalDegrees(rawValue: number) {
+        const degrees = Math.floor(rawValue / 100)
+        const minutes = rawValue - (degrees * 100)
+        const minutesToDegrees = minutes / 60.0
+        return degrees + minutesToDegrees
+    }
+
     const boatPos: Readable<Coordinates> = derived([liveData, datadescription, refCoordinate], ([$liveData, $datadescription, $refCoordinate]) => {
         const latDescription = $datadescription.filter((x :any) => x.name == latRef)[0] 
-        const lat = $liveData[latDescription.id] ?? espelLat
+        const lat = (degreesMinutesToDecimalDegrees($liveData[latDescription.id]) || null) ?? espelLat
         const lngDescription = $datadescription.filter((x :any) => x.name == lngRef)[0]
-        const lng = $liveData[lngDescription.id] ?? espelLng
+        const lng = (degreesMinutesToDecimalDegrees($liveData[lngDescription.id]) || null) ?? espelLng
+
 
         const gcs: GCSCoordinates = {lat, lng}
         const cartesian = toCartesian(gcs, $refCoordinate)
