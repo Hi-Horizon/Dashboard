@@ -28,6 +28,7 @@ async function setSelectedConnection(newConnection: DataStreamCANbus | null) {
   // - parsing CANbus messages before insertion into the database, possibly with a canschema store object
   // - creating an event that is emitted after insertion, to which the dashboard will listen and fetch data from the database
   // - alternatively, put the livedata in a global store, and and update directly
+  // const dataObj = parseCANmessage(frame.id, frame.data, canSchema)
   // const unlisten = await newConnection?.listen((messages:any) => {
   //   const curDate = new Date()
   //   Object.keys(messages)
@@ -88,7 +89,7 @@ const MQTTDataStream: DataStreamCANbus = {
     }
   },
 
-  async listen(handler: (payload: any) => unknown) {
+  async listen(handler: (payload: number[][]) => unknown) {
     return await mqtt.listen(async (x: any) => {
         try {
             const payload = x.payload.event.message.payload
@@ -137,12 +138,11 @@ const PeakCANDataStream: DataStreamCANbus = {
       }
   },
 
-  async listen(handler: (messages: any) => unknown) {
+  async listen(handler: (messages: number[][]) => unknown) {
     return await listen('can-frame', (event : any) => {
         try {
             const frame = event.payload
-            // const dataObj = parseCANmessage(frame.id, frame.data, canSchema)
-            handler(frame)
+            handler([frame])
         } catch (error) {
             console.log(error)
         }
