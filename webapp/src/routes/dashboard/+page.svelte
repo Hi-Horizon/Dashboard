@@ -52,8 +52,8 @@ onMount(async () => {
     unlistenMqtt = await mqtt.listen(async (x: any) => {
         try {
             const payload = x.payload.event.message.payload
-            const dataObj = parseCANmessages(x, canSchema)
             
+            const dataObj = parseCANmessages(x, canSchema)
             const curDate = new Date()
             Object.keys(dataObj).map(async (key: string) => {
                 await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), key, dataObj[key]]);

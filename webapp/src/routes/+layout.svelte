@@ -1,9 +1,7 @@
 <script lang="ts">
     import { pageName, showBackButton } from "../stores";
     import { derived, writable } from "svelte/store";
-    import { listen } from '@tauri-apps/api/event';
     import "../app.css";
-    import { onMount } from "svelte";
     import { MQTTconnected } from "./ConnectionStores";
     
     let { children } = $props();
@@ -18,21 +16,6 @@
         if (conn) return "bg-teal-500"
         else return "bg-red-400"
     }) 
-
-    onMount(() => {
-        // Listen to all notifications from the mqtt plugin to get connection statusses
-        listen('plugin://mqtt', (event: any) => {
-            if (event.payload.event.connect !== undefined) {
-                MQTTconnected.set(true)
-                return
-            }
-            if (event.payload.event.disconnect !== undefined) {
-                if ($MQTTconnected) alert("MQTT has been disconnected")
-                MQTTconnected.set(false)
-                return
-            }
-        })
-    })
 </script>
 
 <div class="flex">
