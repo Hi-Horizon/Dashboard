@@ -66,7 +66,7 @@ let connectId = "1"
 
 const MQTTDataStream: DataStreamCANbus = {
   async connect() {
-    //connect to broker and subsricbe to topic
+    //connect to broker and subscribe to topic
     try {
       await mqtt.connect(connectId, "mqtts://"+ mqttUser +":"+ mqttPassword +"@"+ mqttUrl +":8883?client_id=test", { skipVerification: true })
       await mqtt.subscribe(connectId, topic, 0);    
@@ -81,13 +81,13 @@ const MQTTDataStream: DataStreamCANbus = {
       if (event.payload.event.connect === undefined) {
         alert("connection failed, check credentials and try again")
         selectedConnection.set(null)
-        return false
+        $MQTTconnected = false
       } else {
         alert("connected")
-        return true
+        $MQTTconnected = true
       }
     });
-    return false
+    return true
   },
 
   async disconnect() {
