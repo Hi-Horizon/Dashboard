@@ -1,17 +1,19 @@
 <script lang="ts">
 import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
-import { once } from '@tauri-apps/api/event';
-import { setupPageDefault } from "$lib/setupPageDefault.js";
-import { pageName, selectedConnection } from "../../stores.js";
-import Cell from "$lib/Components/cell.svelte";
-import { MQTTconnected } from "../ConnectionStores.js";
-
+import { once, listen } from '@tauri-apps/api/event';
 import { invoke } from '@tauri-apps/api/core';
-import { listen } from "@tauri-apps/api/event";
-import type { DataStreamCANbus } from "../../lib/interfaces/DataStreamCANbus.js";
-    import { db } from "../../lib/IOconnections/DBO/databaseObject.js";
-import { convertMQTTToRawCANbusMessages } from "../../lib/IOconnections/MQTT/MQTTparser.js";
-    
+import { setupPageDefault } from "$lib/setupPageDefault.js";
+import { db } from "$lib/IOconnections/DBO/databaseObject.js";
+
+import { pageName, selectedConnection } from "../../stores.js";
+import { canSchema, liveData, MQTTconnected } from "../ConnectionStores.js";
+
+import type { CanFrame, DataStreamCANbus } from "$lib/interfaces/DataStreamCANbus.js";
+import { convertMQTTToRawCANbusMessages } from "$lib/IOconnections/MQTT/MQTTparser.js";
+import { parseCANmessage } from "$lib/IOconnections/CANbusParsing.js";
+
+import Cell from "$lib/Components/cell.svelte";
+
 setupPageDefault();
 pageName.set("Connection");
 
@@ -25,21 +27,32 @@ async function setSelectedConnection(newConnection: DataStreamCANbus | null) {
   $MQTTconnected = await newConnection?.connect() || false
   // TODO: in the future, new incoming data should always be updated, not only in the dashboard,
   // this code should be expanded by:
-  // - parsing CANbus messages before insertion into the database, possibly with a canschema store object
-  // - creating an event that is emitted after insertion, to which the dashboard will listen and fetch data from the database
-  // - alternatively, put the livedata in a global store, and and update directly
-  // const dataObj = parseCANmessage(frame.id, frame.data, canSchema)
-  // const unlisten = await newConnection?.listen((messages:any) => {
-  //   const curDate = new Date()
-  //   Object.keys(messages)
-  //     .map(async (key: string) => {
-  //       await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), key, messages[key]]);
-  //     })
-  // }) || null
+  
+  const unlisten = await newConnection?.listen((frames: CanFrame[]) => {
+    // parsing CANbus messages
+    const dataObj = Object.assign({}, ...frames.map(frame => {
+      return parseCANmessage(frame.id, frame.payload, $canSchema)
+    }))
 
-  // if ($selectedConnection !== null) {
-  //   $selectedConnection.unlisten = unlisten
-  // }
+    //inserts values into the database and updates the liveData object
+    const curDate = new Date()
+    Object.keys(dataObj)
+      .map(async (key: string) => {
+        liveData.update((xs: any) => {
+          xs[key] = dataObj[key]
+          return xs
+        })
+        await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), key, dataObj[key]]);
+    })
+    liveData.update((xs: any) => {
+        xs["UnixTime"] = curDate.getTime()
+        return xs
+    })
+  }) || null
+
+  if ($selectedConnection !== null) {
+    $selectedConnection.unlisten = unlisten
+  }
 }
 
 let mqttUrl:any = data.MQTTBROKERURL;
@@ -89,7 +102,7 @@ const MQTTDataStream: DataStreamCANbus = {
     }
   },
 
-  async listen(handler: (payload: number[][]) => unknown) {
+  async listen(handler: (payload: CanFrame[]) => unknown) {
     return await mqtt.listen(async (x: any) => {
         try {
             const payload = x.payload.event.message.payload
@@ -138,11 +151,11 @@ const PeakCANDataStream: DataStreamCANbus = {
       }
   },
 
-  async listen(handler: (messages: number[][]) => unknown) {
+  async listen(handler: (messages: CanFrame[]) => unknown) {
     return await listen('can-frame', (event : any) => {
         try {
-            const frame = event.payload
-            handler([frame])
+          const frame: CanFrame = { id:event.payload.id, payload: event.payload.data }
+          handler([frame])
         } catch (error) {
             console.log(error)
         }

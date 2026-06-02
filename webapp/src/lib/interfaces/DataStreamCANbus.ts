@@ -8,15 +8,20 @@ export interface DataStreamCANbus {
      * Listens to an emitted event from the datastream.
      *
      * @param {function} handler - Callback invoked when messages are received,
-     *                             takes an array of raw CAN messages as input.
+     *                             takes an array of CAN messages as input.
      * @returns {Promise<UnlistenFn>} A promise that resolves to a function
      *                                which, when called, removes the listener.
      */
-    listen(handler: (messages: number[][]) => unknown): Promise<UnlistenFn>;
+    listen(handler: (frames: CanFrame[]) => unknown): Promise<UnlistenFn>;
 
     //
     disconnect():                   Promise<boolean>;
     unlisten: UnlistenFn | null
     //todo define canbus message type
     // convertToCANbusMessageList(): any;
+}
+
+export interface CanFrame {
+    id: number
+    payload:number[]
 }
