@@ -68,9 +68,12 @@
     let map: Map | null = null;
 
     // --- State ---
-    let waypoints: Coordinates[] = [];
-    let elements: RouteElement[] = [];
-    
+    const routeInfo = JSON.parse(localStorage.routeMap || "{}")
+    let waypoints: Coordinates[] = routeInfo.waypoints;
+    waypoints ??= []
+    let elements: RouteElement[] = routeInfo.elements;
+    elements ??= []
+
     let dataLoaded = false;
     let outputText = '';
     let waypointMarkers: CircleMarker[] = [];
@@ -94,6 +97,12 @@
         boatMarker = L.marker([($boatPos.gcs.lat), ($boatPos.gcs.lng)], {icon: boatIcon}).addTo(map)
             .bindPopup('Hi-horizon racing team')
             // .openPopup();
+        
+        //render a route if one is available
+        if (waypoints.length != 0 || elements.length != 0) {
+            dataLoaded = true
+            renderRoute()
+        }
     });
 
     $: {
@@ -207,27 +216,43 @@
             outputText = content;
             waypoints = parseCSV(content);
             refCoordinate.set({lat: waypoints[0].gcs.lat, lng: waypoints[0].gcs.lng});
+
             // Create array of edges between waypoints
             elements = [];
             for (let i = 0; i < waypoints.length - 1; i++) {
                 elements.push(new RouteElement(waypoints[i], waypoints[i + 1]));
             }
+
+            renderRoute();
             dataLoaded = true;
-
-            // Remove previously existing waypoint markers on map
-            waypointMarkers.forEach(m => map?.removeLayer(m));
-            waypointMarkers = [];
-
-            // draw new waypoint markers on map
-            for (let i = 0; i < waypoints.length; i++) {
-                const wp = waypoints[i];
-                const marker = L.circleMarker([wp.gcs.lat, wp.gcs.lng], { radius: 5 }).addTo(map);
-                marker.bindPopup(`Waypoint ${i}`);
-                waypointMarkers.push(marker);
-            }
-            handleCalculate();
+            localStorage.setItem("routeMap", JSON.stringify({waypoints, elements}))
         };
         reader.readAsText(file);
+        
+    }
+
+    function renderRoute() {
+        // Remove previously existing waypoint markers on map
+        waypointMarkers.forEach(m => map?.removeLayer(m));
+        waypointMarkers = [];
+
+        // draw new waypoint markers on map
+        for (let i = 0; i < waypoints.length; i++) {
+            const wp = waypoints[i];
+            const marker = L.circleMarker([wp.gcs.lat, wp.gcs.lng], { radius: 5 }).addTo(map);
+            marker.bindPopup(`Waypoint ${i}`);
+            waypointMarkers.push(marker);
+        }
+
+        handleCalculate();
+    }
+
+    function unrenderRoute() {
+        // Remove previously existing waypoint markers on map
+        waypointMarkers.forEach(m => map?.removeLayer(m));
+        waypointMarkers = [];
+
+        if (routeLine) map.removeLayer(routeLine);
     }
 
     //handeled alle berekening, deels kan in handlefilechange, deels kan in reactive statement
@@ -279,6 +304,13 @@
         routeLine = L.polyline(routeCoords, { weight: 4 }).addTo(map);
         map.fitBounds(routeLine.getBounds(), { padding: [30, 30] });
     }
+
+    function resetRoute() {
+        localStorage.removeItem("routeMap")
+        elements = []
+        waypoints = []
+        unrenderRoute()
+    }
 </script>
 
 <svelte:head>
@@ -297,10 +329,9 @@
     <div bind:this={mapElement} class="flex-1 h-96 w-96"></div>
     <div class="pt-2">
         <input type="file" accept=".csv" on:change={handleFileChange} class="border-2 border-stone-700 file:bg-stone-700 hover:file:bg-stone-600 hover:border-stone-600 file:px-2  rounded "/>
-        <!-- <button on:click={handleCalculate} class="bg-stone-700 hover:bg-stone-600 rounded px-3 p-0.5">Bereken route</button> -->
+        <button on:click={resetRoute} class="bg-stone-700 hover:bg-stone-600 rounded px-3 p-0.5">Reset Route</button>
         {#if dataLoaded}
             <div>Distance to finish: {(distanceToFinish/1000).toFixed(1)} km</div>
         {/if}
     </div>
-    <!-- <pre>{outputText}</pre> -->
 </Cell>
