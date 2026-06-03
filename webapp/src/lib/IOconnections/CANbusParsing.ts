@@ -1,4 +1,4 @@
-// parse message
+// parse message from a canid and its payload, to defined values according to the provided canSchema
 export function parseCANmessage(canId: any, payload: any, canSchema: any) {
     const resultsdict: any = {}
     let messageStructure: any[] = canSchema[canId]
