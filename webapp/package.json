@@ -47,5 +47,9 @@
 		"onlyBuiltDependencies": [
 			"lightningcss"
 		]
+	},
+	"allowScripts": {
+		"tailwindcss@4.1.13": true,
+		"esbuild@0.27.3": true
 	}
 }
