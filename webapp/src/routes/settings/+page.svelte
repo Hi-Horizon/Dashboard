@@ -7,6 +7,7 @@
     import { db } from "$lib/IOconnections/DBO/databaseObject";
     import { writable, type Writable } from "svelte/store";
     import CanMessageInfoImporter from "$lib/settings/CanMessageInfoImporter.svelte";
+    import Button from "$lib/Components/button.svelte";
 
     setupPageDefault();
     pageName.set("Settings");
@@ -46,13 +47,41 @@
             await fetchDataDescriptionFromDb() // update screen
         }
     }
+
+    let dark = false
+	function toggleDarkMode() {
+		setMode(!dark)
+	}
+
+	function setMode(value: boolean) {
+		dark = value
+
+		// update page styling
+		if (dark) {
+			document.documentElement.classList.add('dark')
+		} else {
+			document.documentElement.classList.remove('dark')
+		}
+
+		// store the theme as a local override
+		localStorage.theme = dark ? 'dark' : 'light'
+
+		// if the toggled-to theme matches the system defined theme, clear the local override
+		// this effectively provides a way to override or revert to "automatic" setting mode
+		if (window.matchMedia(`(prefers-color-scheme: ${localStorage.theme})`).matches) {
+			localStorage.removeItem('theme')
+		}
+	}
 </script>
 
 <svelte:head>
 	<title>Settings</title>
 </svelte:head>
 
+
 <div class="flex flex-col grow space-y-5">
+    <Button onclick={toggleDarkMode}>Toggle dark mode</Button>
+
     <div class="grow space-y-3">
         {#await fetchDataDescriptionFromDb()}
             <p>loading...</p>
@@ -63,6 +92,8 @@
         <!-- <FormulaParameters  bind:draftChanges rows={[]}/> -->
     </div>
 
+    
+    
     <footer class="self-end">
         <button on:click={()=>askEmptyLocalChangeConfirmation()} class="p-2 text-center bg-stone-500 hover:bg-stone-400 rounded">Undo</button>
         {#if waitingToSubmit === true}

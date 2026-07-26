@@ -7,7 +7,6 @@
     //fetch initial values for canSchema and DataDescription
     onMount(async () => {
         await fetchConnectionStores(datadescription, canSchema, liveData);
+        await goto("./dashboard")
     })
-
-    goto("./dashboard")
 </script>
