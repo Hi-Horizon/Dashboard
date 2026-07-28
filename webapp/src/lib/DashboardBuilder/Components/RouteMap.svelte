@@ -331,10 +331,10 @@
     <div class="pt-2">
         <input type="file" accept=".csv" on:change={handleFileChange} class="border-2 border-stone-300 hover:file:bg-stone-400 dark:border-stone-700 file:bg-stone-300 hover:border-stone-400 dark:file:bg-stone-700 dark:hover:file:bg-stone-600 dark:hover:border-stone-600 file:px-2  rounded "/>
     </div>
-    <div>
+    <div class="pt-2">
         <Button onclick={resetRoute}>Reset Route</Button>
     </div>
     {#if dataLoaded}
-    <div>Distance to finish: {(distanceToFinish/1000).toFixed(1)} km</div>
+        <div class="pt-2">Distance to finish: {(distanceToFinish/1000).toFixed(1)} km</div>
     {/if}
 </Cell>
