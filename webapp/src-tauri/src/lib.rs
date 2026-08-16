@@ -71,7 +71,6 @@ pub fn run() {
             .build()
         )
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_mqtt::init())
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(
