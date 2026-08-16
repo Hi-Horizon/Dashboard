@@ -33,11 +33,10 @@
         mqttDataUnlisten = listen('mqtt-data', async (e: any) => {
             console.log('Received MQTT data:', e.payload);
             const db = await getDb();
-            const canFrames = convertMQTTToRawCANbusMessages(e.payload);
-
+            const canFrames = convertMQTTToRawCANbusMessages(e.payload.payload);
             // parsing CANbus messages
             const dataObj = Object.assign({}, ...canFrames.map(frame => {
-                return parseCANmessage(frame.id, frame.payload, canSchema)
+                return parseCANmessage(frame.id, frame.payload, $canSchema)
             }))
 
             //inserts values into the database and updates the liveData object
