@@ -1,10 +1,10 @@
 <script lang="ts">
     import Button from "../Components/button.svelte";
-    import { db } from "$lib/IOconnections/DBO/databaseObject";
+    import { getDb } from "$lib/IOconnections/DBO/databaseObject";
     import { addReadStatisticsType } from "./ReadStatistics";
 
     let fileInput: any
-
+    
     async function importDataDescriptions(e: any) {
         try {
             let configFile = e.target.files[0];
@@ -44,6 +44,7 @@
            datadescription.Offset   = Number(rawConfig[row][7])
            // todo, add offset
 
+           const db = await getDb();
            await addReadStatisticsType(db, datadescription)
         }
     }

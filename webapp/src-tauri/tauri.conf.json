@@ -15,7 +15,8 @@
         "title": "Hi-Horizon Telemetry Dashboard",
         "focus": true,
         "resizable": true,
-        "maximized": true
+        "maximized": true,
+        "url": "/dashboard"
       }
     ],
     "security": {

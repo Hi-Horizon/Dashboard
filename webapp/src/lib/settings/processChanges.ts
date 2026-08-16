@@ -1,7 +1,6 @@
 import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
 import type Database from "@tauri-apps/plugin-sql";
 import { parseOperationReadStatistic } from "./ReadStatistics";
-import { db } from "../IOconnections/DBO/databaseObject";
 
 // export const parseChanges = db.transaction((body)=>{
 //     body.forEach((setting: SettingsLocalChange[]) =>{

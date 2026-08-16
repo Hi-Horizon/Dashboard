@@ -1,8 +1,9 @@
 import type { Writable } from "svelte/store";
-import { db } from "./IOconnections/DBO/databaseObject";
+import { getDb } from "./IOconnections/DBO/databaseObject";
 
 // fetch initial values of the connection stores, important since these stores define that incoming data
 export async function fetchConnectionStores(datadescriptionStore: Writable<any[]>, canSchemaStore: Writable<any>, liveData: Writable<any>) {
+    const db = await getDb();
     const dataDescription: any[] = await db.select('SELECT * FROM DataDescription')
     
     //fill the canschema values
