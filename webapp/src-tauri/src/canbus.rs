@@ -7,9 +7,13 @@ use peak_can::socket::RecvCan;
 use peak_can::socket::usb::UsbCanSocket;
 use peak_can::error::CanError;
 
+use tauri::{AppHandle, Emitter, State};
+use std::sync::{Arc, Mutex};
+use std::sync::atomic::{AtomicBool, Ordering};
+
 pub struct CanState {
-    handle: Mutex<Option<std::thread::JoinHandle<()>>>,
-    stop_flag: Mutex<Option<Arc<AtomicBool>>>,
+    pub handle: Mutex<Option<std::thread::JoinHandle<()>>>,
+    pub stop_flag: Mutex<Option<Arc<AtomicBool>>>,
 }
 
 // Serializable struct sent to the frontend

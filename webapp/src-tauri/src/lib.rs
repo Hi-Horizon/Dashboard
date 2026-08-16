@@ -28,7 +28,6 @@ pub fn run() {
             .build()
         )
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_mqtt::init())
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(
@@ -39,11 +38,16 @@ pub fn run() {
             }
             Ok(())
         })
-        .manage(CanState {
+        .manage(canbus::CanState {
             handle: Mutex::new(None),
             stop_flag: Mutex::new(None),
         })
         .invoke_handler(tauri::generate_handler![canbus::connect_can, canbus::disconnect_can])
+                .manage(mqtt::MqttState {
+            handle: Mutex::new(None),
+            stop_flag: Mutex::new(None),
+        })
+        .invoke_handler(tauri::generate_handler![mqtt::connect_mqtt, mqtt::disconnect_mqtt])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
