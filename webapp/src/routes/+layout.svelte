@@ -69,7 +69,6 @@
         <li class="justify-self-end"><a href="./navigation-generator"><NewRouteIcon/></a></li>
         <li class="justify-self-end relative"><a href="./connection">
             <ConnectionIcon/>
-            <!-- <img src="/icons/connection.svg" alt="Logout" class="p-2 hover:bg-stone-700 not-dark:invert rounded"> -->
             <span class="{mqttConnected.color} absolute top-0 end-0 size-3 rounded-full transform-translate-y-1/2 translate-x-1/2"></span>
         </a></li>
         <li class="justify-self-end"><a href="./settings"><SettingsIcon/></a></li>
