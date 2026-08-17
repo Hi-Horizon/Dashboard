@@ -10,6 +10,11 @@
     import { convertMQTTToRawCANbusMessages } from '$lib/IOconnections/MQTT/MQTTparser';
     import { canSchema, datadescription, liveData } from './ConnectionStores';
     import { fetchConnectionStores } from '$lib/fetchConnectionStores';
+    import SettingsIcon from "$lib/Components/icons/settingsIcon.svelte";
+    import DashboardIcon from "$lib/Components/icons/dashboardIcon.svelte";
+    import GraphIcon from "$lib/Components/icons/graphIcon.svelte";
+    import NewRouteIcon from "$lib/Components/icons/newRouteIcon.svelte";
+    import ConnectionIcon from "$lib/Components/icons/connectionIcon.svelte";
     
     let { children } = $props();
 
@@ -58,15 +63,15 @@
 </script>
 
 <div class="flex">
-    <ul class="sticky top-0 shrink-0 flex flex-col p-3 h-screen bg-stone-200 dark:bg-stone-800 text-center space-y-3">
-        <li class=""><a href="./dashboard"><img src="/icons/dashboard.svg" alt="Dashboard" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
-        <li class="flex-1"><a href="./analyzation"><img src="/icons/graph.svg" alt="analyzation" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
-        <li class="justify-self-end"><a href="./navigation-generator"><img src="/icons/route_generator.svg" alt="analyzation" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
+    <ul class="sticky top-0 shrink-0 flex flex-col p-2 w-16 h-screen bg-stone-200 dark:bg-stone-800 text-center space-y-3">
+        <li class=""><a href="./dashboard"><DashboardIcon/></a></li>
+        <li class="flex-1"><a href="./analyzation"><GraphIcon/></a></li>
+        <li class="justify-self-end"><a href="./navigation-generator"><NewRouteIcon/></a></li>
         <li class="justify-self-end relative"><a href="./connection">
-            <img src="/icons/connection.svg" alt="Logout" class="p-2 hover:bg-stone-700 not-dark:invert rounded">
+            <ConnectionIcon/>
             <span class="{mqttConnected.color} absolute top-0 end-0 size-3 rounded-full transform-translate-y-1/2 translate-x-1/2"></span>
         </a></li>
-        <li class="justify-self-end"><a href="./settings"><img src="/icons/settings.svg" alt="Settings" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
+        <li class="justify-self-end"><a href="./settings"><SettingsIcon/></a></li>
     </ul>
 
     <div class="grow p-5 flex flex-col">

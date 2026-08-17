@@ -31,14 +31,14 @@
             <p class="dark:text-stone-400 grow"></p>
         </div>
     {:else if !isDummy}
-        <p class="font-bold">{valueName}</p>
+        <p class="">{valueName}</p>
         <div class="flex flex-row items-end space-x-1">
             <p class="text-4xl">{($latestVoltage*$latestCurrent || null)?.toFixed(2) ?? "-"}</p>
             <p class="dark:text-stone-400 grow"></p>
         </div>
     {:else}
     <div class="text-transparent">
-        <p class="font-bold">dummy</p>
+        <p class="">dummy</p>
         <div class="flex flex-row items-end space-x-1">
             <p class="text-4xl">hi</p>
             <p class="grow">user</p>

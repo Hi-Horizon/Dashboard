@@ -5,6 +5,7 @@
     import { derived, writable, type Readable, type Writable } from 'svelte/store';
     import Cell from '../../Components/cell.svelte';
     import { boatIconOptions } from '../../leaflet-maps/icons';
+    import Button from '$lib/Components/button.svelte';
 
     // --- Types ---
     interface GCSCoordinates {
@@ -328,10 +329,12 @@
     <div class="font-bold pb-2">Navigation</div>
     <div bind:this={mapElement} class="flex-1 h-96 w-96"></div>
     <div class="pt-2">
-        <input type="file" accept=".csv" on:change={handleFileChange} class="border-2 border-stone-700 file:bg-stone-700 hover:file:bg-stone-600 hover:border-stone-600 file:px-2  rounded "/>
-        <button on:click={resetRoute} class="bg-stone-700 hover:bg-stone-600 rounded px-3 p-0.5">Reset Route</button>
-        {#if dataLoaded}
-            <div>Distance to finish: {(distanceToFinish/1000).toFixed(1)} km</div>
-        {/if}
+        <input type="file" accept=".csv" on:change={handleFileChange} class="border-2 border-stone-300 hover:file:bg-stone-400 dark:border-stone-700 file:bg-stone-300 hover:border-stone-400 dark:file:bg-stone-700 dark:hover:file:bg-stone-600 dark:hover:border-stone-600 file:px-2  rounded "/>
     </div>
+    <div class="pt-2">
+        <Button onclick={resetRoute}>Reset Route</Button>
+    </div>
+    {#if dataLoaded}
+        <div class="pt-2">Distance to finish: {(distanceToFinish/1000).toFixed(1)} km</div>
+    {/if}
 </Cell>
