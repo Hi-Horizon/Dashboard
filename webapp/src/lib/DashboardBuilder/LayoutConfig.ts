@@ -1,8 +1,9 @@
-import { db } from "../IOconnections/DBO/databaseObject";
+import { getDb } from "../IOconnections/DBO/databaseObject";
 
 // gets the main layout config (id 1), 
 // returns a javascript object containing the config
 export async function getlayoutConfig() {
+    const db = await getDb();
     const result: any = await db.select('SELECT layoutData FROM DashboardLayout where id = 1');
     let jsonObj
     try {
@@ -13,10 +14,16 @@ export async function getlayoutConfig() {
     return jsonObj
 }
 
-
 // edit the main layout config (id 1)
 // returns update result
 export async function editLayoutconfig(newConfig:string) {
+    const db = await getDb();
     const result: any = await db.execute('UPDATE DashboardLayout SET layoutdata = ? where id = 1', [newConfig]);
-    return result
+    if (result.rowsAffected === 0) {
+        const resultInsert = await db.execute("INSERT INTO DashboardLayout (id, name, layoutdata) VALUES (1, 'Default Dashboard', ?)", [newConfig]);
+        return resultInsert
+    }
+    else {
+        return result
+    }
 }

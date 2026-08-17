@@ -28,10 +28,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@kuyoonjo/tauri-plugin-mqtt": "^0.1.0",
 		"@tailwindcss/vite": "^4.1.13",
+		"@tauri-apps/api": "^2.11.1",
 		"@tauri-apps/plugin-shell": "^2.3.1",
-		"@tauri-apps/plugin-sql": "^2.3.0",
+		"@tauri-apps/plugin-sql": "^2.4.0",
 		"buffer": "^6.0.3",
 		"chart.js": "^4.5.0",
 		"chartjs-adapter-dayjs-4": "^1.0.4",

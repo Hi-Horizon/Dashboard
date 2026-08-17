@@ -1,21 +1,60 @@
 <script lang="ts">
-    import { pageName, showBackButton } from "../stores";
-    import { derived, writable } from "svelte/store";
     import "../app.css";
-    import { MQTTconnected } from "./ConnectionStores";
+
+    import { listen } from '@tauri-apps/api/event';
+    import { onMount } from "svelte";
+    import { pageName, showBackButton } from "../stores";
+    import { getDb } from '$lib/IOconnections/DBO/databaseObject';
+
+    import { parseCANmessage } from '$lib/IOconnections/CANbusParsing';
+    import { convertMQTTToRawCANbusMessages } from '$lib/IOconnections/MQTT/MQTTparser';
+    import { canSchema, datadescription, liveData } from './ConnectionStores';
+    import { fetchConnectionStores } from '$lib/fetchConnectionStores';
     
     let { children } = $props();
 
     let currentPageName: string = $state("Page");
+    let mqttConnected: { connected: boolean; color: string } = $state({connected: false, color: "bg-red-400"});
+
     pageName.subscribe((value) => {
         currentPageName = value;
     });
 
+    let mqttStatusUnlisten: any = null;
+    let mqttDataUnlisten: any   = null;
+    onMount(async () => {
+        await fetchConnectionStores(datadescription, canSchema, liveData);
 
-    const connectionColor = derived(MQTTconnected, (conn) => {
-        if (conn) return "bg-teal-500"
-        else return "bg-red-400"
-    }) 
+        mqttStatusUnlisten = listen('mqtt-status', (e) => {
+            console.log('Received MQTT status:', e.payload);
+            mqttConnected = {connected: e.payload === "connected", color: e.payload === "connected" ? "bg-teal-500" : "bg-red-400" };
+        });
+
+        mqttDataUnlisten = listen('mqtt-data', async (e: any) => {
+            console.log('Received MQTT data:', e.payload);
+            const db = await getDb();
+            const canFrames = convertMQTTToRawCANbusMessages(e.payload.payload);
+            // parsing CANbus messages
+            const dataObj = Object.assign({}, ...canFrames.map(frame => {
+                return parseCANmessage(frame.id, frame.payload, $canSchema)
+            }))
+
+            //inserts values into the database and updates the liveData object
+            const curDate = new Date()
+            Object.keys(dataObj)
+            .map(async (key: string) => {
+                liveData.update((xs: any) => {
+                xs[key] = dataObj[key]
+                return xs
+                })
+                await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), key, dataObj[key]]);
+            })
+            liveData.update((xs: any) => {
+                xs["UnixTime"] = curDate.getTime()
+                return xs
+            })
+        });
+    });
 </script>
 
 <div class="flex">
@@ -25,7 +64,7 @@
         <li class="justify-self-end"><a href="./navigation-generator"><img src="/icons/route_generator.svg" alt="analyzation" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
         <li class="justify-self-end relative"><a href="./connection">
             <img src="/icons/connection.svg" alt="Logout" class="p-2 hover:bg-stone-700 not-dark:invert rounded">
-            <span class="{$connectionColor} absolute top-0 end-0 size-3 rounded-full transform-translate-y-1/2 translate-x-1/2"></span>
+            <span class="{mqttConnected.color} absolute top-0 end-0 size-3 rounded-full transform-translate-y-1/2 translate-x-1/2"></span>
         </a></li>
         <li class="justify-self-end"><a href="./settings"><img src="/icons/settings.svg" alt="Settings" class="p-2 hover:bg-stone-700 not-dark:invert rounded"></a></li>
     </ul>
