@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "HiHorizon_Telemetry_Dashboard",
-  "version": "0.1.0",
+  "version": "../package.json",
   "identifier": "com.Hi-horizon.telemetry-dashboard",
   "build": {
     "beforeDevCommand": "npm run vite:dev",
