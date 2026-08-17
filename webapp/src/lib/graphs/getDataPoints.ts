@@ -1,4 +1,4 @@
-import { db } from "../IOconnections/DBO/databaseObject";
+import { getDb } from "../IOconnections/DBO/databaseObject";
 
 export function getAllDataPointsFromAxes(x:string, y:string, xs:string, xe:string): any {
     // try {
@@ -16,6 +16,7 @@ export function getAllDataPointsFromAxes(x:string, y:string, xs:string, xe:strin
 
 //returns a table in a two-dimensional array with columnnames
 export async function getDataTableWithRange(min:number = 0, max:number = Number.MAX_SAFE_INTEGER): Promise<any[]> {
+    const db = getDb();
     try {
         //get datadescription values
         const columndescriptions: any[] = await db.select('SELECT * FROM DataDescription');
@@ -33,5 +34,4 @@ export async function getDataTableWithRange(min:number = 0, max:number = Number.
         console.log(error)
         return [];
     }
-    return []
 }

@@ -1,4 +1,5 @@
 import { createModel } from "js-crc"
+import type { CanFrame } from "../../interfaces/DataStreamCANbus";
 
 const crc16 = createModel({
   width: 16,
@@ -41,5 +42,32 @@ export function parseCANmessages(mqttMsg: any, canSchema: any) {
         })
     });
     return resultsdict
+}
+
+// if checksum fails, stop parsing and returns empty list
+export function convertMQTTToRawCANbusMessages(payload: number[]): CanFrame[] {
+    const canMessages: number[][] = []
+    const resultsdict: any = {}
+
+    for (let i = 14; i <= payload.length; i += 14) {
+        canMessages.push(payload.slice(i - 14, i))
+    }
+    // parse bytes to individual can messages
+    canMessages.forEach(message => {
+        // calculate crc
+        if (Number(crc16(message)) !== 0) {
+            console.warn("crc checksum failed!")
+            return [] //stop parsing and return empty since message is invalid
+        }
+    });
+
+    // remove checksum
+    const rawMessages = canMessages.map((xs) => xs.slice(0, 12))
+    // return the list of CanFrames
+    return rawMessages.map(message => {
+        // parse id
+        const id: number = message[3] + (message[2] << 8) + (message[1] << 16) + (message[0] << 24)
+        return {id, payload: message.slice(4,12)}
+    })
 }
 

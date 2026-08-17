@@ -1,71 +1,28 @@
 <script lang="ts">
+import { onMount } from "svelte";
+
 import { pageName } from "../../stores";
 import { setupPageDefault } from "$lib/setupPageDefault";
-import { onMount } from "svelte";
-import * as mqtt from "@kuyoonjo/tauri-plugin-mqtt";
-import { db } from "$lib/IOconnections/DBO/databaseObject";
 import DashboardBuilder from "$lib/DashboardBuilder/Components/DashboardBuilder.svelte";
-import { getlayoutConfig } from "$lib/DashboardBuilder/LayoutConfig";
-import { datadescription, liveData } from "../ConnectionStores";
 import DashboardConfigUploader from "$lib/DashboardBuilder/Components/DashboardConfigUploader.svelte";
-import { parseCANmessages } from "$lib/IOconnections/MQTT/MQTTparser";
+import { canSchema, datadescription, liveData } from "../ConnectionStores";
+import { fetchConnectionStores } from "$lib/fetchConnectionStores";
+
+import { getlayoutConfig } from "$lib/DashboardBuilder/LayoutConfig";
 
 setupPageDefault();
 pageName.set("Dashboard");
 
-let tagToIdDict: any = {};
-let canSchema: any = {};
-
 let DashboardLayout:any;
 
-async function fetchDataDescriptionFromDb() {
+//fetches connectionstores in case of when store memory is wiped 
+onMount(async () => {
+    await fetchConnectionStores(datadescription, canSchema, liveData);
+})
+
+async function fetchLayout() {
     DashboardLayout = await getlayoutConfig();
-
-    datadescription.set(await db.select('SELECT * FROM DataDescription'));
-
-    //fill the tagToIdDict
-    $datadescription.map((x) => {
-        tagToIdDict[x.tag] = x.id
-    })
-
-    //fill the canschema values
-    canSchema = Object.groupBy($datadescription, ({ CANid }) => CANid)
-    // sort on CAN position
-    Object.keys(canSchema).forEach(key => {
-        canSchema[key] = canSchema[key].sort((a: any, b: any) => a.CANmsgPosition - b.CANmsgPosition)
-    });
-
-    // fetch time of last update
-    const lastMsgTime: any[] = await db.select('SELECT max(UnixTime) as UnixTime FROM Data')
-    liveData.update((xs: any) => {
-        xs["UnixTime"] = lastMsgTime[0].UnixTime
-        return xs
-    })
 }
-
-onMount(() => {
-    mqtt.listen(async (x: any) => {
-        try {
-            const payload = x.payload.event.message.payload
-            const dataObj = parseCANmessages(x, canSchema)
-            
-            const curDate = new Date()
-            Object.keys(dataObj).map(async (key: string) => {
-                await db.execute('INSERT INTO Data Values ( ? , ? , ? )', [curDate.getTime(), key, dataObj[key]]);
-                liveData.update((xs: any) => {
-                    xs[key] = dataObj[key]
-                return xs
-                })
-            })
-            liveData.update((xs: any) => {
-                xs["UnixTime"] = curDate.getTime()
-                return xs
-            })
-        } catch (error) {
-            console.log(x)
-        }
-    });
-});
 </script>
 
 <svelte:head>
@@ -74,7 +31,7 @@ onMount(() => {
 
 <div class="space-y-3">
     <!-- top row -->
-    {#await fetchDataDescriptionFromDb()}
+    {#await fetchLayout()}
         loading..
     {:then}
     

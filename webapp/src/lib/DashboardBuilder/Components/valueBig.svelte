@@ -26,14 +26,14 @@
             <p class="dark:text-stone-400 grow"></p>
         </div>
     {:else if !isDummy}
-        <p class="font-bold">{$description.name}</p>
+        <p class="">{$description.name}</p>
         <div class="flex flex-row items-end space-x-1">
             <p class="text-4xl">{($latestValue)?.toFixed(2) ?? "-"}</p>
             <p class="dark:text-stone-400 grow">{$description.unit}</p>
         </div>
     {:else}
     <div class="text-transparent">
-        <p class="font-bold">dummy</p>
+        <p class="">dummy</p>
         <div class="flex flex-row items-end space-x-1">
             <p class="text-4xl">hi</p>
             <p class="grow">user</p>
