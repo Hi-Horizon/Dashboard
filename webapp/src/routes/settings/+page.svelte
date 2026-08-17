@@ -1,13 +1,16 @@
 <script lang="ts">
-    import ReadStatisticTable from "./SettingsList/ReadStatisticTable.svelte";
-    import { pageName } from "../../stores";
-    import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
-    import { setupPageDefault } from "$lib/setupPageDefault";
-    import { parseOperationReadStatistic } from "$lib/settings/ReadStatistics";
-    import { db } from "$lib/IOconnections/DBO/databaseObject";
+    import { onMount } from "svelte";
     import { writable, type Writable } from "svelte/store";
+    import { getDb } from "$lib/IOconnections/DBO/databaseObject";
+
+    import { pageName } from "../../stores";
+    import { setupPageDefault } from "$lib/setupPageDefault";
+    import type { SettingsLocalChange } from "$lib/interfaces/SettingsLocalChange";
+
+    import ReadStatisticTable from "./SettingsList/ReadStatisticTable.svelte";
     import CanMessageInfoImporter from "$lib/settings/CanMessageInfoImporter.svelte";
     import Button from "$lib/Components/button.svelte";
+    import { parseOperationReadStatistic } from "$lib/settings/ReadStatistics";
 
     setupPageDefault();
     pageName.set("Settings");
@@ -16,7 +19,12 @@
 
     let DataDescriptions: Writable<any[]> = writable([])
 
+    onMount(async () => {
+        await fetchDataDescriptionFromDb();
+    })
+
     async function fetchDataDescriptionFromDb() {
+        const db = await getDb();
         let rawData: any[] = await db.select('SELECT * FROM DataDescription')
         rawData.forEach((row) => {
             row.CANid = '0x' + row.CANid.toString(16);
@@ -35,6 +43,7 @@
 
     let waitingToSubmit: boolean = false;
     async function submitChanges(): Promise<any> {
+        const db = await getDb();
         // const AllchangeLogs: SettingsLocalChange[][] = [$draftChanges];
         let confirmation: boolean = confirm("are you sure you want these changes?");
         if (confirmation === true) {

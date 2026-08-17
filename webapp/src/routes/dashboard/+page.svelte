@@ -1,12 +1,14 @@
 <script lang="ts">
+import { onMount } from "svelte";
+
 import { pageName } from "../../stores";
 import { setupPageDefault } from "$lib/setupPageDefault";
-import { onMount } from "svelte";
 import DashboardBuilder from "$lib/DashboardBuilder/Components/DashboardBuilder.svelte";
-import { getlayoutConfig } from "$lib/DashboardBuilder/LayoutConfig";
 import DashboardConfigUploader from "$lib/DashboardBuilder/Components/DashboardConfigUploader.svelte";
-    import { fetchConnectionStores } from "$lib/fetchConnectionStores";
-    import { canSchema, datadescription, liveData } from "../ConnectionStores";
+import { canSchema, datadescription, liveData } from "../ConnectionStores";
+import { fetchConnectionStores } from "$lib/fetchConnectionStores";
+
+import { getlayoutConfig } from "$lib/DashboardBuilder/LayoutConfig";
 
 setupPageDefault();
 pageName.set("Dashboard");

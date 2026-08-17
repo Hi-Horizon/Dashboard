@@ -9,7 +9,6 @@
     "core:default",
     "shell:default",
     "shell:allow-open",
-    "mqtt:default",
     "sql:default",
     "sql:allow-execute"
   ]
