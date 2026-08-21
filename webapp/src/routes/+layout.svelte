@@ -32,6 +32,7 @@
 
         mqttStatusUnlisten = listen('mqtt-status', (e) => {
             console.log('Received MQTT status:', e.payload);
+            alert(`MQTT status: ${e.payload}`);
             mqttConnected = {connected: e.payload === "connected", color: e.payload === "connected" ? "bg-teal-500" : "bg-red-400" };
         });
 

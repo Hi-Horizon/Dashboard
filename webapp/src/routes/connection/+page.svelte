@@ -14,7 +14,7 @@ async function connect_mqtt() {
   await invoke('connect_mqtt', { creds: { username: mqttUser, password: mqttPassword } });
 }
 
-  async function disconnect_mqtt() {
+async function disconnect_mqtt() {
   await invoke('disconnect_mqtt');
 }
 
