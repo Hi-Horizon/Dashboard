@@ -3,6 +3,9 @@ use rumqttc::{AsyncClient, MqttOptions, Transport, QoS, Event, Packet};
 use std::sync::{Arc, Mutex};
 use std::sync::atomic::{AtomicBool, Ordering};
 
+const HOST: &str    = env!("MQTT_HOST");
+const PORT: &str     = env!("MQTT_PORT");
+
 //state to track the MQTT connection and thread
 pub struct MqttState {
     pub handle: Mutex<Option<tauri::async_runtime::JoinHandle<()>>>,
@@ -58,7 +61,7 @@ pub async fn run_mqtt_loop(
     creds: MqttCredentials
 ) {
     // TODO: HARDCODED MQTT OPTIONS FOR NOW, WILL BE REPLACED WITH USER INPUT LATER
-    let mut opts = MqttOptions::new("dashboard", std::env::var("MQTTBROKERURL").unwrap_or_else(|_| "localhost".into()), std::env::var("MQTTBROKERPORT").unwrap_or_else(|_| "1883".into()).parse::<u16>().unwrap_or(1883));
+    let mut opts = MqttOptions::new("dashboard", HOST, PORT.parse().unwrap_or(1883));
     opts.set_transport(Transport::tls_with_default_config());
     // set credentials if provided
     if let (Some(u), Some(p)) = (&creds.username, &creds.password) {
